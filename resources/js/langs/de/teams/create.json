@@ -1,0 +1,16 @@
+{
+    "allowed-to-create": "Sie können {teams} Team(s) erstellen",
+    "what-kind-of-team": "Was für eine Art von Team möchten Sie erstellen?",
+    "team-type": "Teamtyp",
+    "team-name": "Teamname",
+    "my-awesome-team-placeholder": "Mein tolles Team",
+    "unique-team-id": "Einzigartige Team-Kennung",
+    "id-to-join-team": "Jeder mit dieser ID kann Ihrem Team beitreten.",
+    "create-team": "Team erstellen",
+    "update-team": "Team aktualisieren",
+    "created": "Herzlichen Glückwunsch! Ihr neues Team wurde erstellt.",
+    "updated": "Team aktualisiert.",
+    "select-team": "Team auswählen",
+    "fail": "Beim Erstellen Ihres Teams ist ein Fehler aufgetreten",
+    "max-created": "Sie dürfen keine weiteren Teams erstellen."
+}

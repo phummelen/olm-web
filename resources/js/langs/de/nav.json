@@ -1,0 +1,20 @@
+{
+    "admin": "Administrator",
+    "admin-verify-photos": "ADMIN - Fotos überprüfen",
+    "admin-horizon": "ADMIN - Horizon",
+    "admin-verify-boxes": "ADMIN - Felder überprüfen",
+    "about": "Über uns",
+    "global-map": "Weltkarte",
+    "world-cup": "Weltmeisterschaft",
+    "community": "Gemeinschaft",
+    "upload": "Hochladen",
+    "more": "Mehr",
+    "tag-litter": "Müll markieren",
+    "profile": "Profil",
+    "settings": "Einstellungen",
+    "bounding-boxes": "Begrenzungsrahmen",
+    "logout": "Ausloggen",
+    "login": "Einloggen",
+    "signup": "Anmelden",
+    "teams": "Teams"
+}

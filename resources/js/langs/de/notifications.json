@@ -1,0 +1,15 @@
+{
+    "success": "Erfolg",
+    "error": "Fehler!",
+    "tags-added": "Erfolg! Ihre Tags wurden hinzugefügt",
+    "subscription-cancelled": "Ihr Abonnement wurde storniert",
+    "privacy-updated": "Ihre Datenschutzeinstellungen wurden gespeichert",
+    "litter-toggled": "Abgeholt-Wert aktualisiert",
+    "settings": {
+        "subscribed": "Sie haben sich für Updates und gute Nachrichten angemeldet!",
+        "unsubscribed": "Sie haben sich abgemeldet. Sie erhalten keine guten Nachrichten mehr!",
+        "flag-updated": "Ihre Flagge wurde aktualisiert"
+    },
+    "something-went-wrong": "Etwas ist schief gelaufen. Bitte versuchen Sie es erneut oder kontaktieren Sie uns!",
+    "settings-updated": "Einstellungen erfolgreich aktualisiert!"
+}

@@ -1,0 +1,20 @@
+{
+    "change-privacy": "Datenschutz ändern",
+    "maps": "Karten",
+    "credit-name": "Nennung meines Namens",
+    "credit-username": "Nennung meines Benutzernamens",
+    "name-imgs-yes": "Ihr Name wird auf jedem Bild angezeigt, das Sie auf den Karten hochladen.",
+    "username-imgs-yes": "Ihr Benutzername wird auf jedem Bild angezeigt, das Sie auf den Karten hochladen.",
+    "name-username-map-no": "Ihr Name und Benutzername werden auf den Karten nicht angezeigt.",
+    "leaderboards": "Bestenlisten",
+    "credit-my-name": "Nennung meines Namens",
+    "credit-my-username": "Nennung meines Benutzernamens",
+    "name-leaderboards-yes": "Ihr Name wird in allen Bestenlisten angezeigt, für die Sie sich qualifizieren.",
+    "username-leaderboards-yes": "Ihr Benutzername wird in allen Bestenlisten angezeigt, für die Sie sich qualifizieren.",
+    "name-username-leaderboards-no": "Ihr Name und Benutzername werden nicht auf den Bestenlisten angezeigt.",
+    "created-by": "Erstellt von",
+    "name-locations-yes": "Ihr Name wird auf allen Orten angezeigt, die Sie erstellen.",
+    "username-locations-yes": "Ihr Benutzername wird auf allen Orten angezeigt, die Sie erstellen.",
+    "name-username-locations-yes": "Ihr Name und Benutzername werden im Abschnitt \"Erstellt von\" auf allen Orten, die Sie zur Datenbank hinzufügen, nicht angezeigt.",
+    "update": "Aktualisieren"
+}
