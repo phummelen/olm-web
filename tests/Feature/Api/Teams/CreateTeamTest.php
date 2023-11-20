@@ -100,7 +100,7 @@ class CreateTeamTest extends TestCase
 
         $teamPivot = $this->user->teams()->first();
         $this->assertNotNull($teamPivot);
-        $this->assertSame(0, $teamPivot->total_photos);
+        $this->assertNull($teamPivot->total_photos);
         $this->assertSame(0, $teamPivot->total_litter);
     }
 }

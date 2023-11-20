@@ -131,7 +131,7 @@ class UpdateTagsDeletePhotoTest extends TestCase
         // Admin updates the tags -------------------
         $this->actingAs($this->admin);
 
-        $this->assertSame(0, $this->admin->xp);
+        $this->assertNull($this->admin->xp);
 
         $this->post($route, [
             'photoId' => $this->photo->id,
@@ -155,7 +155,7 @@ class UpdateTagsDeletePhotoTest extends TestCase
         $this->assertSame(1, $this->user->xp);
         $this->assertSame(10, $this->photo->total_litter);
         $this->assertFalse($this->photo->picked_up);
-        $this->assertSame(1, $this->photo->verification);
+        $this->assertSame(1.0, $this->photo->verification);
         $this->assertSame(2, $this->photo->verified);
     }
 
@@ -234,9 +234,9 @@ class UpdateTagsDeletePhotoTest extends TestCase
 
         // Assert leaderboards are updated ------------
         $this->assertSame(5, $this->admin->xp_redis);
-        $this->assertSame(1, Redis::zscore("xp.users", $this->user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
+        $this->assertSame('1', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
     }
 }

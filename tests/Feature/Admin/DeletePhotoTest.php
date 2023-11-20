@@ -75,7 +75,7 @@ class DeletePhotoTest extends TestCase
         // We make sure the photo exists
         Storage::disk('s3')->assertExists($this->imageAndAttributes['filepath']);
         Storage::disk('bbox')->assertExists($this->imageAndAttributes['filepath']);
-        $this->assertSame(0, $this->admin->xp);
+        $this->assertNull($this->admin->xp);
         $this->assertSame(1, $this->user->has_uploaded);
         $this->assertSame(4, $this->user->xp);
         $this->assertSame(1, $this->user->total_images);
@@ -136,20 +136,20 @@ class DeletePhotoTest extends TestCase
             'tags' => ['smoking' => ['butts' => 3]]
         ]);
         $this->assertSame(0, $this->admin->xp_redis);
-        $this->assertSame(4, Redis::zscore("xp.users", $this->user->id));
-        $this->assertSame(4, Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
-        $this->assertSame(4, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
-        $this->assertSame(4, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
+        $this->assertSame('4', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
+        $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
+        $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
 
         // Admin deletes the photo -------------------
         $this->actingAs($this->admin)->post('/admin/destroy', ['photoId' => $this->photo->id]);
 
         // Assert leaderboards are updated ------------
         $this->assertSame(1, $this->admin->xp_redis);
-        $this->assertSame(0, Redis::zscore("xp.users", $this->user->id));
-        $this->assertSame(0, Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
-        $this->assertSame(0, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
-        $this->assertSame(0, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
+        $this->assertSame('0', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('0', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
+        $this->assertSame('0', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
+        $this->assertSame('0', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
     }
 
     public function test_unauthorized_users_cannot_delete_photos()

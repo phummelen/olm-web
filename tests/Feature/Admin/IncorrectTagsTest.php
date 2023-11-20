@@ -72,7 +72,7 @@ class IncorrectTagsTest extends TestCase
 
         // We make sure xp and tags are correct
         $this->assertSame(4, $this->user->xp);
-        $this->assertSame(0, $this->admin->xp);
+        $this->assertNull($this->admin->xp);
         $this->assertInstanceOf(Smoking::class, $this->photo->smoking);
 
         // Admin marks the tagging as incorrect -------------------
@@ -87,7 +87,7 @@ class IncorrectTagsTest extends TestCase
         // Assert xp is decreased, and tags are cleared
         $this->assertSame(1, $this->user->xp);
         $this->assertSame(0, $this->user->count_correctly_verified);
-        $this->assertSame(0, $this->photo->verification);
+        $this->assertSame(0.0, $this->photo->verification);
         $this->assertSame(0, $this->photo->verified);
         $this->assertSame(0, $this->photo->total_litter);
         $this->assertNull($this->photo->result_string);
@@ -112,20 +112,20 @@ class IncorrectTagsTest extends TestCase
             'tags' => ['smoking' => ['butts' => 3]]
         ]);
         $this->assertSame(0, $this->admin->xp_redis);
-        $this->assertSame(4, Redis::zscore("xp.users", $this->user->id));
-        $this->assertSame(4, Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
-        $this->assertSame(4, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
-        $this->assertSame(4, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
+        $this->assertSame('4', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
+        $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
+        $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
 
         // Admin marks the tagging as incorrect -------------------
         $this->actingAs($this->admin)->post('/admin/reset-tags', ['photoId' => $this->photo->id]);
 
         // Assert leaderboards are updated ------------
         $this->assertSame(1, $this->admin->xp_redis);
-        $this->assertSame(1, Redis::zscore("xp.users", $this->user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
+        $this->assertSame('1', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
     }
 
     public function test_unauthorized_users_cannot_mark_tagging_as_incorrect()

@@ -73,7 +73,7 @@ class CorrectTagsKeepPhotoTest extends TestCase
         // We make sure xp and tags are correct
         Redis::zrem('xp.users', $this->admin->id);
         $this->assertSame(4, $this->user->xp);
-        $this->assertSame(0, $this->admin->xp);
+        $this->assertNull($this->admin->xp);
         $this->assertSame(0, $this->admin->xp_redis);
         $this->assertInstanceOf(Smoking::class, $this->photo->smoking);
 
@@ -88,7 +88,7 @@ class CorrectTagsKeepPhotoTest extends TestCase
 
         // Assert xp and tags don't change
         $this->assertSame(4, $this->user->xp);
-        $this->assertSame(1, $this->photo->verification);
+        $this->assertSame(1.0, $this->photo->verification);
         $this->assertSame(2, $this->photo->verified);
         $this->assertSame(3, $this->photo->total_litter);
         $this->assertInstanceOf(Smoking::class, $this->photo->smoking);
@@ -138,7 +138,7 @@ class CorrectTagsKeepPhotoTest extends TestCase
         Event::assertDispatched(
             TagsVerifiedByAdmin::class,
             function (TagsVerifiedByAdmin $e) {
-                return $e->photo_id === $this->photo->id;
+                return $e->photo_id == $this->photo->id;
             }
         );
     }

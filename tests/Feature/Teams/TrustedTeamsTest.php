@@ -55,7 +55,7 @@ class TrustedTeamsTest extends TestCase
         // The photo is automatically verified
         $photo->refresh();
         $this->assertSame(2, $photo->verified);
-        $this->assertSame(1, $photo->verification);
+        $this->assertSame(1.0, $photo->verification);
 
         // Event is fired
         Event::assertDispatched(TagsVerifiedByAdmin::class);
@@ -89,7 +89,7 @@ class TrustedTeamsTest extends TestCase
         // The photo is automatically verified
         $photo->refresh();
         $this->assertSame(2, $photo->verified);
-        $this->assertSame(1, $photo->verification);
+        $this->assertSame(1.0, $photo->verification);
 
         // Event is fired
         Event::assertDispatched(TagsVerifiedByAdmin::class);

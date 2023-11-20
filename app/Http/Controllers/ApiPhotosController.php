@@ -147,7 +147,7 @@ class ApiPhotosController extends Controller
         $state = $this->uploadHelper->getStateFromAddressArray($country, $addressArray);
         $city = $this->uploadHelper->getCityFromAddressArray($country, $state, $addressArray, $lat, $lon);
 
-        $pickedUp = (property_exists($request, 'picked_up') && $request->picked_up !== null && !is_null($request->picked_up))
+        $pickedUp = $request->filled('picked_up')
             ? $request->picked_up
             : !$user->items_remaining;
 

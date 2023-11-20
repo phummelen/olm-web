@@ -31,8 +31,8 @@ class AddContributorForLocationActionTest extends TestCase
         // should not store their id twice
         $addContributorAction->run($countryId, $stateId, $cityId, $userId);
 
-        $this->assertSame([$userId], Redis::smembers("country:$countryId:user_ids"));
-        $this->assertSame([$userId], Redis::smembers("state:$stateId:user_ids"));
-        $this->assertSame([$userId], Redis::smembers("city:$cityId:user_ids"));
+        $this->assertSame(["$userId"], Redis::smembers("country:$countryId:user_ids"));
+        $this->assertSame(["$userId"], Redis::smembers("state:$stateId:user_ids"));
+        $this->assertSame(["$userId"], Redis::smembers("city:$cityId:user_ids"));
     }
 }

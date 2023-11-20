@@ -23,9 +23,9 @@ class RemoveContributorForLocationActionTest extends TestCase
         Redis::sadd("state:$stateId:user_ids", $userId);
         Redis::sadd("city:$cityId:user_ids", $userId);
 
-        $this->assertSame([$userId], Redis::smembers("country:$countryId:user_ids"));
-        $this->assertSame([$userId], Redis::smembers("state:$stateId:user_ids"));
-        $this->assertSame([$userId], Redis::smembers("city:$cityId:user_ids"));
+        $this->assertSame(["$userId"], Redis::smembers("country:$countryId:user_ids"));
+        $this->assertSame(["$userId"], Redis::smembers("state:$stateId:user_ids"));
+        $this->assertSame(["$userId"], Redis::smembers("city:$cityId:user_ids"));
 
         /** @var RemoveContributorForLocationAction $removeContributorAction */
         $removeContributorAction = app(RemoveContributorForLocationAction::class);

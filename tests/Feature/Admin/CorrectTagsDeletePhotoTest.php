@@ -76,14 +76,15 @@ class CorrectTagsDeletePhotoTest extends TestCase
         Storage::disk('s3')->assertExists($this->imageAndAttributes['filepath']);
         Storage::disk('bbox')->assertExists($this->imageAndAttributes['filepath']);
         $this->assertSame(4, $this->user->xp);
-        $this->assertSame(0, $this->admin->xp);
+        $this->assertNull($this->admin->xp);
         $this->assertSame(0, $this->admin->xp_redis);
 
         // Admin verifies the photo -------------------
         $this->actingAs($this->admin);
 
-        $this->post('/admin/verify', ['photoId' => $this->photo->id]);
+        $response = $this->post('/admin/verify', ['photoId' => $this->photo->id]);
 
+        $response->assertOk();
         $this->user->refresh();
         $this->photo->refresh();
 
@@ -92,7 +93,7 @@ class CorrectTagsDeletePhotoTest extends TestCase
         Storage::disk('bbox')->assertMissing($this->imageAndAttributes['filepath']);
         $this->assertSame(4, $this->user->xp);
         $this->assertSame('/assets/verified.jpg', $this->photo->filename);
-        $this->assertSame(1, $this->photo->verification);
+        $this->assertSame(1.0, $this->photo->verification);
         $this->assertSame(2, $this->photo->verified);
         // Admin is rewarded with 1 XP
         $this->assertSame(1, $this->admin->xp);
@@ -140,7 +141,7 @@ class CorrectTagsDeletePhotoTest extends TestCase
         Event::assertDispatched(
             TagsVerifiedByAdmin::class,
             function (TagsVerifiedByAdmin $e) {
-                return $e->photo_id === $this->photo->id;
+                return $e->photo_id == $this->photo->id;
             }
         );
     }

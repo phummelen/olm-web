@@ -38,7 +38,7 @@ class AddTagsToUploadedImageController extends Controller
             $request->custom_tags ?? []
         ));
 
-        $pickedUp = (property_exists($request, 'picked_up') && $request->picked_up !== null && !is_null($request->picked_up))
+        $pickedUp = $request->filled('picked_up')
             ? $request->picked_up
             : !$user->items_remaining;
 

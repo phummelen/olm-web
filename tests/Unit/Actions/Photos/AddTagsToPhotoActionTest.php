@@ -25,7 +25,7 @@ class AddTagsToPhotoActionTest extends TestCase
         ]);
 
         $this->assertSame(
-            ['all' => 7, 'litter' => 2, 'brands' => 5],
+            ['litter' => 2, 'brands' => 5, 'all' => 7],
             $totals
         );
     }

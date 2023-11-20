@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Faker\Factory;
 use App\Models\Photo;
+use Faker\Factory;
 use Illuminate\Database\Seeder;
 
 class PhotosSeeder extends Seeder

@@ -186,9 +186,9 @@ class UploadPhotoTest extends TestCase
 
         $imageAttributes = $this->getImageAndAttributes();
 
-        $this->assertSame(0, $user->has_uploaded);
-        $this->assertSame(0, $user->xp);
-        $this->assertSame(0, $user->total_images);
+        $this->assertNull($user->has_uploaded);
+        $this->assertNull($user->xp);
+        $this->assertNull($user->total_images);
 
         $this->post('/submit', [
             'file' => $imageAttributes['file'],
@@ -219,17 +219,17 @@ class UploadPhotoTest extends TestCase
         Redis::del("xp.country.$countryId");
         Redis::del("xp.country.$countryId.state.$stateId");
         Redis::del("xp.country.$countryId.state.$stateId.city.$cityId");
-        $this->assertSame(0, Redis::zscore("xp.users", $user->id));
-        $this->assertSame(0, Redis::zscore("xp.country.$countryId", $user->id));
-        $this->assertSame(0, Redis::zscore("xp.country.$countryId.state.$stateId", $user->id));
-        $this->assertSame(0, Redis::zscore("xp.country.$countryId.state.$stateId.city.$cityId", $user->id));
+        $this->assertNull(Redis::zscore("xp.users", $user->id));
+        $this->assertNull(Redis::zscore("xp.country.$countryId", $user->id));
+        $this->assertNull(Redis::zscore("xp.country.$countryId.state.$stateId", $user->id));
+        $this->assertNull(Redis::zscore("xp.country.$countryId.state.$stateId.city.$cityId", $user->id));
 
         $this->actingAs($user)->post('/submit', ['file' => $imageAttributes['file']]);
 
-        $this->assertSame(1, Redis::zscore("xp.users", $user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.$countryId", $user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.$countryId.state.$stateId", $user->id));
-        $this->assertSame(1, Redis::zscore("xp.country.$countryId.state.$stateId.city.$cityId", $user->id));
+        $this->assertSame('1', Redis::zscore("xp.users", $user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.$countryId", $user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.$countryId.state.$stateId", $user->id));
+        $this->assertSame('1', Redis::zscore("xp.country.$countryId.state.$stateId.city.$cityId", $user->id));
     }
 
     public function test_unauthenticated_users_cannot_upload_photos()
