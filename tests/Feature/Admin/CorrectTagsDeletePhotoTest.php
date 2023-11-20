@@ -19,10 +19,13 @@ class CorrectTagsDeletePhotoTest extends TestCase
 
     /** @var User */
     protected $admin;
+
     /** @var User */
     protected $user;
+
     /** @var Photo */
     protected $photo;
+
     /** @var array */
     private $imageAndAttributes;
 
@@ -35,7 +38,6 @@ class CorrectTagsDeletePhotoTest extends TestCase
 
         $this->setImagePath();
 
-        /** @var User $admin */
         $this->admin = User::factory()->create(['verification_required' => false]);
 
         $this->admin->assignRole(Role::create(['name' => 'admin']));
@@ -73,9 +75,9 @@ class CorrectTagsDeletePhotoTest extends TestCase
         Redis::zrem('xp.users', $this->admin->id);
         Storage::disk('s3')->assertExists($this->imageAndAttributes['filepath']);
         Storage::disk('bbox')->assertExists($this->imageAndAttributes['filepath']);
-        $this->assertEquals(4, $this->user->xp);
-        $this->assertEquals(0, $this->admin->xp);
-        $this->assertEquals(0, $this->admin->xp_redis);
+        $this->assertSame(4, $this->user->xp);
+        $this->assertSame(0, $this->admin->xp);
+        $this->assertSame(0, $this->admin->xp_redis);
 
         // Admin verifies the photo -------------------
         $this->actingAs($this->admin);
@@ -88,13 +90,13 @@ class CorrectTagsDeletePhotoTest extends TestCase
         // And it's gone
         Storage::disk('s3')->assertMissing($this->imageAndAttributes['filepath']);
         Storage::disk('bbox')->assertMissing($this->imageAndAttributes['filepath']);
-        $this->assertEquals(4, $this->user->xp);
-        $this->assertEquals('/assets/verified.jpg', $this->photo->filename);
-        $this->assertEquals(1, $this->photo->verification);
-        $this->assertEquals(2, $this->photo->verified);
+        $this->assertSame(4, $this->user->xp);
+        $this->assertSame('/assets/verified.jpg', $this->photo->filename);
+        $this->assertSame(1, $this->photo->verification);
+        $this->assertSame(2, $this->photo->verified);
         // Admin is rewarded with 1 XP
-        $this->assertEquals(1, $this->admin->xp);
-        $this->assertEquals(1, $this->admin->xp_redis);
+        $this->assertSame(1, $this->admin->xp);
+        $this->assertSame(1, $this->admin->xp_redis);
     }
 
     public function test_unauthorized_users_cannot_verify_and_delete_photos()
@@ -113,8 +115,8 @@ class CorrectTagsDeletePhotoTest extends TestCase
 
         $response->assertRedirect('/');
 
-        $this->assertEquals(0.1, $this->photo->verification);
-        $this->assertEquals(0, $this->photo->verified);
+        $this->assertEqualsWithDelta(0.1, $this->photo->verification, PHP_FLOAT_EPSILON);
+        $this->assertSame(0, $this->photo->verified);
     }
 
     public function test_it_throws_not_found_exception_if_photo_doesnt_exist()

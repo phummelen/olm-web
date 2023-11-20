@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Merchants;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Merchant;
 use App\Models\MerchantPhoto;
@@ -58,9 +60,9 @@ class UploadMerchantPhotoController extends Controller
                 'merchant_id' => $merchant->id
             ]);
         }
-        catch (\Exception $exception)
+        catch (Exception $exception)
         {
-            \Log::info(['UploadMerchantPhotoController', $exception->getMessage()]);
+            Log::info(['UploadMerchantPhotoController', $exception->getMessage()]);
 
             return [
                 'success' => false,

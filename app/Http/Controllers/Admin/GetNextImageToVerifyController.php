@@ -14,9 +14,6 @@ class GetNextImageToVerifyController extends Controller
 {
     /**
      * Get the next image to verify
-     *
-     * @param GetImageForVerificationRequest $request
-     * @return array
      */
     public function __invoke (GetImageForVerificationRequest $request): array
     {

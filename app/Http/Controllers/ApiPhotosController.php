@@ -37,21 +37,19 @@ class ApiPhotosController extends Controller
 
     /** @var UploadHelper */
     protected $uploadHelper;
+
     /** @var UploadPhotoAction */
     private $uploadPhotoAction;
+
     /** @var DeletePhotoAction */
     private $deletePhotoAction;
+
     /** @var MakeImageAction */
     private $makeImageAction;
 
     /**
      * ApiPhotosController constructor
      * Apply middleware to all of these routes
-     *
-     * @param UploadHelper $uploadHelper
-     * @param UploadPhotoAction $uploadPhotoAction
-     * @param DeletePhotoAction $deletePhotoAction
-     * @param MakeImageAction $makeImageAction
      */
     public function __construct (
         UploadHelper $uploadHelper,
@@ -72,8 +70,6 @@ class ApiPhotosController extends Controller
      * Stores a photo
      * This is to handle all APIs from mobile app versions
      *
-     * @param Request $request
-     * @return Photo
      * @throws InvalidCoordinates
      * @throws PhotoAlreadyUploaded
      */
@@ -84,7 +80,9 @@ class ApiPhotosController extends Controller
         /** @var User $user */
         $user = auth()->user();
 
-        if (!$user->has_uploaded) $user->has_uploaded = 1;
+        if (!$user->has_uploaded) {
+            $user->has_uploaded = 1;
+        }
 
         Log::channel('photos')->info([
             'app_upload' => $request->all(),
@@ -102,19 +100,15 @@ class ApiPhotosController extends Controller
 
         if (($lat === 0 && $lon === 0) || ($lat === '0' && $lon === '0'))
         {
-            \Log::info("invalid coordinates found for userId $user->id \n");
+            Log::info("invalid coordinates found for userId $user->id \n");
             throw new InvalidCoordinates();
         }
 
-        $date = str_contains($request['date'], ':')
+        $date = str_contains((string) $request['date'], ':')
             ? $request['date']
             : (int)$request['date'];
 
         $date = Carbon::parse($date);
-
-        // These users can upload duplicate photos
-        // we assume that in 1 second only 1 photo can be taken for each user
-        $excludedUserIds = [1,3233];
 
         // temp disabling this
         // The user with id = 1 needs to upload duplicate images for testing
@@ -153,7 +147,7 @@ class ApiPhotosController extends Controller
         $state = $this->uploadHelper->getStateFromAddressArray($country, $addressArray);
         $city = $this->uploadHelper->getCityFromAddressArray($country, $state, $addressArray, $lat, $lon);
 
-        $pickedUp = (isset($request->picked_up) && !is_null($request->picked_up))
+        $pickedUp = (property_exists($request, 'picked_up') && $request->picked_up !== null && !is_null($request->picked_up))
             ? $request->picked_up
             : !$user->items_remaining;
 
@@ -217,28 +211,26 @@ class ApiPhotosController extends Controller
     }
 
     /**
-     * Upload Photo
-     *
-     * @param Request $request
-     *
-     * array (
-        'lat' => '55.455525',
-        'lon' => '-5.713071670000001',
-        'date' => '2021:06:04 15:50:55',
-        'presence' => 'true',
-        'model' => 'iPhone 12',
-        'photo' =>
-            Illuminate\Http\UploadedFile::__set_state(array(
-                'test' => false,
-                'originalName' => 'IMG_2624.JPG',
-                'mimeType' => 'image/jpeg',
-                'error' => 0,
-                'hashName' => NULL
-            ))
-        );
-     *
-     * @return array
-     */
+    * Upload Photo
+    *
+    * @param Request $request
+    *
+    * array (
+       'lat' => '55.455525',
+       'lon' => '-5.713071670000001',
+       'date' => '2021:06:04 15:50:55',
+       'presence' => 'true',
+       'model' => 'iPhone 12',
+       'photo' =>
+           Illuminate\Http\UploadedFile::__set_state(array(
+               'test' => false,
+               'originalName' => 'IMG_2624.JPG',
+               'mimeType' => 'image/jpeg',
+               'error' => 0,
+               'hashName' => NULL
+           ))
+       );
+    */
     public function store (Request $request): array
     {
         $request->validate([
@@ -280,9 +272,6 @@ class ApiPhotosController extends Controller
      * Upload Photo
      *
      * May or may not have tags.
-     *
-     * @param UploadPhotoWithOrWithoutTagsRequest $request
-     * @return array
      */
     public function uploadWithOrWithoutTags (UploadPhotoWithOrWithoutTagsRequest $request) :array
     {
@@ -306,14 +295,14 @@ class ApiPhotosController extends Controller
         }
         catch (PhotoAlreadyUploaded $e)
         {
-            \Log::info(['ApiPhotosController@uploadWithOrWithoutTags.1', $e->getMessage()]);
+            Log::info(['ApiPhotosController@uploadWithOrWithoutTags.1', $e->getMessage()]);
 
             return [
                 'success' => false,
                 'msg' => 'photo-already-uploaded'
             ];
         } catch (InvalidCoordinates $e) {
-            \Log::info(['ApiPhotosoController@uploadWithOrWithoutTags.2', $e->getMessage()]);
+            Log::info(['ApiPhotosoController@uploadWithOrWithoutTags.2', $e->getMessage()]);
 
             return [
                 'success' => false,

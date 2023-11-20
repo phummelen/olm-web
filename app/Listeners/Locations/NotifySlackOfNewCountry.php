@@ -10,7 +10,6 @@ class NotifySlackOfNewCountry
     /**
      * Handle the event.
      *
-     * @param  NewCountryAdded  $event
      * @return void
      */
     public function handle (NewCountryAdded $event)

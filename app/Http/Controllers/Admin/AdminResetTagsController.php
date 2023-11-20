@@ -15,13 +15,11 @@ use Illuminate\Support\Facades\Route;
 
 class AdminResetTagsController extends Controller
 {
+    public $deleteTagsAction;
+    public $updateLeaderboardsAction;
+    public $calculateTagsDiffAction;
     /**
      * Apply IsAdmin middleware to all of these routes
-     *
-     * @param DeleteTagsFromPhotoAction $deleteTagsAction
-     * @param UpdateLeaderboardsForLocationAction $updateLeaderboardsAction
-     * @param DeletePhotoAction $deletePhotoAction
-     * @param CalculateTagsDifferenceAction $calculateTagsDiffAction
      */
     public function __construct (
         DeleteTagsFromPhotoAction $deleteTagsAction,
@@ -45,9 +43,6 @@ class AdminResetTagsController extends Controller
     public function __invoke (Request $request)
     {
         $photo = Photo::findOrFail($request->photoId);
-
-        // Verification to decrease the user by
-        $negativeNumber = -1;
 
         // This function should only be run when the image is not verified already
         // Only superadmins should be able to reset tags on a verified photo

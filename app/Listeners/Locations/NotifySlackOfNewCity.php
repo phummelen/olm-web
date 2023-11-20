@@ -12,7 +12,6 @@ class NotifySlackOfNewCity
      *
      * Note: Photo is not created yet
      *
-     * @param  NewCityAdded  $event
      * @return void
      */
     public function handle (NewCityAdded $event)

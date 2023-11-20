@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use GeoHash;
 use App\Models\Photo;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,10 +16,8 @@ trait FilterPhotosByGeoHashTrait
      *
      * For a specific zoom level, we want to return the bounding box of the clusters + neighbours
      *
-     * @param Builder $query
      * @param string $bbox array -> [west|left, south|bottom, east|right, north|top]
      * @param null layers
-     *
      * @return Builder $query
      */
     public function filterPhotosByGeoHash (Builder $query, string $bbox, $layers = null): Builder
@@ -33,7 +32,7 @@ trait FilterPhotosByGeoHashTrait
         $precision = $this->getGeohashPrecision(request()->zoom);
 
         // Get the center of the bounding box, as a geohash
-        $center_geohash = \GeoHash::encode($center_lat, $center_lon, $precision); // precision 0 will return the full geohash
+        $center_geohash = GeoHash::encode($center_lat, $center_lon, $precision); // precision 0 will return the full geohash
 
         // get the neighbour geohashes from our center geohash
         $geos = array_values($this->neighbors($center_geohash));
@@ -68,8 +67,6 @@ trait FilterPhotosByGeoHashTrait
      * Convert our photos object into a geojson array
      *
      * @param $photos
-     *
-     * @return array
      */
     protected function photosToGeojson ($photos): array
     {
