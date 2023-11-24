@@ -17,15 +17,13 @@ class UpdateTagsController extends Controller
 
     public $calculateTagsDiffAction;
 
-    /**
-     * @param CalculateTagsDifferenceAction $calculateTagsDiffAction
-     */
     public function __construct (CalculateTagsDifferenceAction $calculateTagsDiffAction)
     {
         $this->middleware('admin');
 
         $this->calculateTagsDiffAction = $calculateTagsDiffAction;
     }
+
     /**
      * Update tags on an image
      *

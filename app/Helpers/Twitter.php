@@ -2,6 +2,8 @@
 
 namespace App\Helpers;
 
+use Exception;
+use Illuminate\Support\Facades\Log;
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 class Twitter
@@ -32,9 +34,9 @@ class Twitter
             {
                 $status = $connection->post("tweets", $tweet, true);
             }
-            catch (\Exception $exception)
+            catch (Exception $exception)
             {
-                \Log::info(['Twitter.sendMessage', $exception->getMessage()]);
+                Log::info(['Twitter.sendMessage', $exception->getMessage()]);
             }
         }
     }

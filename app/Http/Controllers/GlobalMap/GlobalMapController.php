@@ -51,8 +51,6 @@ class GlobalMapController extends Controller
 
     /**
      * Get photos point data at zoom levels 16 or above
-     *
-     * @return array
      */
     public function index(): array
     {
@@ -83,20 +81,15 @@ class GlobalMapController extends Controller
                 }
             ]);
 
-        if (request()->fromDate || request()->toDate)
-        {
+        if (request()->fromDate || request()->toDate) {
             $startDate = request()->fromDate && Carbon::hasFormat(request()->fromDate, 'Y-m-d')
                 ? Carbon::createFromFormat('Y-m-d', request()->fromDate)->startOfDay()
                 : Carbon::create(2017);
-
             $endDate = request()->toDate && Carbon::hasFormat(request()->toDate, 'Y-m-d')
                 ? Carbon::createFromFormat('Y-m-d', request()->toDate)->endOfDay()
                 : now()->addDay();
-
             $query->whereBetween('datetime', [$startDate, $endDate]);
-        }
-        else if (request()->year)
-        {
+        } elseif (request()->year) {
             $query->whereYear('datetime', request()->year);
         }
 

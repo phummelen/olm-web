@@ -6,6 +6,9 @@ use Rector\Caching\ValueObject\Storage\FileCacheStorage;
 use Rector\CodingStyle\Rector\ArrowFunction\StaticArrowFunctionRector;
 use Rector\CodingStyle\Rector\Closure\StaticClosureRector;
 use Rector\CodingStyle\Rector\Encapsed\EncapsedStringsToSprintfRector;
+use Rector\CodingStyle\Rector\Encapsed\WrapEncapsedVariableInCurlyBracesRector;
+use Rector\CodingStyle\Rector\Plus\UseIncrementAssignRector;
+use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector;
 use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
@@ -41,6 +44,9 @@ return static function (RectorConfig $rectorConfig): void {
         StaticArrowFunctionRector::class,
         StaticClosureRector::class,
         EncapsedStringsToSprintfRector::class,
+        WrapEncapsedVariableInCurlyBracesRector::class,
+        PostIncDecToPreIncDecRector::class,
+        UseIncrementAssignRector::class,
         __DIR__.'/app/Http/Middleware/RedirectIfAuthenticated.php',
         RemoveUnusedVariableAssignRector::class => [
             __DIR__.'/tests',
