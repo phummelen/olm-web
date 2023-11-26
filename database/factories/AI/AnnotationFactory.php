@@ -7,6 +7,9 @@ use App\Models\Photo;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Annotation>
+ */
 class AnnotationFactory extends Factory
 {
     /**
@@ -25,15 +28,15 @@ class AnnotationFactory extends Factory
     {
         return [
             'photo_id' => Photo::factory()->create(),
-            'category' => $this->faker->name,
-            'category_id' => $this->faker->randomDigit,
-            'supercategory_id' => $this->faker->randomDigit,
-            'tag' => $this->faker->name,
-            'tag_id' => $this->faker->randomDigit,
-            'brand' => $this->faker->name,
-            'brand_id' => $this->faker->randomDigit,
-            'bbox' => $this->faker->sentence,
-            'segmentation' => $this->faker->sentence,
+            'category' => fake()->name,
+            'category_id' => fake()->randomDigit,
+            'supercategory_id' => fake()->randomDigit,
+            'tag' => fake()->name,
+            'tag_id' => fake()->randomDigit,
+            'brand' => fake()->name,
+            'brand_id' => fake()->randomDigit,
+            'bbox' => fake()->sentence,
+            'segmentation' => fake()->sentence,
             'is_crowd' => 0,
             'area' => 1,
             'added_by' => User::factory()->create(),

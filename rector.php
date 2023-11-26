@@ -32,7 +32,7 @@ return static function (RectorConfig $rectorConfig): void {
         SetList::CODE_QUALITY,
         SetList::CODING_STYLE,
         SetList::DEAD_CODE,
-        LaravelSetList::LARAVEL_80,
+        LaravelSetList::LARAVEL_90,
         LaravelSetList::LARAVEL_CODE_QUALITY,
         LaravelSetList::LARAVEL_ARRAY_STR_FUNCTION_TO_STATIC_CALL,
         LaravelSetList::LARAVEL_FACADE_ALIASES_TO_FULL_NAMES,

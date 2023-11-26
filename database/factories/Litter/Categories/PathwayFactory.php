@@ -5,6 +5,9 @@ namespace Database\Factories\Litter\Categories;
 use App\Models\Litter\Categories\Pathway;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Pathway>
+ */
 class PathwayFactory extends Factory
 {
     /**
@@ -22,7 +25,7 @@ class PathwayFactory extends Factory
     public function definition()
     {
         return [
-            'gutter' => $this->faker->randomDigit,
+            'gutter' => fake()->randomDigit,
         ];
     }
 }

@@ -5,6 +5,9 @@ namespace Database\Factories\Litter\Categories;
 use App\Models\Litter\Categories\Industrial;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Industrial>
+ */
 class IndustrialFactory extends Factory
 {
     /**
@@ -22,7 +25,7 @@ class IndustrialFactory extends Factory
     public function definition()
     {
         return [
-            'oil' => $this->faker->randomDigit,
+            'oil' => fake()->randomDigit,
         ];
     }
 }

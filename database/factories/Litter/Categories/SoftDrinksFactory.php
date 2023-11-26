@@ -5,6 +5,9 @@ namespace Database\Factories\Litter\Categories;
 use App\Models\Litter\Categories\SoftDrinks;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<SoftDrinks>
+ */
 class SoftDrinksFactory extends Factory
 {
     /**
@@ -22,7 +25,7 @@ class SoftDrinksFactory extends Factory
     public function definition()
     {
         return [
-            'waterBottle' => $this->faker->randomDigit,
+            'waterBottle' => fake()->randomDigit,
         ];
     }
 }

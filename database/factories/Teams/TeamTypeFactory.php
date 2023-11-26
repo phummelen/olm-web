@@ -5,6 +5,9 @@ namespace Database\Factories\Teams;
 use App\Models\Teams\TeamType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<TeamType>
+ */
 class TeamTypeFactory extends Factory
 {
     /**
@@ -22,9 +25,9 @@ class TeamTypeFactory extends Factory
     public function definition()
     {
         return [
-            'team' => $this->faker->name,
-            'price' => $this->faker->randomDigit,
-            'description' => $this->faker->word,
+            'team' => fake()->name,
+            'price' => fake()->randomDigit,
+            'description' => fake()->word,
         ];
     }
 }

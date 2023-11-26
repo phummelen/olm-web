@@ -5,6 +5,9 @@ namespace Database\Factories\Litter\Categories;
 use App\Models\Litter\Categories\Political;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Political>
+ */
 class PoliticalFactory extends Factory
 {
     /**
@@ -22,7 +25,7 @@ class PoliticalFactory extends Factory
     public function definition()
     {
         return [
-            'independent' => $this->faker->randomDigit,
+            'independent' => fake()->randomDigit,
         ];
     }
 }
