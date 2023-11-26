@@ -15,8 +15,11 @@ class IncrementPhotoMonth implements ShouldQueue
     use InteractsWithSockets;
     use SerializesModels;
     public $country_id;
+
     public $state_id;
+
     public $city_id;
+
     public $created_at;
 
     /**

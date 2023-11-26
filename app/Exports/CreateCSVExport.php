@@ -22,8 +22,11 @@ class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
     use Queueable;
     use SerializesModels;
     public $location_type;
+
     public $location_id;
+
     public $team_id;
+
     public $user_id;
 
     /** @var array */

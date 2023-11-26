@@ -15,7 +15,9 @@ class CleanupCreated implements ShouldBroadcast, ShouldQueue
     use InteractsWithSockets;
     use SerializesModels;
     public $name;
+
     public $latitude;
+
     public $longitude;
 
     /**

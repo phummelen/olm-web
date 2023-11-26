@@ -21,37 +21,52 @@ class ImageUploaded implements ShouldBroadcast, ShouldQueue
     use SerializesModels;
     // For Websockets
     public $city;
+
     // For Websockets
     public $state;
+
     // For Websockets
     public $country;
+
     // For Websockets
     public $countryCode;
+
     // For Websockets
     public $teamName;
+
     // For Websockets
     public $isUserVerified;
+
     // For Websockets
     public $isPickedUp;
+
     // For Websockets
     public $photoSource;
 
     // For CheckContributors
     public $photoId;
+
     // For CheckContributors
     public $userId;
+
     // For CheckContributors
     public $user;
+
     // For CheckContributors
     public $countryId;
+
     // For CheckContributors
     public $stateId;
+
     // For CheckContributors
     public $cityId;
+
     // For CheckContributors
     public $latitude;
+
     // For CheckContributors
     public $longitude;
+
     // For CheckContributors
     public $teamId;
 

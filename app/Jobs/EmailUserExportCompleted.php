@@ -18,6 +18,7 @@ class EmailUserExportCompleted implements ShouldQueue
     use Queueable;
     use SerializesModels;
     public $email;
+
     public $path;
 
     /**

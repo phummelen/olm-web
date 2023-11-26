@@ -14,12 +14,19 @@ class NewCityAdded implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
     public $city;
+
     public $state;
+
     public $country;
+
     public $now;
+
     public $cityId;
+
     public $lat;
+
     public $lon;
+
     public $photoId;
 
     /**

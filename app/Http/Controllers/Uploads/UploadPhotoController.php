@@ -263,7 +263,7 @@ class UploadPhotoController extends Controller
         ));
 
         // Broadcast an event to anyone viewing the Global Map
-        // Sends Notification to Twitter & Slack
+        // Sends Notification to Slack
         if ($country->wasRecentlyCreated) {
             event(new NewCountryAdded($country->country, $country->shortcode, now()));
         }

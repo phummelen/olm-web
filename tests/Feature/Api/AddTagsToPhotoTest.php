@@ -222,6 +222,7 @@ class AddTagsToPhotoTest extends TestCase
         ]);
 
         $response->assertOk();
+
         $photo->refresh();
         $this->assertFalse($photo->picked_up);
 
