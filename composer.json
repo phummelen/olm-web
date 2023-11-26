@@ -16,7 +16,6 @@
         "beyondcode/laravel-websockets": "^1.13.1",
         "doctrine/dbal": "^2.10",
         "spatie/laravel-ignition": "^1.6.4",
-        "fideloper/proxy": "^4.2",
         "gpressutto5/laravel-slack": "^2.2",
         "guzzlehttp/guzzle": "^7.0.1",
         "intervention/image": "^2.7",
