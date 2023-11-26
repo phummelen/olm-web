@@ -9,6 +9,49 @@ import can_verify_boxes from './middleware/can_verify_boxes'
 
 import middlewarePipeline from './middleware/middlewarePipeline'
 
+import Welcome from 'views/home/Welcome';
+import Email from 'views/Auth/passwords/Email';
+import Reset from 'views/Auth/passwords/Reset';
+import About from 'views/home/About';
+import Cleanups from 'views/home/Cleanups';
+import Littercoin from 'views/home/Littercoin';
+import Merchants from 'views/home/Merchants';
+import Donate from 'views/home/Donate';
+import ContactUs from 'views/home/ContactUs';
+import Index from 'views/home/Community/Index';
+import FAQ from 'views/home/FAQ';
+import GlobalMapContainer from 'views/global/GlobalMapContainer';
+import TagsViewer from 'views/home/TagsViewer';
+import SignUp from 'views/Auth/SignUp';
+import Subscribe from 'views/Auth/Subscribe';
+import Terms from 'views/general/Terms';
+import Privacy from 'views/general/Privacy';
+import References from 'views/general/References';
+import Leaderboard from 'views/Leaderboard/Leaderboard';
+import Credits from 'views/general/Credits';
+import Countries from 'views/Locations/Countries';
+import States from 'views/Locations/States';
+import Cities from 'views/Locations/Cities';
+import CityMapContainer from 'views/Locations/CityMapContainer';
+import VerifyPhotos from 'views/admin/VerifyPhotos';
+import AdminMerchants from 'views/admin/Merchants';
+import Upload from 'views/general/Upload';
+import Tag from 'views/general/Tag';
+import BulkTag from 'views/general/BulkTag';
+import Profile from 'views/general/Profile';
+import Teams from 'views/Teams/Teams';
+import Settings from 'views/Settings';
+import Details from 'views/settings/Details';
+import Social from 'views/settings/Social';
+import Account from 'views/settings/Account';
+import Payments from 'views/settings/Payments';
+import SettingsPrivacy from 'views/settings/Privacy';
+import SettingsLittercoin from 'views/settings/Littercoin';
+import PickedUp from 'views/settings/PickedUp';
+import Emails from 'views/settings/Emails';
+import GlobalFlag from 'views/settings/GlobalFlag';
+import BoundingBox from 'views/bbox/BoundingBox';
+
 // The earlier a route is defined, the higher its priority.
 const router = new VueRouter({
     mode: 'history',
@@ -18,130 +61,130 @@ const router = new VueRouter({
         // GUEST ROUTES
         {
             path: '/',
-            component: require('./views/home/Welcome').default
+            component: Welcome
         },
         {
             path: '/confirm/email/:token',
-            component: require('./views/home/Welcome').default
+            component: Welcome
         },
         {
             path: '/password/reset',
-            component: require('./views/Auth/passwords/Email').default
+            component: Email
         },
         {
             path: '/password/reset/:token',
-            component: require('./views/Auth/passwords/Reset').default,
+            component: Reset,
             props: true
         },
         {
             path: '/emails/unsubscribe/:token',
-            component: require('./views/home/Welcome').default
+            component: Welcome
         },
         {
             path: '/about',
-            component: require('./views/home/About').default
+            component: About
         },
         {
             path: '/cleanups',
-            component: require('./views/home/Cleanups').default,
+            component: Cleanups,
             children: [
                 {
                     path: ':invite_link/join',
-                    component: require('./views/home/Cleanups').default
+                    component: Cleanups
                 }
             ]
         },
         {
             path: '/littercoin',
-            component: require('./views/home/Littercoin').default
+            component: Littercoin
         },
         {
             path: '/littercoin/merchants',
-            component: require('./views/home/Merchants').default
+            component: Merchants
         },
         {
             path: '/donate',
-            component: require('./views/home/Donate').default
+            component: Donate
         },
         {
             path: '/contact-us',
-            component: require('./views/home/ContactUs').default
+            component: ContactUs
         },
         {
             path: '/community',
-            component: require('./views/home/Community/Index').default
+            component: Index
         },
         {
             path: '/faq',
-            component: require('./views/home/FAQ').default
+            component: FAQ
         },
         {
             path: '/global',
-            component: require('./views/global/GlobalMapContainer').default
+            component: GlobalMapContainer
         },
         {
             path: '/tags',
-            component: require('./views/home/TagsViewer').default
+            component: TagsViewer
         },
         {
             path: '/signup',
-            component: require('./views/Auth/SignUp').default
+            component: SignUp
         },
         {
             path: '/join/:plan?',
-            component: require('./views/Auth/Subscribe').default
+            component: Subscribe
         },
         {
             path: '/terms',
-            component: require('./views/general/Terms').default
+            component: Terms
         },
         {
             path: '/privacy',
-            component: require('./views/general/Privacy').default
+            component: Privacy
         },
         {
             path: '/references',
-            component: require('./views/general/References').default
+            component: References
         },
         {
             path: '/leaderboard',
-            component: require('./views/Leaderboard/Leaderboard').default
+            component: Leaderboard
         },
         {
             path: '/credits',
-            component: require('./views/general/Credits').default
+            component: Credits
         },
         // Countries
         {
             path: '/world',
-            component: require('./views/Locations/Countries').default
+            component: Countries
         },
         // States
         {
             path: '/world/:country',
-            component: require('./views/Locations/States').default
+            component: States
         },
         // Cities
         {
             path: '/world/:country/:state',
-            component: require('./views/Locations/Cities').default
+            component: Cities
         },
         // City - Map
         {
             path: '/world/:country/:state/:city/map/:minDate?/:maxDate?/:hex?',
-            component: require('./views/Locations/CityMapContainer').default
+            component: CityMapContainer
         },
         // Admin
         {
             path: '/admin/photos',
-            component: require('./views/admin/VerifyPhotos').default,
+            component: VerifyPhotos,
             meta: {
                 middleware: [ auth, admin ]
             }
         },
         {
             path: '/admin/merchants',
-            component: require('./views/admin/Merchants').default,
+            component: AdminMerchants,
             meta: {
                 middleware: [ auth, admin ]
             }
@@ -149,139 +192,135 @@ const router = new VueRouter({
         // AUTH ROUTES
         {
             path: '/upload',
-            component: require('./views/general/Upload').default,
+            component: Upload,
             meta: {
                 middleware: [ auth ]
             }
         },
         {
             path: '/submit', // old route
-            component: require('./views/general/Upload').default,
+            component: Upload,
             meta: {
                 middleware: [ auth ]
             }
         },
         {
             path: '/tag',
-            component: require('./views/general/Tag').default,
+            component: Tag,
             meta: {
                 middleware: [ auth ]
             }
         },
         {
             path: '/bulk-tag',
-            component: require('./views/general/BulkTag').default,
+            component: BulkTag,
             meta: {
                 middleware: [ auth ]
             }
         },
         {
             path: '/profile',
-            component: require('./views/general/Profile').default,
+            component: Profile,
             meta: {
                 middleware: [ auth ]
             }
         },
         {
             path: '/teams',
-            component: require('./views/Teams/Teams').default,
+            component: Teams,
             meta: {
                 middleware: [ auth ]
             }
         },
         {
             path: '/settings',
-            component: require('./views/Settings').default,
+            component: Settings,
             meta: {
                 middleware: [ auth ]
             },
             children: [
                 {
                     path: 'password',
-                    component: require('./views/Settings').default,
+                    component: Settings,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'details',
-                    component: require('./views/settings/Details').default,
+                    component: Details,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'social',
-                    component: require('./views/settings/Social').default,
+                    component: Social,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'account',
-                    component: require('./views/settings/Account').default,
+                    component: Account,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'payments',
-                    component: require('./views/settings/Payments').default,
+                    component: Payments,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'privacy',
-                    component: require('./views/settings/Privacy').default,
+                    component: SettingsPrivacy,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'littercoin',
-                    component: require('./views/settings/Littercoin').default,
+                    component: SettingsLittercoin,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'picked-up',
-                    component: require('./views/settings/PickedUp').default,
+                    component: PickedUp,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'emails',
-                    component: require('./views/settings/Emails').default,
+                    component: Emails,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
                 {
                     path: 'show-flag',
-                    component: require('./views/settings/GlobalFlag').default,
+                    component: GlobalFlag,
                     meta: {
                         middleware: [ auth ]
                     },
                 },
-                // {
-                // 	path: 'phone',
-                // 	component: require('./views/Phone').default
-                // }
             ]
         },
         {
             path: '/bbox',
-            component: require('./views/bbox/BoundingBox').default,
+            component: BoundingBox,
             meta: {
                 middleware: [ auth, can_bbox ]
             }
         },
         {
             path: '/bbox/verify',
-            component: require('./views/bbox/BoundingBox').default,
+            component: BoundingBox,
             meta: {
                 middleware: [ auth, can_verify_boxes ]
             }

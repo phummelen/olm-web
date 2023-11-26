@@ -1,6 +1,6 @@
-let Supercluster = require('supercluster');
+import Supercluster from "supercluster";
 
-const fs = require('fs');
+import fs from "fs";
 const prefix = process.argv.slice(2)[0]; // '/home/forge/openlittermap.com'; or '/home/vagrant/Code/olm';
 const zoom = process.argv.slice(3)[0];
 const featuresFilename = process.argv.slice(4)[0] || 'features.json';
