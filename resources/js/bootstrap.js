@@ -38,7 +38,7 @@ window.Pusher = Pusher;
 
 window.Echo = new Echo({
     broadcaster: 'pusher',
-    key: 'aa1eecefcf9deb983617',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
     wsHost: window.location.hostname,
     wssHost: window.location.hostname,
     wsPort:  window.APP_DEBUG === 'true' ? 6001 : 6002,

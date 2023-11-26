@@ -1,4 +1,5 @@
 import './bootstrap';
+import '../css/app.scss';
 
 import Vue from 'vue';
 import axios from 'axios';
@@ -19,7 +20,7 @@ import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs';
 import VueImg from 'v-img';
 import VueTypedJs from 'vue-typed-js'
 
-import RootContainer from './views/RootContainer';
+import RootContainer from './views/RootContainer.vue';
 
 // assign global variables
 window.axios = axios;

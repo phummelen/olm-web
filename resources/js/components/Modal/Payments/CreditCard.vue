@@ -328,7 +328,7 @@ export default {
         configureStripe ()
         {
             // stripe public key
-            this.stripe = Stripe(process.env.MIX_STRIPE_KEY);
+            this.stripe = Stripe(process.env.VITE_STRIPE_KEY);
 
             this.elements = this.stripe.elements();
             this.card = this.elements.create('card'); // accepts 2nd arg for styles object https://stripe.com/docs/stripe-js#elements
@@ -413,7 +413,7 @@ export default {
          */
         submit ()
         {
-            const stripe = Stripe(process.env.MIX_STRIPE_KEY)
+            const stripe = Stripe(process.env.VITE_STRIPE_KEY)
 
             stripe.redirectToCheckout({
                 lineItems: [{
