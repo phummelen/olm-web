@@ -23,7 +23,6 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('twitter:daily-report')->dailyAt('00:00');
         $schedule->command('clusters:generate-all')->dailyAt('00:10');
         $schedule->command('clusters:generate-team-clusters')->dailyAt('00:20');
     }

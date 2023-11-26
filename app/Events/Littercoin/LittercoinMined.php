@@ -16,7 +16,9 @@ class LittercoinMined implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
     public $userId;
+
     public $reason;
+
     public $now;
 
     /**

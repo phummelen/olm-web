@@ -16,8 +16,11 @@ use Illuminate\Support\Facades\Route;
 class AdminResetTagsController extends Controller
 {
     public $deleteTagsAction;
+
     public $updateLeaderboardsAction;
+
     public $calculateTagsDiffAction;
+
     /**
      * Apply IsAdmin middleware to all of these routes
      */

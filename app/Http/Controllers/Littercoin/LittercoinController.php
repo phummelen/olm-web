@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Littercoin;
 
-use App\Helpers\Twitter;
 use App\Http\Controllers\Controller;
 use App\Models\Littercoin;
 use Illuminate\Http\Request;
@@ -126,8 +125,6 @@ class LittercoinController extends Controller {
                 $littercoinCount = Littercoin::where('user_id', $userId)
                                              ->where('transaction_id', $responseJSON->txId)
                                              ->count();
-
-                Twitter::sendTweet("$littercoinCount #Littercoin have been minted.");
 
                 return [
                     $response

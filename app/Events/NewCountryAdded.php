@@ -15,7 +15,9 @@ class NewCountryAdded implements ShouldBroadcast
     use InteractsWithSockets;
     use SerializesModels;
     public $country;
+
     public $countryCode;
+
     public $now;
 
     /**

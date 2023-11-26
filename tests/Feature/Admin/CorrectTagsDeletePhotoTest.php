@@ -85,6 +85,7 @@ class CorrectTagsDeletePhotoTest extends TestCase
         $response = $this->post('/admin/verify', ['photoId' => $this->photo->id]);
 
         $response->assertOk();
+
         $this->user->refresh();
         $this->photo->refresh();
 
