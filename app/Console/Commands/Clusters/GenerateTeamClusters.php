@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands\Clusters;
 
-use GeoHash;
 use App\Models\Photo;
 use App\Models\TeamCluster;
 use App\Models\Teams\Team;
+use GeoHash;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Storage;
 
@@ -50,7 +50,7 @@ class GenerateTeamClusters extends Command
 
         $finish = microtime(true);
         $this->newLine();
-        $this->info("Total Time: " . ($finish - $start) . "\n");
+        $this->info('Total Time: '.($finish - $start)."\n");
 
         return 0;
     }
@@ -60,7 +60,7 @@ class GenerateTeamClusters extends Command
      */
     protected function generateFeatures(Team $team): void
     {
-        $this->info("Generating features...");
+        $this->info('Generating features...');
 
         $bar = $this->output->createProgressBar(
             Photo::whereTeamId($team->id)->count()
@@ -80,8 +80,8 @@ class GenerateTeamClusters extends Command
                 'type' => 'Feature',
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => [$photo->lon, $photo->lat]
-                ]
+                    'coordinates' => [$photo->lon, $photo->lat],
+                ],
             ];
 
             $features[] = $feature;
@@ -102,7 +102,7 @@ class GenerateTeamClusters extends Command
      */
     protected function generateClusters(Team $team): void
     {
-        $this->info("Generating clusters for each zoom level...");
+        $this->info('Generating clusters for each zoom level...');
 
         $rootDir = base_path();
         $zoomLevels = range(2, 16);
@@ -148,7 +148,7 @@ class GenerateTeamClusters extends Command
 
     protected function deleteClusters(Team $team)
     {
-        $this->info("Deleting clusters...");
+        $this->info('Deleting clusters...');
 
         TeamCluster::whereTeamId($team->id)->delete();
     }

@@ -2,18 +2,15 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Events\Littercoin\LittercoinMined;
+use App\Events\TagsVerifiedByAdmin;
+use App\Http\Controllers\Controller;
 use App\Mail\Admin\AccountUpgraded;
 use App\Models\Littercoin;
 use App\Models\Photo;
-use App\Events\TagsVerifiedByAdmin;
-use App\Http\Controllers\Controller;
-
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Route;
 
 class VerifyImageWithTagsController extends Controller
 {
@@ -36,7 +33,7 @@ class VerifyImageWithTagsController extends Controller
      *
      * Todo: After Littercoin is sent, email the user, encouraging them to continue, share information about the app
      */
-    public function __invoke (Request $request): array
+    public function __invoke(Request $request): array
     {
         // Update the photo as verified
         $photo = Photo::findOrFail($request->photoId);
@@ -51,7 +48,7 @@ class VerifyImageWithTagsController extends Controller
         $counts = $this->increaseUsersVerificationCount($photo->user_id);
 
         // Emit an event to update locations, charts, team and other non-essential data that can be queued
-        event (new TagsVerifiedByAdmin($photo->id));
+        event(new TagsVerifiedByAdmin($photo->id));
 
         // Log the action
         logAdminAction($photo, 'verify-tags');
@@ -59,7 +56,7 @@ class VerifyImageWithTagsController extends Controller
         return [
             'success' => true,
             'userVerificationCount' => $counts['verificationCount'],
-            'photosVerified' => $counts['photosVerified']
+            'photosVerified' => $counts['photosVerified'],
         ];
     }
 
@@ -71,21 +68,19 @@ class VerifyImageWithTagsController extends Controller
      *   - we upgrade their account as verification_required = false
      *   - we send an email congratulating them
      *
-     * @param int $userId => The user who uploaded the image that is being verified
+     * @param  int  $userId => The user who uploaded the image that is being verified
      * @return array => verificationCount, photosVerified
      */
-    private function increaseUsersVerificationCount (int $userId): array
+    private function increaseUsersVerificationCount(int $userId): array
     {
         $user = User::find($userId);
 
-        $verificationCount = Redis::hincrby("user_verification_count", $user->id, 1);
+        $verificationCount = Redis::hincrby('user_verification_count', $user->id, 1);
 
         $photosCount = 0;
 
-        if ($verificationCount >= 100)
-        {
-            if ($user->verification_required)
-            {
+        if ($verificationCount >= 100) {
+            if ($user->verification_required) {
                 $user->verification_required = false;
                 $user->save();
 
@@ -96,15 +91,13 @@ class VerifyImageWithTagsController extends Controller
             // Verify any remaining photos
             $photos = Photo::where([
                 'user_id' => $user->id,
-                'verification' => 0.1
+                'verification' => 0.1,
             ])->get();
 
-            if ($photos)
-            {
+            if ($photos) {
                 $photosCount = $photos->count();
 
-                foreach ($photos as $photo)
-                {
+                foreach ($photos as $photo) {
                     $photo->verification = 1;
                     $photo->verified = 2;
                     $photo->save();
@@ -116,12 +109,12 @@ class VerifyImageWithTagsController extends Controller
             }
 
             // Since the user is now verified, we can delete their ID from redis.
-            Redis::hdel("user_verification_count", $user->id);
+            Redis::hdel('user_verification_count', $user->id);
         }
 
         return [
             'verificationCount' => $verificationCount,
-            'photosVerified' => $photosCount
+            'photosVerified' => $photosCount,
         ];
     }
 }

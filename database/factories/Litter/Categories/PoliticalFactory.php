@@ -22,7 +22,7 @@ class PoliticalFactory extends Factory
     public function definition()
     {
         return [
-            'independent' => $this->faker->randomDigit
+            'independent' => $this->faker->randomDigit,
         ];
     }
 }

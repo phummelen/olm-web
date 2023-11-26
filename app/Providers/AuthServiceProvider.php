@@ -36,7 +36,7 @@ class AuthServiceProvider extends ServiceProvider
                 'seanlynch@umail.ucc.ie',
                 'info@openlittermap.com',
                 'nair.anoop1995@gmail.com',
-                'jahogeni@gmail.com'
+                'jahogeni@gmail.com',
             ]);
         });
     }

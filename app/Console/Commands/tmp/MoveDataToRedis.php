@@ -54,8 +54,7 @@ class MoveDataToRedis extends Command
         // we need
         // user:id total_custom_tags?
 
-        foreach ($photos->cursor() as $photo)
-        {
+        foreach ($photos->cursor() as $photo) {
             // Each Photo
             // total_litter
             // total_brands

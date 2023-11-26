@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use DB;
-use App\Plan;
 use App\Models\User\User;
-use Laravel\Cashier\Cashier;
+use App\Plan;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class StripeController extends Controller
 {
     /**
      * Get the users first (and only) subscription (active/inactive)
      */
-    public function subscriptions ()
+    public function subscriptions()
     {
         $subs = Auth::user()->subscriptions;
 
@@ -24,10 +22,9 @@ class StripeController extends Controller
     /**
      * The user wants to unsubscribe from payments
      */
-    public function delete (Request $request)
+    public function delete(Request $request)
     {
-        if ($user = Auth::user())
-        {
+        if ($user = Auth::user()) {
             $name = $user->subscriptions->first()->name;
 
             $user->subscription($name)->cancelNow();
@@ -42,10 +39,9 @@ class StripeController extends Controller
      *
      * todo  https://stripe.com/docs/api/subscriptions/create
      */
-    public function resubscribe (Request $request)
+    public function resubscribe(Request $request)
     {
-        if ($user = Auth::user())
-        {
+        if ($user = Auth::user()) {
             $plan = Plan::where('name', $request->plan)->first()->plan_id;
 
             // create a new subscription and manage multiple subscriptions.

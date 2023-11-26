@@ -18,7 +18,7 @@ class TeamsDataController extends Controller
      *
      * @return array
      */
-    public function index ()
+    public function index()
     {
         $teamIds = $this->getTeamIds();
 
@@ -52,7 +52,7 @@ class TeamsDataController extends Controller
         return [
             'photos_count' => $photosCount,
             'litter_count' => $litterCount,
-            'members_count' => $membersCount
+            'members_count' => $membersCount,
         ];
     }
 
@@ -65,8 +65,7 @@ class TeamsDataController extends Controller
     {
         $teamIds = Auth::user()->teams->pluck('id')->toArray();
 
-        if (request()->team_id && in_array(request()->team_id, $teamIds))
-        {
+        if (request()->team_id && in_array(request()->team_id, $teamIds)) {
             $teamIds = [request()->team_id];
         }
 

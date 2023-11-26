@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin;
 
-
 use App\Actions\LogAdminVerificationAction;
 use App\Models\Litter\Categories\Smoking;
 use App\Models\Photo;
@@ -61,9 +60,9 @@ class IncorrectTagsTest extends TestCase
             'picked_up' => false,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
-                ]
-            ]
+                    'butts' => 3,
+                ],
+            ],
         ]);
 
         $this->photo->refresh();
@@ -101,7 +100,7 @@ class IncorrectTagsTest extends TestCase
     {
         // User has already uploaded an image, so their xp is 1
         Redis::zrem('xp.users', $this->admin->id);
-        Redis::zadd("xp.users", 1, $this->user->id);
+        Redis::zadd('xp.users', 1, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}", 1, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", 1, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", 1, $this->user->id);
@@ -109,10 +108,10 @@ class IncorrectTagsTest extends TestCase
         $this->post('/add-tags', [
             'photo_id' => $this->photo->id,
             'picked_up' => false,
-            'tags' => ['smoking' => ['butts' => 3]]
+            'tags' => ['smoking' => ['butts' => 3]],
         ]);
         $this->assertSame(0, $this->admin->xp_redis);
-        $this->assertSame('4', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('4', Redis::zscore('xp.users', $this->user->id));
         $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
         $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
         $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
@@ -122,7 +121,7 @@ class IncorrectTagsTest extends TestCase
 
         // Assert leaderboards are updated ------------
         $this->assertSame(1, $this->admin->xp_redis);
-        $this->assertSame('1', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('1', Redis::zscore('xp.users', $this->user->id));
         $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
         $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
         $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
@@ -143,9 +142,9 @@ class IncorrectTagsTest extends TestCase
             'picked_up' => false,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
-                ]
-            ]
+                    'butts' => 3,
+                ],
+            ],
         ]);
 
         // A non-admin user tries to perform the action ------------
@@ -169,14 +168,13 @@ class IncorrectTagsTest extends TestCase
         $response->assertNotFound();
     }
 
-
-//    public function test_it_logs_the_admin_action()
-//    {
-//        $spy = $this->spy(LogAdminVerificationAction::class);
-//
-//        $this->actingAs($this->admin)
-//            ->post('/admin/reset-tags', ['photoId' => $this->photo->id]);
-//
-//        $spy->shouldHaveReceived('run');
-//    }
+    //    public function test_it_logs_the_admin_action()
+    //    {
+    //        $spy = $this->spy(LogAdminVerificationAction::class);
+    //
+    //        $this->actingAs($this->admin)
+    //            ->post('/admin/reset-tags', ['photoId' => $this->photo->id]);
+    //
+    //        $spy->shouldHaveReceived('run');
+    //    }
 }

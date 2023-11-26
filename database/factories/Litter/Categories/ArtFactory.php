@@ -3,7 +3,6 @@
 namespace Database\Factories\Litter\Categories;
 
 use App\Models\Litter\Categories\Art;
-use App\Models\Photo;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ArtFactory extends Factory
@@ -23,7 +22,7 @@ class ArtFactory extends Factory
     public function definition()
     {
         return [
-            'item' => $this->faker->randomDigit
+            'item' => $this->faker->randomDigit,
         ];
     }
 }

@@ -2,18 +2,15 @@
 
 namespace Tests\Feature\Admin;
 
-use Iterator;
 use App\Actions\LogAdminVerificationAction;
 use App\Events\TagsVerifiedByAdmin;
 use App\Models\Litter\Categories\Alcohol;
-use App\Models\Location\City;
-use App\Models\Location\Country;
-use App\Models\Location\State;
 use App\Models\Photo;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
+use Iterator;
 use Spatie\Permission\Models\Role;
 use Tests\Feature\HasPhotoUploads;
 use Tests\TestCase;
@@ -63,10 +60,10 @@ class UpdateTagsDeletePhotoTest extends TestCase
             'picked_up' => false,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
-                ]
+                    'butts' => 3,
+                ],
             ],
-            'custom_tags' => ['test']
+            'custom_tags' => ['test'],
         ]);
     }
 
@@ -80,9 +77,8 @@ class UpdateTagsDeletePhotoTest extends TestCase
      * @dataProvider provider
      */
     public function test_an_admin_can_update_tags(
-        $route, $deletesPhoto, $tagsKey
-    )
-    {
+        $route, $deletesPhoto, $tagsKey,
+    ) {
         // Admin updates the tags -------------------
         $this->actingAs($this->admin);
 
@@ -95,10 +91,10 @@ class UpdateTagsDeletePhotoTest extends TestCase
             'photoId' => $this->photo->id,
             $tagsKey => [
                 'alcohol' => [
-                    'beerBottle' => 10
-                ]
+                    'beerBottle' => 10,
+                ],
             ],
-            'custom_tags' => ['new-test']
+            'custom_tags' => ['new-test'],
         ])->assertOk();
 
         // Assert tags are stored correctly ------------
@@ -125,9 +121,8 @@ class UpdateTagsDeletePhotoTest extends TestCase
      * @dataProvider provider
      */
     public function test_user_and_photo_info_are_updated_when_an_admin_updates_tags_of_a_photo(
-        $route, $deletesPhoto, $tagsKey
-    )
-    {
+        $route, $deletesPhoto, $tagsKey,
+    ) {
         // Admin updates the tags -------------------
         $this->actingAs($this->admin);
 
@@ -137,10 +132,10 @@ class UpdateTagsDeletePhotoTest extends TestCase
             'photoId' => $this->photo->id,
             $tagsKey => [
                 'alcohol' => [
-                    'beerBottle' => 10
-                ]
+                    'beerBottle' => 10,
+                ],
             ],
-            'custom_tags' => ['new-test']
+            'custom_tags' => ['new-test'],
         ])->assertOk();
 
         // Assert user and photo info are stored correctly ------------
@@ -163,9 +158,8 @@ class UpdateTagsDeletePhotoTest extends TestCase
      * @dataProvider provider
      */
     public function test_it_fires_tags_verified_by_admin_event_when_an_admin_updates_tags_of_a_photo(
-        $route, $deletesPhoto, $tagsKey
-    )
-    {
+        $route, $deletesPhoto, $tagsKey,
+    ) {
         Event::fake(TagsVerifiedByAdmin::class);
 
         // Admin updates the tags -------------------
@@ -175,9 +169,9 @@ class UpdateTagsDeletePhotoTest extends TestCase
             'photoId' => $this->photo->id,
             $tagsKey => [
                 'alcohol' => [
-                    'beerBottle' => 10
-                ]
-            ]
+                    'beerBottle' => 10,
+                ],
+            ],
         ]);
 
         // Assert event is fired ------------
@@ -193,15 +187,14 @@ class UpdateTagsDeletePhotoTest extends TestCase
      * @dataProvider provider
      */
     public function test_it_logs_the_admin_action(
-        $route, $deletesPhoto, $tagsKey
-    )
-    {
+        $route, $deletesPhoto, $tagsKey,
+    ) {
         $spy = $this->spy(LogAdminVerificationAction::class);
 
         $this->actingAs($this->admin)
             ->post($route, [
                 'photoId' => $this->photo->id,
-                $tagsKey => ['alcohol' => ['beerBottle' => 10]]
+                $tagsKey => ['alcohol' => ['beerBottle' => 10]],
             ]);
 
         $spy->shouldHaveReceived('run');
@@ -211,12 +204,11 @@ class UpdateTagsDeletePhotoTest extends TestCase
      * @dataProvider provider
      */
     public function test_leaderboards_are_updated_when_an_admin_updates_tags_of_a_photo(
-        $route, $deletesPhoto, $tagsKey
-    )
-    {
+        $route, $deletesPhoto, $tagsKey,
+    ) {
         // User has already uploaded and tagged the image, so their xp is 5
         Redis::zrem('xp.users', $this->admin->id);
-        Redis::zadd("xp.users", 5, $this->user->id);
+        Redis::zadd('xp.users', 5, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}", 5, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", 5, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", 5, $this->user->id);
@@ -229,12 +221,12 @@ class UpdateTagsDeletePhotoTest extends TestCase
         $this->post($route, [
             'photoId' => $this->photo->id,
             $tagsKey => ['alcohol' => ['beerBottle' => 10]],
-            'custom_tags' => ['new-test']
+            'custom_tags' => ['new-test'],
         ]);
 
         // Assert leaderboards are updated ------------
         $this->assertSame(5, $this->admin->xp_redis);
-        $this->assertSame('1', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('1', Redis::zscore('xp.users', $this->user->id));
         $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
         $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
         $this->assertSame('1', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));

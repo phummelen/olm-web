@@ -3,7 +3,6 @@
 namespace App\Actions\Photos;
 
 use App\Models\Photo;
-use Illuminate\Support\Collection;
 
 class DeleteTagsFromPhotoAction
 {
@@ -11,8 +10,6 @@ class DeleteTagsFromPhotoAction
      * Clear all tags on an image
      *
      * Returns the total number of tags that were deleted, separated from brands
-     *
-     *
      */
     public function run(Photo $photo): array
     {
@@ -47,7 +44,7 @@ class DeleteTagsFromPhotoAction
 
     private function deleteBrands(Photo $photo): int
     {
-        if (!$photo->brands) {
+        if (! $photo->brands) {
             return 0;
         }
 

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddLittercoinOwedToUsers extends Migration
 {
@@ -14,8 +14,8 @@ class AddLittercoinOwedToUsers extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->integer("littercoin_owed")->unsigned()->nullable();
-            $table->integer("littercoin_paid")->unsigned()->nullable();
+            $table->integer('littercoin_owed')->unsigned()->nullable();
+            $table->integer('littercoin_paid')->unsigned()->nullable();
         });
     }
 

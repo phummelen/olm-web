@@ -20,7 +20,6 @@ class LeaveTeamAction
         $team->save();
     }
 
-
     /**
      * If the user is the leader of the team they're leaving
      * assign a new team member as leader
@@ -34,7 +33,7 @@ class LeaveTeamAction
         $nextTeamMember = DB::table('team_user')
             ->where([
                 'team_id' => $team->id,
-                ['user_id', '<>', $user->id]
+                ['user_id', '<>', $user->id],
             ])
             ->first()
             ->user_id;
@@ -56,7 +55,7 @@ class LeaveTeamAction
         $nextTeam = DB::table('team_user')
             ->where([
                 'user_id' => $user->id,
-                ['team_id', '<>', $team->id]
+                ['team_id', '<>', $team->id],
             ])
             ->first();
 

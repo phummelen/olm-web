@@ -2,22 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use Exception;
 use App\Donate;
+use Exception;
+use Illuminate\Http\Request;
 use Stripe\Charge;
 use Stripe\Customer;
 use Stripe\Stripe;
-use App\Payment;
-use Illuminate\Http\Request;
 
 class DonateController extends Controller
 {
     /**
      *  Get the donation amounts
      */
-    public function index ()
+    public function index()
     {
-    	return Donate::all();
+        return Donate::all();
     }
 
     public function submit(Request $request)
@@ -34,14 +33,14 @@ class DonateController extends Controller
     protected function doPayment($token, $email, $amount)
     {
         Stripe::setApiKey(config('services.stripe.secret'));
-        $customer = Customer::create(array(
+        $customer = Customer::create([
             'email' => $email,
-            'card'  => $token
-        ));
-        Charge::create(array(
+            'card' => $token,
+        ]);
+        Charge::create([
             'customer' => $customer->id,
-            'amount'   => $amount,
-            'currency' => 'eur'
-        ));
+            'amount' => $amount,
+            'currency' => 'eur',
+        ]);
     }
 }

@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\PasswordBroker;
 use Illuminate\Contracts\Auth\StatefulGuard;
-use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
-
-use Illuminate\Support\Str;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
-
+use Illuminate\Support\Str;
 
 class ResetPasswordController extends Controller
 {
@@ -112,7 +110,7 @@ class ResetPasswordController extends Controller
     /**
      * Reset the given user's password.
      *
-     * @param CanResetPassword $user
+     * @param  CanResetPassword  $user
      * @param  string  $password
      * @return void
      */
@@ -130,14 +128,14 @@ class ResetPasswordController extends Controller
     /**
      * Get the response for a successful password reset.
      *
-     * @param string $response
+     * @param  string  $response
      * @return JsonResponse
      */
     protected function sendResetResponse($response)
     {
         return response()->json([
             'success' => true,
-            'message' => trans($response)
+            'message' => trans($response),
         ]);
     }
 
@@ -152,7 +150,7 @@ class ResetPasswordController extends Controller
     {
         return response()->json([
             'success' => false,
-            'errors' => ['email' => [trans($response)]]
+            'errors' => ['email' => [trans($response)]],
         ], 422);
     }
 
@@ -176,7 +174,6 @@ class ResetPasswordController extends Controller
         return Auth::guard();
     }
 
-
     /**
      * Get the post register / login redirect path.
      *
@@ -190,5 +187,4 @@ class ResetPasswordController extends Controller
 
         return property_exists($this, 'redirectTo') ? $this->redirectTo : '/';
     }
-
 }

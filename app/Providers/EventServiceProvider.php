@@ -2,36 +2,34 @@
 
 namespace App\Providers;
 
-use App\Events\UserSignedUp;
-use App\Listeners\SendNewUserEmail;
-use App\Events\Photo\IncrementPhotoMonth;
-use App\Listeners\UpdateTimes\IncrementCountryMonth;
-use App\Listeners\UpdateTimes\IncrementStateMonth;
-use App\Listeners\UpdateTimes\IncrementCityMonth;
-use App\Events\ImageUploaded;
 use App\Events\ImageDeleted;
+use App\Events\ImageUploaded;
 use App\Events\NewCityAdded;
 use App\Events\NewCountryAdded;
 use App\Events\NewStateAdded;
+use App\Events\Photo\IncrementPhotoMonth;
 use App\Events\TagsVerifiedByAdmin;
-
-use App\Listeners\AddTags\IncrementLocation;
+use App\Events\UserSignedUp;
 use App\Listeners\AddTags\CompileResultsString;
-use App\Listeners\Locations\User\UpdateUserIdLastUpdatedLocation;
-use App\Listeners\User\UpdateUserCategories;
-use App\Listeners\User\UpdateUserTimeSeries;
+use App\Listeners\AddTags\IncrementLocation;
 use App\Listeners\Littercoin\RewardLittercoin;
 use App\Listeners\Locations\AddLocationContributor;
 use App\Listeners\Locations\DecreaseLocationTotalPhotos;
+use App\Listeners\Locations\IncreaseLocationTotalPhotos;
 use App\Listeners\Locations\NotifySlackOfNewCity;
 use App\Listeners\Locations\NotifySlackOfNewCountry;
 use App\Listeners\Locations\NotifySlackOfNewState;
 use App\Listeners\Locations\RemoveLocationContributor;
-use App\Listeners\Locations\IncreaseLocationTotalPhotos;
+use App\Listeners\Locations\User\UpdateUserIdLastUpdatedLocation;
+use App\Listeners\SendNewUserEmail;
 use App\Listeners\Teams\DecreaseTeamTotalPhotos;
 use App\Listeners\Teams\IncreaseTeamTotalLitter;
 use App\Listeners\Teams\IncreaseTeamTotalPhotos;
-
+use App\Listeners\UpdateTimes\IncrementCityMonth;
+use App\Listeners\UpdateTimes\IncrementCountryMonth;
+use App\Listeners\UpdateTimes\IncrementStateMonth;
+use App\Listeners\User\UpdateUserCategories;
+use App\Listeners\User\UpdateUserTimeSeries;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -45,7 +43,7 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Registered::class => [
-            SendEmailVerificationNotification::class
+            SendEmailVerificationNotification::class,
         ],
         ImageUploaded::class => [
             // Add user_id to country, state, and city on Redis
@@ -56,12 +54,12 @@ class EventServiceProvider extends ServiceProvider
 
             // Update total_images for a team, and total_photos for a TeamUser pivot, on SQL
             // this needs to be migrated to Redis
-            IncreaseTeamTotalPhotos::class
+            IncreaseTeamTotalPhotos::class,
         ],
         ImageDeleted::class => [
             RemoveLocationContributor::class,
             DecreaseLocationTotalPhotos::class,
-            DecreaseTeamTotalPhotos::class
+            DecreaseTeamTotalPhotos::class,
         ],
         // Several Listeners could be merged. Add ProofOfWork
         TagsVerifiedByAdmin::class => [
@@ -89,7 +87,7 @@ class EventServiceProvider extends ServiceProvider
             UpdateUserIdLastUpdatedLocation::class,
         ],
         UserSignedUp::class => [
-            SendNewUserEmail::class
+            SendNewUserEmail::class,
         ],
         IncrementPhotoMonth::class => [
             IncrementCountryMonth::class,

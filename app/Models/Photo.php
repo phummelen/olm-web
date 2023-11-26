@@ -2,25 +2,25 @@
 
 namespace App\Models;
 
+use App\Models\AI\Annotation;
+use App\Models\Litter\Categories\Alcohol;
+use App\Models\Litter\Categories\Art;
+use App\Models\Litter\Categories\Brand;
+use App\Models\Litter\Categories\Coastal;
+use App\Models\Litter\Categories\Coffee;
+use App\Models\Litter\Categories\Dogshit;
+use App\Models\Litter\Categories\Dumping;
+use App\Models\Litter\Categories\Food;
+use App\Models\Litter\Categories\Industrial;
+use App\Models\Litter\Categories\Material;
+use App\Models\Litter\Categories\Other;
+use App\Models\Litter\Categories\Sanitary;
+use App\Models\Litter\Categories\Smoking;
+use App\Models\Litter\Categories\SoftDrinks;
+use App\Models\Litter\Categories\TrashDog;
+use App\Models\Location\City;
 use App\Models\Location\Country;
 use App\Models\Location\State;
-use App\Models\Location\City;
-use App\Models\Litter\Categories\Smoking;
-use App\Models\Litter\Categories\Food;
-use App\Models\Litter\Categories\Coffee;
-use App\Models\Litter\Categories\SoftDrinks;
-use App\Models\Litter\Categories\Alcohol;
-use App\Models\Litter\Categories\Sanitary;
-use App\Models\Litter\Categories\Dumping;
-use App\Models\Litter\Categories\Other;
-use App\Models\Litter\Categories\Industrial;
-use App\Models\Litter\Categories\Coastal;
-use App\Models\Litter\Categories\Art;
-use App\Models\Litter\Categories\TrashDog;
-use App\Models\Litter\Categories\Dogshit;
-use App\Models\Litter\Categories\Material;
-use App\Models\AI\Annotation;
-use App\Models\Litter\Categories\Brand;
 use App\Models\Teams\Team;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -32,6 +32,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * @property Collection $customTags
  * @property User $user
+ *
  * @method Builder onlyFromUsersThatAllowTagging
  */
 class Photo extends Model
@@ -47,7 +48,7 @@ class Photo extends Model
     /**
      * Create an Accessor that adds ['selected' => false] to each record
      */
-    public function getSelectedAttribute ()
+    public function getSelectedAttribute()
     {
         return false;
     }
@@ -55,15 +56,15 @@ class Photo extends Model
     /**
      * Wrapper around photo presence, for better readability
      */
-    public function getPickedUpAttribute ()
+    public function getPickedUpAttribute()
     {
-        return !$this->remaining;
+        return ! $this->remaining;
     }
 
     /**
      * A photo can have many bounding boxes associated with it
      */
-    public function boxes ()
+    public function boxes()
     {
         return $this->hasMany(Annotation::class);
     }
@@ -71,7 +72,7 @@ class Photo extends Model
     /**
      * All Categories
      */
-    public static function categories ()
+    public static function categories()
     {
         return [
             'smoking',
@@ -94,7 +95,7 @@ class Photo extends Model
     /**
      * All Currently available Brands
      */
-    public static function getBrands ()
+    public static function getBrands()
     {
         return Brand::types();
     }
@@ -107,15 +108,15 @@ class Photo extends Model
      * - team
      * - total_categories
      */
-    public function user ()
+    public function user()
     {
-    	return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
      * Team that uploaded the photo
      */
-    public function team ()
+    public function team()
     {
         return $this->belongsTo(Team::class, 'team_id');
     }
@@ -125,21 +126,15 @@ class Photo extends Model
      *
      * Remove any keys with null values
      */
-    public function tags (): array
+    public function tags(): array
     {
         $tags = [];
-        foreach ($this->categories() as $category)
-        {
-            if ($this->$category)
-            {
-                foreach ($this->$category->types() as $tag)
-                {
-                    if (is_null($this->$category[$tag]))
-                    {
-                        unset ($this->$category[$tag]);
-                    }
-                    else
-                    {
+        foreach ($this->categories() as $category) {
+            if ($this->$category) {
+                foreach ($this->$category->types() as $tag) {
+                    if (is_null($this->$category[$tag])) {
+                        unset($this->$category[$tag]);
+                    } else {
                         $tags[$category][$tag] = $this->$category[$tag];
                     }
                 }
@@ -152,16 +147,14 @@ class Photo extends Model
     /**
      * Update and return the total amount of litter in a photo
      */
-    public function total ()
+    public function total()
     {
         $total = 0;
 
-        foreach ($this->categories() as $category)
-        {
+        foreach ($this->categories() as $category) {
             // We dont want to include brands in total_litter
             // Increment total_litter when its not brands
-            if ($this->{$category} && $category !== 'brands')
-            {
+            if ($this->{$category} && $category !== 'brands') {
                 $total += $this->$category->total();
             }
         }
@@ -177,14 +170,12 @@ class Photo extends Model
      *
      * eg: "smoking.butts 3, alcohol.beerBottles 4,"
      */
-    public function translate ()
+    public function translate()
     {
         $result_string = '';
 
-        foreach ($this->categories() as $category)
-        {
-            if ($this->$category)
-            {
+        foreach ($this->categories() as $category) {
+            if ($this->$category) {
                 $result_string .= $this->$category->translate();
             }
         }
@@ -196,19 +187,19 @@ class Photo extends Model
     /**
      * Location relationships
      */
-    public function country ()
+    public function country()
     {
-    	return $this->hasOne(Country::class);
+        return $this->hasOne(Country::class);
     }
 
-    public function state ()
+    public function state()
     {
         return $this->hasOne(State::class);
     }
 
-    public function city ()
+    public function city()
     {
-    	return $this->hasOne(City::class);
+        return $this->hasOne(City::class);
     }
 
     public function adminVerificationLog()
@@ -220,77 +211,77 @@ class Photo extends Model
     /**
      * Litter categories
      */
-    public function smoking ()
+    public function smoking()
     {
-    	return $this->belongsTo(Smoking::class, 'smoking_id', 'id');
+        return $this->belongsTo(Smoking::class, 'smoking_id', 'id');
     }
 
-    public function food ()
+    public function food()
     {
-    	return $this->belongsTo(Food::class, 'food_id', 'id');
+        return $this->belongsTo(Food::class, 'food_id', 'id');
     }
 
-    public function coffee ()
+    public function coffee()
     {
-    	return $this->belongsTo(Coffee::class, 'coffee_id', 'id');
+        return $this->belongsTo(Coffee::class, 'coffee_id', 'id');
     }
 
-    public function softdrinks ()
+    public function softdrinks()
     {
-    	return $this->belongsTo(SoftDrinks::class, 'softdrinks_id', 'id');
-	}
+        return $this->belongsTo(SoftDrinks::class, 'softdrinks_id', 'id');
+    }
 
-	public function alcohol ()
+    public function alcohol()
     {
-		return $this->belongsTo(Alcohol::class, 'alcohol_id', 'id');
-	}
+        return $this->belongsTo(Alcohol::class, 'alcohol_id', 'id');
+    }
 
-	public function sanitary ()
+    public function sanitary()
     {
-		return $this->belongsTo(Sanitary::class, 'sanitary_id', 'id');
-	}
+        return $this->belongsTo(Sanitary::class, 'sanitary_id', 'id');
+    }
 
-    public function dumping ()
+    public function dumping()
     {
         return $this->belongsTo(Dumping::class, 'dumping_id', 'id');
     }
 
-	public function other ()
+    public function other()
     {
-		return $this->belongsTo(Other::class, 'other_id', 'id');
-	}
+        return $this->belongsTo(Other::class, 'other_id', 'id');
+    }
 
-    public function industrial ()
+    public function industrial()
     {
         return $this->belongsTo(Industrial::class, 'industrial_id', 'id');
     }
 
-    public function coastal ()
+    public function coastal()
     {
         return $this->belongsTo(Coastal::class, 'coastal_id', 'id');
     }
 
-    public function art ()
+    public function art()
     {
         return $this->belongsTo(Art::class, 'art_id', 'id');
     }
 
-    public function brands ()
+    public function brands()
     {
         return $this->belongsTo(Brand::class, 'brands_id', 'id');
     }
 
-    public function trashdog ()
+    public function trashdog()
     {
         return $this->belongsTo(TrashDog::class, 'trashdog_id', 'id');
     }
 
-    public function dogshit ()
+    public function dogshit()
     {
         return $this->belongsTo(Dogshit::class, 'dogshit_id', 'id');
     }
 
-    public function material ()
+    public function material()
     {
         return $this->belongsTo(Material::class, 'material_id', 'id');
     }

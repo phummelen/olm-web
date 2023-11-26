@@ -21,17 +21,17 @@ class DecreaseTeamTotalPhotos implements ShouldQueue
      */
     public function handle(ImageDeleted $event)
     {
-        if (!$event->teamId) {
+        if (! $event->teamId) {
             return;
         }
 
         Team::whereId($event->teamId)->update([
-            'total_images' => DB::raw('ifnull(total_images, 0) - 1')
+            'total_images' => DB::raw('ifnull(total_images, 0) - 1'),
         ]);
 
         // Update the user's contribution to this team
         $event->user->teams()->updateExistingPivot($event->teamId, [
-            'total_photos' => DB::raw('ifnull(total_photos, 0) - 1')
+            'total_photos' => DB::raw('ifnull(total_photos, 0) - 1'),
         ]);
     }
 }

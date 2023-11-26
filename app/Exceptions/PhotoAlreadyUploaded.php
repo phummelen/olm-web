@@ -6,5 +6,5 @@ use Exception;
 
 class PhotoAlreadyUploaded extends Exception
 {
-    protected $message = "photo-already-uploaded";
+    protected $message = 'photo-already-uploaded';
 }

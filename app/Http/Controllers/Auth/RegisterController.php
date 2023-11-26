@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User\User;
+use App\Events\UserSignedUp;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Foundation\Auth\RegistersUsers;
-
 use App\Mail\NewUserRegMail;
+use App\Models\User\User;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Events\Registered;
-use App\Events\UserSignedUp;
 
 class RegisterController extends Controller
 {
@@ -39,7 +35,7 @@ class RegisterController extends Controller
      *
      * @return void
      */
-    public function __construct ()
+    public function __construct()
     {
         $this->middleware('guest');
     }
@@ -49,7 +45,7 @@ class RegisterController extends Controller
      *
      * @return User
      */
-    protected function create (array $data)
+    protected function create(array $data)
     {
         return User::create([
             'name' => $data['name'],
@@ -62,14 +58,14 @@ class RegisterController extends Controller
     /**
      * Handle a registration request for the application.
      */
-    public function register (Request $request): array
+    public function register(Request $request): array
     {
         $this->validate($request, [
             'name' => 'required|min:3|max:25',
             'username' => 'required|min:3|max:20|unique:users|different:password',
             'email' => 'required|email|max:75|unique:users',
             'password' => 'required|confirmed|min:6|case_diff|numbers|letters',
-//            'g-recaptcha-response' => 'required|captcha'
+            //            'g-recaptcha-response' => 'required|captcha'
         ]);
 
         event(new Registered($user = $this->create($request->all())));
@@ -84,14 +80,14 @@ class RegisterController extends Controller
 
         return [
             'user_id' => $user->id,
-            'email' => $user->email
+            'email' => $user->email,
         ];
     }
 
-   /**
-    * The user clicked the confirm email link
-    */
-    public function confirmEmail ($token)
+    /**
+     * The user clicked the confirm email link
+     */
+    public function confirmEmail($token)
     {
         /** @var User $user */
         $user = User::whereToken($token)->first();
@@ -104,6 +100,4 @@ class RegisterController extends Controller
 
         return view('root', ['auth' => $auth, 'user' => $user, 'verified' => $verified, 'unsub' => $unsub]);
     }
-
-
 }

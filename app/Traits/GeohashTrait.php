@@ -10,7 +10,7 @@ trait GeohashTrait
 
     private $borders = [];
 
-    private $coding = "0123456789bcdefghjkmnpqrstuvwxyz";
+    private $coding = '0123456789bcdefghjkmnpqrstuvwxyz';
 
     private $codingMap = [];
 
@@ -38,7 +38,7 @@ trait GeohashTrait
 
         //build map from encoding char to 0 padded bitfield
         for ($i = 0; $i < 32; $i++) {
-            $this->codingMap[substr($this->coding, $i, 1)] = str_pad(decbin($i), 5, "0", STR_PAD_LEFT);
+            $this->codingMap[substr($this->coding, $i, 1)] = str_pad(decbin($i), 5, '0', STR_PAD_LEFT);
         }
     }
 
@@ -46,12 +46,12 @@ trait GeohashTrait
      * For each zoom level, we want to return a precision length to determine how many objects to retrieve
      */
     public $zoomToGeoHashPrecision = [
-//        0 => 1,
-//        1 => 1,
-//        2 => 1,
-//        3 => 1,
-//        4 => 2,
-//        5 => 2,
+        //        0 => 1,
+        //        1 => 1,
+        //        2 => 1,
+        //        3 => 1,
+        //        4 => 2,
+        //        5 => 2,
         6 => 2, // Our geohash filtering currently starts at this zoom level
         7 => 2,
         8 => 2,
@@ -65,9 +65,9 @@ trait GeohashTrait
         16 => 6, // Photos filtering currently begins at this zoom level
         17 => 6,
         18 => 6,
-//        19 => 7,
-//        20 => 7,
-//        21 => 7
+        //        19 => 7,
+        //        20 => 7,
+        //        21 => 7
     ];
 
     private function calculateAdjacent($srcHash, $dir)
@@ -81,13 +81,13 @@ trait GeohashTrait
             $base = $this->calculateAdjacent($base, $dir);
         }
 
-        return $base . $this->coding[strpos((string) $this->neighbors[$dir][$type], $lastChr)];
+        return $base.$this->coding[strpos((string) $this->neighbors[$dir][$type], $lastChr)];
     }
 
     /**
      * Get neighbouring geohashes for our center geohash
      */
-    public function neighbors ($srcHash)
+    public function neighbors($srcHash)
     {
         $neighbors['top'] = $this->calculateAdjacent($srcHash, 'top');
         $neighbors['bottom'] = $this->calculateAdjacent($srcHash, 'bottom');
@@ -107,7 +107,7 @@ trait GeohashTrait
      * Handles edge cases when the zoom
      * is more than the max allowed level of 18
      *
-     * @param int $precision
+     * @param  int  $precision
      */
     protected function getGeohashPrecision($precision): int
     {

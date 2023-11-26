@@ -2,12 +2,12 @@
 
 namespace App\Console\Commands\Photos;
 
-use GeoHash;
 use App\Models\Location\City;
 use App\Models\Location\Country;
 use App\Models\Location\State;
 use App\Models\Photo;
 use App\Models\User\User;
+use GeoHash;
 use Illuminate\Console\Command;
 
 class GenerateDummyPhotos extends Command
@@ -24,9 +24,9 @@ class GenerateDummyPhotos extends Command
      *
      * @var string
      */
-    protected $description = 'Generates Dummy photos in Ireland in Cork,' .
-    ' you can add an argument of how many photos to generate by typing in a number after' .
-    ' olm:photos:generate-dummy-photos. ' .
+    protected $description = 'Generates Dummy photos in Ireland in Cork,'.
+    ' you can add an argument of how many photos to generate by typing in a number after'.
+    ' olm:photos:generate-dummy-photos. '.
     ' e.g. php artisan olm:photos:generate-dummy-photos 1500';
 
     /**
@@ -47,13 +47,13 @@ class GenerateDummyPhotos extends Command
         $cork = City::firstOrCreate([
             'city' => 'Cork',
             'country_id' => $ireland->id,
-            'created_by' => $userId
+            'created_by' => $userId,
         ]);
 
         State::firstOrCreate([
             'state' => 'County Cork',
             'country_id' => $ireland->id,
-            'created_by' => $userId
+            'created_by' => $userId,
         ]);
 
         $photosToGen = $this->argument('photos');
@@ -63,12 +63,6 @@ class GenerateDummyPhotos extends Command
         $this->insertPhotos($photosToGen, $photos);
     }
 
-    /**
-     * @param $photosToGen
-     * @param $userId
-     * @param $ireland
-     * @param $cork
-     */
     protected function generatePhotos($photosToGen, $userId, $ireland, $cork): array
     {
         $this->line('Generating photos...');
@@ -89,8 +83,8 @@ class GenerateDummyPhotos extends Command
                 'city_id' => $cork->id,
                 'lat' => $lat,
                 'lon' => $lon,
-                'model' => "iPhone 5",
-                'filename' => "dummy.png",
+                'model' => 'iPhone 5',
+                'filename' => 'dummy.png',
                 'datetime' => now()->addDays(random_int(0, 200)),
                 'verified' => 2,
                 'verification' => 1,
@@ -108,9 +102,6 @@ class GenerateDummyPhotos extends Command
         return $photos;
     }
 
-    /**
-     * @param $photosToGen
-     */
     protected function insertPhotos($photosToGen, array $photos): void
     {
         $this->newLine();

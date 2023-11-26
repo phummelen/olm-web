@@ -20,13 +20,14 @@ class ClusterFactory extends Factory
     public function definition(): array
     {
         $pointCount = $this->faker->randomDigitNotNull;
+
         return [
             'lat' => $this->faker->latitude,
             'lon' => $this->faker->longitude,
             'point_count' => $pointCount * 1000,
             'point_count_abbreviated' => "{$pointCount}k",
             'geohash' => 'gcpvn219nm0ughyj8uemwkpb',
-            'zoom' => $this->faker->randomElement(range(6, 18))
+            'zoom' => $this->faker->randomElement(range(6, 18)),
         ];
     }
 }

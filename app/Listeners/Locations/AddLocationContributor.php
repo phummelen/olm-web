@@ -19,7 +19,7 @@ class AddLocationContributor implements ShouldQueue
     /**
      * Add user_id to a redis set for each location
      */
-    public function handle (ImageUploaded $event)
+    public function handle(ImageUploaded $event)
     {
         $this->addContributorAction->run(
             $event->countryId,

@@ -14,7 +14,7 @@ class UpdateTeamTest extends TestCase
         $leader = User::factory()->create();
         /** @var Team $team */
         $team = Team::factory()->create([
-            'leader' => $leader->id
+            'leader' => $leader->id,
         ]);
 
         $leader->teams()->attach($team);
@@ -26,7 +26,7 @@ class UpdateTeamTest extends TestCase
 
         $response = $this->patchJson("/api/teams/update/{$team->id}", [
             'name' => $newTeamName,
-            'identifier' => $newTeamIdentifier
+            'identifier' => $newTeamIdentifier,
         ]);
 
         $response
@@ -47,7 +47,7 @@ class UpdateTeamTest extends TestCase
         $member = User::factory()->create();
         /** @var Team $team */
         $team = Team::factory()->create([
-            'leader' => $leader->id
+            'leader' => $leader->id,
         ]);
         $leader->teams()->attach($team);
         $member->teams()->attach($team);
@@ -59,7 +59,7 @@ class UpdateTeamTest extends TestCase
 
         $response = $this->patchJson("/api/teams/update/{$team->id}", [
             'name' => $newTeamName,
-            'identifier' => $newTeamIdentifier
+            'identifier' => $newTeamIdentifier,
         ]);
 
         $response->assertJsonFragment(['success' => false, 'message' => 'member-not-allowed']);
@@ -69,7 +69,7 @@ class UpdateTeamTest extends TestCase
 
         $response = $this->patchJson("/api/teams/update/{$team->id}", [
             'name' => $newTeamName,
-            'identifier' => $newTeamIdentifier
+            'identifier' => $newTeamIdentifier,
         ]);
 
         $response->assertJsonFragment(['success' => false, 'message' => 'member-not-allowed']);
@@ -81,7 +81,7 @@ class UpdateTeamTest extends TestCase
         $leader = User::factory()->create();
         /** @var Team $team */
         $team = Team::factory()->create([
-            'leader' => $leader->id
+            'leader' => $leader->id,
         ]);
 
         $leader->teams()->attach($team);
@@ -91,7 +91,7 @@ class UpdateTeamTest extends TestCase
         // Empty input
         $response = $this->patchJson("/api/teams/update/{$team->id}", [
             'name' => '',
-            'identifier' => ''
+            'identifier' => '',
         ]);
 
         $response
@@ -101,7 +101,7 @@ class UpdateTeamTest extends TestCase
         // Short input
         $response = $this->patchJson("/api/teams/update/{$team->id}", [
             'name' => 'aa',
-            'identifier' => 'aa'
+            'identifier' => 'aa',
         ]);
 
         $response
@@ -111,7 +111,7 @@ class UpdateTeamTest extends TestCase
         // Long input
         $response = $this->patchJson("/api/teams/update/{$team->id}", [
             'name' => implode('', range(1, 101)),
-            'identifier' => implode('', range(1, 16))
+            'identifier' => implode('', range(1, 16)),
         ]);
 
         $response
@@ -123,7 +123,7 @@ class UpdateTeamTest extends TestCase
 
         $response = $this->patchJson("/api/teams/update/{$team->id}", [
             'name' => 'name',
-            'identifier' => 'identifier'
+            'identifier' => 'identifier',
         ]);
 
         $response

@@ -17,7 +17,7 @@ class DonationAmountsSeeder extends Seeder
         DB::table('donates')->insert([
             'amount' => 500,
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
     }
 }

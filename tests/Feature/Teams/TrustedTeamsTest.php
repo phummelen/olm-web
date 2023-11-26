@@ -42,14 +42,14 @@ class TrustedTeamsTest extends TestCase
         // User uploads a photo and tags it
         $this->actingAs($user);
 
-        $this->post('/submit', ['file' => $this->getImageAndAttributes()['file'],]);
+        $this->post('/submit', ['file' => $this->getImageAndAttributes()['file']]);
 
         $photo = $user->fresh()->photos->last();
 
         $this->post('/add-tags', [
             'photo_id' => $photo->id,
             'picked_up' => true,
-            'tags' => ['smoking' => ['butts' => 3]]
+            'tags' => ['smoking' => ['butts' => 3]],
         ]);
 
         // The photo is automatically verified
@@ -83,7 +83,7 @@ class TrustedTeamsTest extends TestCase
         $photo = $user->fresh()->photos->last();
         $this->post('/api/add-tags', [
             'photo_id' => $photo->id,
-            'tags' => ['smoking' => ['butts' => 3]]
+            'tags' => ['smoking' => ['butts' => 3]],
         ]);
 
         // The photo is automatically verified

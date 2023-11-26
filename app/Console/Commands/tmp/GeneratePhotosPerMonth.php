@@ -52,12 +52,11 @@ class GeneratePhotosPerMonth extends Command
             'state_id',
             'city_id'
         )
-        ->where('verified', '>=', 2);
+            ->where('verified', '>=', 2);
 
         $total = $photos->count();
 
-        foreach ($photos->cursor() as $photo)
-        {
+        foreach ($photos->cursor() as $photo) {
             $date = Carbon::parse($photo->datetime)->format('m-y');
 
             $user = User::find($photo->user_id);
@@ -66,29 +65,25 @@ class GeneratePhotosPerMonth extends Command
             $state = State::find($photo->state_id);
             $city = City::find($photo->city_id);
 
-            if ($user)
-            {
+            if ($user) {
                 Redis::hincrby("ppm:user:$user->id", $date, 1);
             }
 
-            if ($country)
-            {
+            if ($country) {
                 Redis::hincrby("ppm:country:$country->id", $date, 1);
             }
 
-            if ($state)
-            {
+            if ($state) {
                 Redis::hincrby("ppm:state:$state->id", $date, 1);
             }
 
-            if ($city)
-            {
+            if ($city) {
                 Redis::hincrby("ppm:city:$city->id", $date, 1);
             }
 
             $completed = ($photo->id / $total);
 
-            $this->info($completed . " %");
+            $this->info($completed.' %');
         }
     }
 }

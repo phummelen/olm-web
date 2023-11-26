@@ -14,13 +14,14 @@ class AdminVerificationLog extends Model
 
     protected $casts = [
         'added_tags' => 'array',
-        'removed_tags' => 'array'
+        'removed_tags' => 'array',
     ];
 
     /**
      * The user who updated the tags
      */
-    public function admin () {
+    public function admin()
+    {
         return $this->belongsTo(User::class, 'admin_id', 'id');
     }
 }

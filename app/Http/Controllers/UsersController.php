@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Storage;
 use App\Models\User\User;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class UsersController extends Controller
 {
     /*
     * Apply middleware to all of these routes
     */
-    public function __construct ()
+    public function __construct()
     {
         return $this->middleware('auth');
     }
@@ -24,7 +24,7 @@ class UsersController extends Controller
      *
      * Eager load any roles assigned to the user
      */
-    public function getAuthUser ()
+    public function getAuthUser()
     {
         return Auth::user()->load('roles')->append('xp_redis');
     }
@@ -36,14 +36,14 @@ class UsersController extends Controller
      *      - send new email
      *      - notify the user
      */
-    public function details (Request $request)
+    public function details(Request $request)
     {
         $user = Auth::user();
 
         $this->validate($request, [
-            'name'     => 'min:3|max:25',
-            'email'    => ['required', 'email', 'max:75', Rule::unique('users')->ignore($user->id)],
-            'username' => ['required', 'min:3', 'max:75', Rule::unique('users')->ignore($user->id)]
+            'name' => 'min:3|max:25',
+            'email' => ['required', 'email', 'max:75', Rule::unique('users')->ignore($user->id)],
+            'username' => ['required', 'min:3', 'max:75', Rule::unique('users')->ignore($user->id)],
         ]);
 
         $email_changed = false;
@@ -51,8 +51,7 @@ class UsersController extends Controller
         $user->name = $request->name;
         $user->username = $request->username;
 
-        if ($request->email != $user->email)
-        {
+        if ($request->email != $user->email) {
             $email_changed = true;
             $user->email = $request->email;
             // todo
@@ -71,17 +70,16 @@ class UsersController extends Controller
      * The user wants to change their password
      * Todo - Add custom validation to check users password matches before the rest of the validation
      */
-    public function changePassword (Request $request)
+    public function changePassword(Request $request)
     {
         $this->validate($request, [
             'oldpassword' => 'required',
-            'password' => 'required|confirmed|min:6|case_diff|numbers|letters|symbols'
+            'password' => 'required|confirmed|min:6|case_diff|numbers|letters|symbols',
         ]);
 
         $user = Auth::user();
 
-        if (Hash::check($request->input('oldpassword'), $user->password))
-        {
+        if (Hash::check($request->input('oldpassword'), $user->password)) {
             $user->password = $request->password;
             $user->save();
 
@@ -94,7 +92,8 @@ class UsersController extends Controller
     /*
     * Update the users security settings
     */
-    public function updateSecurity(Request $request) {
+    public function updateSecurity(Request $request)
+    {
 
         $user = Auth::user();
 
@@ -109,32 +108,32 @@ class UsersController extends Controller
         //     $user->settings->public_profile = $request->public_profile;
         // }
 
-        if($request->has('first_name')) {
+        if ($request->has('first_name')) {
             $user->first_name = true;
             $user->save();
         }
 
-        if(!$request->has('first_name')) {
+        if (! $request->has('first_name')) {
             $user->first_name = false;
             $user->save();
         }
 
-        if($request->has('user_name')) {
+        if ($request->has('user_name')) {
             $user->user_name = true;
             $user->save();
         }
 
-        if(!$request->has('user_name')) {
+        if (! $request->has('user_name')) {
             $user->user_name = false;
             $user->save();
         }
 
-        if($request->has('items_remaining')) {
+        if ($request->has('items_remaining')) {
             $user->items_remaining = true;
             $user->save();
         }
 
-        if(!$request->has('items_remaining')) {
+        if (! $request->has('items_remaining')) {
             $user->items_remaining = false;
             $user->save();
         }
@@ -142,29 +141,26 @@ class UsersController extends Controller
         return redirect('/settings#/general');
     }
 
-
     /**
      * The user can delete their profile and all associated records.
      */
-    public function destroy (Request $request)
+    public function destroy(Request $request)
     {
         $this->validate($request, [
-            'password' => 'required'
+            'password' => 'required',
         ]);
 
         $user = Auth::user();
 
         // Remove user.id from redis leaderboards
 
-        if (Hash::check($request->password, $user->password))
-        {
+        if (Hash::check($request->password, $user->password)) {
             // delete their photos, etc
             // maybe don't delete, but remove all personal information and keep user.id
             $user->delete();
-            return ['message' => 'success'];
-        }
 
-        else {
+            return ['message' => 'success'];
+        } else {
             return ['message' => 'password'];
         }
     }
@@ -172,7 +168,7 @@ class UsersController extends Controller
     /**
      * Toggle a Users privacy
      */
-    public function togglePrivacy (Request $request)
+    public function togglePrivacy(Request $request)
     {
         $user = Auth::user();
 
@@ -197,14 +193,14 @@ class UsersController extends Controller
     /**
      * Log the user out
      */
-    public function logout ()
+    public function logout()
     {
         Auth::logout();
 
         return redirect('/');
     }
 
-    public function unsubscribeEmail  ($token)
+    public function unsubscribeEmail($token)
     {
         $user = User::whereToken($token)->firstOrFail();
 
@@ -217,7 +213,7 @@ class UsersController extends Controller
     /**
      * Update the users phone number
      */
-    public function phone (Request $request)
+    public function phone(Request $request)
     {
         $phoneNumber = $request['phonenumber'];
         $user = Auth::user();
@@ -228,7 +224,7 @@ class UsersController extends Controller
     /**
      * Remove a users phone number from the database
      */
-    public function removePhone (Request $request)
+    public function removePhone(Request $request)
     {
         $user = Auth::user();
         $user->phone = '';
@@ -241,7 +237,7 @@ class UsersController extends Controller
      * Todo - move settings to new table
      * and use new picked_up column
      */
-    public function togglePresence (Request $request)
+    public function togglePresence(Request $request)
     {
         $user = Auth::user();
         $user->items_remaining = ! $user->items_remaining;
@@ -249,14 +245,14 @@ class UsersController extends Controller
 
         return [
             'message' => 'success',
-            'value' => $user->items_remaining
+            'value' => $user->items_remaining,
         ];
     }
 
     /**
      * Upload a users profile photo
      */
-    public function uploadProfilePhoto (Request $request)
+    public function uploadProfilePhoto(Request $request)
     {
         $file = $request->file('file'); // -> /tmp/php7S8v..
 

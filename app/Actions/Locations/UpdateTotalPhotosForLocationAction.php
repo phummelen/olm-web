@@ -12,10 +12,10 @@ class UpdateTotalPhotosForLocationAction
      * Increments or decrements total_photos
      * from a redis hash for each location
      *
-     * @param string $countryId Country
-     * @param string $stateId State
-     * @param string $cityId City
-     * @param int $increaseBy can be negative, value will be subtracted, but not below 0
+     * @param  string  $countryId Country
+     * @param  string  $stateId State
+     * @param  string  $cityId City
+     * @param  int  $increaseBy can be negative, value will be subtracted, but not below 0
      */
     public function run(string $countryId, string $stateId, string $cityId, int $increaseBy = 1)
     {
@@ -30,9 +30,6 @@ class UpdateTotalPhotosForLocationAction
      * Updates the given redis hash
      * Takes into account negative values that will set the counter below 0
      * In which case doesn't apply the update
-     *
-     * @param $hashName
-     * @param $value
      */
     protected function updateValue($hashName, $value)
     {

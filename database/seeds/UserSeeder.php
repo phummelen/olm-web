@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User\User;
+use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
@@ -20,9 +20,9 @@ class UserSeeder extends Seeder
             'username' => 'superadmin',
             'name' => 'superadmin',
             'verified' => 1,
-            'can_bbox'=> 1,
+            'can_bbox' => 1,
             'verification_required' => 0,
-            'remaining_teams' => 10
+            'remaining_teams' => 10,
         ]);
         $user->assignRole('superadmin');
 
@@ -31,9 +31,9 @@ class UserSeeder extends Seeder
             'username' => 'admin',
             'name' => 'admin',
             'verified' => 1,
-            'can_bbox'=> 1,
+            'can_bbox' => 1,
             'verification_required' => 0,
-            'remaining_teams' => 10
+            'remaining_teams' => 10,
         ]);
         $user->assignRole('admin');
 
@@ -42,9 +42,9 @@ class UserSeeder extends Seeder
             'username' => 'helper',
             'name' => 'helper',
             'verified' => 1,
-            'can_bbox'=> 1,
+            'can_bbox' => 1,
             'verification_required' => 0,
-            'remaining_teams' => 1
+            'remaining_teams' => 1,
         ]);
         $user->assignRole('helper');
     }

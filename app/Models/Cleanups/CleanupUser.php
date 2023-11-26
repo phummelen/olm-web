@@ -15,12 +15,12 @@ class CleanupUser extends Model
      */
     protected $table = 'cleanup_user';
 
-    public function cleanup ()
+    public function cleanup()
     {
         return $this->belongsTo(Cleanup::class);
     }
 
-    public function user ()
+    public function user()
     {
         return $this->belongsTo(User::class);
     }

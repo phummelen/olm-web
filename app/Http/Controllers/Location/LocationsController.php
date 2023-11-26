@@ -3,21 +3,18 @@
 namespace App\Http\Controllers\Location;
 
 use App\Helpers\Get\LoadDataHelper;
-use App\Http\Controllers\Controller;
-
 use App\Helpers\Locations;
-
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class LocationsController extends Controller
 {
     /**
      * Load the data for any location
      *
-     * @param int $id
-     * @param string $locationType
+     * @param  int  $id
+     * @param  string  $locationType
      */
-    public function index ()
+    public function index()
     {
         $locationId = request('id');
         $locationType = request('locationType');
@@ -29,10 +26,9 @@ class LocationsController extends Controller
      * The States page of the LitterWorldCup has been refreshed
      *
      * @param $country. Should be the name or shortcode of a country.
-     *
      * @return array
      */
-    public static function getStates ()
+    public static function getStates()
     {
         // todo - validate text
 
@@ -44,10 +40,9 @@ class LocationsController extends Controller
      *
      * @param $country. Should be the name, id, or shortcode of a Country.
      * @param $state. Should be the name or id of a State.
-     *
      * @return array
      */
-    public static function getCities ()
+    public static function getCities()
     {
         // todo - validate text
 

@@ -22,7 +22,7 @@ class PathwayFactory extends Factory
     public function definition()
     {
         return [
-            'gutter' => $this->faker->randomDigit
+            'gutter' => $this->faker->randomDigit,
         ];
     }
 }

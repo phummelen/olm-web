@@ -28,7 +28,7 @@ class TeamTest extends TestCase
                 'created_by',
                 'identifier',
                 'leaderboards',
-                'is_trusted'
+                'is_trusted',
             ],
             Schema::getColumnListing('teams')
         );

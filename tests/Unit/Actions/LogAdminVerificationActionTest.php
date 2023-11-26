@@ -18,11 +18,11 @@ class LogAdminVerificationActionTest extends TestCase
         $photo = Photo::factory()->create();
         $addedTags = [
             'tags' => ['smoking' => ['butts' => 3]],
-            'customTags' => 'nice-tag'
+            'customTags' => 'nice-tag',
         ];
         $removedTags = [
             'tags' => ['smoking' => ['lighters' => 1]],
-            'customTags' => 'tag'
+            'customTags' => 'tag',
         ];
         $removedUserXp = 100;
         $rewardedAdminXp = 50;

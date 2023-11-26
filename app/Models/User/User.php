@@ -2,30 +2,28 @@
 
 namespace App\Models\User;
 
-use Illuminate\Support\Str;
-use App\Payment;
-use App\Models\Photo;
-use App\Models\CustomTag;
-use App\Models\Teams\Team;
-use App\Models\Littercoin;
 use App\Models\AI\Annotation;
 use App\Models\Cleanups\Cleanup;
 use App\Models\Cleanups\CleanupUser;
-
+use App\Models\CustomTag;
+use App\Models\Littercoin;
+use App\Models\Photo;
+use App\Models\Teams\Team;
+use App\Payment;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
 use Laravel\Cashier\Billable;
 use Laravel\Passport\HasApiTokens;
-use Spatie\Permission\Traits\HasRoles;
 use LaravelAndVueJS\Traits\LaravelPermissionToVueJS;
-
-use Illuminate\Support\Facades\Redis;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Spatie\Permission\Traits\HasRoles;
 
 /**
  * @property Collection<Team> | array<Team> $teams
@@ -39,33 +37,34 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  */
 class User extends Authenticatable
 {
-    use Notifiable;
     use Billable;
     use HasApiTokens;
+    use HasFactory;
     use HasRoles;
     use LaravelPermissionToVueJS;
-    use HasFactory;
+    use Notifiable;
+
     /**
      * On creation, give a new user a 30 random string for email verification
      * Model event:
      * triggered automatically
      */
-    protected static function boot ()
+    protected static function boot()
     {
         // trigger the boot method of the Model Class that Eloquent models extend
         parent::boot();
 
         // listen for model events
         // When a user is created, add tokens
-        static::creating(function($user) {
+        static::creating(function ($user) {
             $user->token = Str::random(30);
         });
 
-        static::creating(function($user) {
+        static::creating(function ($user) {
             $user->sub_token = Str::random(30);
         });
 
-        static::addGlobalScope('photosCount', function($builder) {
+        static::addGlobalScope('photosCount', function ($builder) {
             $builder->withCount('photos'); // photos_count
         });
     }
@@ -73,7 +72,7 @@ class User extends Authenticatable
     /**
      * Eager load by default
      */
-     protected $with = ['team'];
+    protected $with = ['team'];
 
     /**
      * The attributes that are mass assignable.
@@ -115,7 +114,7 @@ class User extends Authenticatable
         'remaining_teams',
         'photos_per_month',
         'bbox_verification_count',
-        'enable_admin_tagging'
+        'enable_admin_tagging',
     ];
 
     /**
@@ -124,11 +123,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'role_id'
+        'password', 'remember_token', 'role_id',
     ];
 
     protected $guarded = [
-        'role_id'
+        'role_id',
     ];
 
     protected $casts = [
@@ -136,7 +135,7 @@ class User extends Authenticatable
         'show_username' => 'boolean',
         'verification_required' => 'boolean',
         'prevent_others_tagging_my_photos' => 'boolean',
-        'settings' => 'array'
+        'settings' => 'array',
     ];
 
     protected $appends = [
@@ -146,7 +145,7 @@ class User extends Authenticatable
         'picked_up',
         'user_verification_count',
         'littercoin_progress',
-        'total_littercoin'
+        'total_littercoin',
     ];
 
     /**
@@ -154,17 +153,15 @@ class User extends Authenticatable
      *
      * @return array
      */
-    public function getTotalCategoriesAttribute ()
+    public function getTotalCategoriesAttribute()
     {
         $categories = Photo::categories();
 
         $totals = [];
 
-        foreach ($categories as $category)
-        {
-            if ($category !== "brands")
-            {
-                $totals[$category] = (int)Redis::hget("user:$this->id", $category);
+        foreach ($categories as $category) {
+            if ($category !== 'brands') {
+                $totals[$category] = (int) Redis::hget("user:$this->id", $category);
             }
         }
 
@@ -177,16 +174,16 @@ class User extends Authenticatable
      */
     public function getIsTrustedAttribute(): bool
     {
-        return !$this->verification_required || $this->team && $this->team->is_trusted;
+        return ! $this->verification_required || $this->team && $this->team->is_trusted;
     }
 
     /**
      * Wrapper around default setting for items_remaining,
      * for better readability
      */
-    public function getPickedUpAttribute ()
+    public function getPickedUpAttribute()
     {
-        return !$this->items_remaining;
+        return ! $this->items_remaining;
     }
 
     /**
@@ -194,7 +191,7 @@ class User extends Authenticatable
      *
      * @return int total number of tags
      */
-    public function getTotalTagsAttribute ()
+    public function getTotalTagsAttribute()
     {
         $totalBrands = (int) Redis::hget("user:{$this->id}", 'total_brands');
         $totalLitter = (int) Redis::hget("user:{$this->id}", 'total_litter');
@@ -208,9 +205,9 @@ class User extends Authenticatable
      *
      * 0-100
      */
-    public function getUserVerificationCountAttribute ()
+    public function getUserVerificationCountAttribute()
     {
-        return Redis::hget("user_verification_count", $this->id) ?? 0;
+        return Redis::hget('user_verification_count', $this->id) ?? 0;
     }
 
     /**
@@ -222,13 +219,13 @@ class User extends Authenticatable
      */
     public function getXpRedisAttribute()
     {
-        return (int) Redis::zscore("xp.users", $this->id);
+        return (int) Redis::zscore('xp.users', $this->id);
     }
 
     /**
      * Get this Users XP from the Global Leaderboard of All Users
      */
-    public function getTodaysXpAttribute ()
+    public function getTodaysXpAttribute()
     {
         $year = now()->year;
         $month = now()->month;
@@ -237,7 +234,7 @@ class User extends Authenticatable
         return (int) Redis::zscore("leaderboard:users:$year:$month:$day", $this->id);
     }
 
-    public function getYesterdaysXpAttribute ()
+    public function getYesterdaysXpAttribute()
     {
         $year = now()->subDays(1)->year;
         $month = now()->subDays(1)->month;
@@ -246,7 +243,7 @@ class User extends Authenticatable
         return (int) Redis::zscore("leaderboard:users:$year:$month:$day", $this->id);
     }
 
-    public function getThisMonthsXpAttribute ()
+    public function getThisMonthsXpAttribute()
     {
         $year = now()->year;
         $month = now()->month;
@@ -254,7 +251,7 @@ class User extends Authenticatable
         return (int) Redis::zscore("leaderboard:users:$year:$month", $this->id);
     }
 
-    public function getLastMonthsXpAttribute ()
+    public function getLastMonthsXpAttribute()
     {
         $year = now()->subMonths(1)->year;
         $month = now()->subMonths(1)->month;
@@ -262,14 +259,14 @@ class User extends Authenticatable
         return (int) Redis::zscore("leaderboard:users:$year:$month", $this->id);
     }
 
-    public function getThisYearsXpAttribute ()
+    public function getThisYearsXpAttribute()
     {
         $year = now()->year;
 
         return (int) Redis::zscore("leaderboard:users:$year", $this->id);
     }
 
-    public function getLastYearsXpAttribute ()
+    public function getLastYearsXpAttribute()
     {
         $year = now()->year;
 
@@ -281,36 +278,42 @@ class User extends Authenticatable
      *
      * Here, we have to pass the locationType and locationId dynamically.
      */
-    public function getXpWithParams ($param): int
+    public function getXpWithParams($param): int
     {
         $timeFilter = $param['timeFilter'];
         $locationType = $param['locationType'];
         $locationId = $param['locationId'];
 
-        if ($timeFilter === "today") {
+        if ($timeFilter === 'today') {
             $year = now()->year;
             $month = now()->month;
             $day = now()->day;
+
             // country, state, city. not users
             return (int) Redis::zscore("leaderboard:$locationType:$locationId:$year:$month:$day", $this->id);
-        } elseif ($timeFilter === "yesterday") {
+        } elseif ($timeFilter === 'yesterday') {
             $year = now()->subDays(1)->year;
             $month = now()->subDays(1)->month;
             $day = now()->subDays(1)->day;
+
             return (int) Redis::zscore("leaderboard:$locationType:$locationId:$year:$month:$day", $this->id);
-        } elseif ($timeFilter === "this-month") {
+        } elseif ($timeFilter === 'this-month') {
             $year = now()->year;
             $month = now()->month;
+
             return (int) Redis::zscore("leaderboard:$locationType:$locationId:$year:$month", $this->id);
-        } elseif ($timeFilter === "last-month") {
+        } elseif ($timeFilter === 'last-month') {
             $year = now()->subMonths(1)->year;
             $month = now()->subMonths(1)->month;
+
             return (int) Redis::zscore("leaderboard:$locationType:$locationId:$year:$month", $this->id);
-        } elseif ($timeFilter === "this-year") {
+        } elseif ($timeFilter === 'this-year') {
             $year = now()->year;
+
             return (int) Redis::zscore("leaderboard:$locationType:$locationId:$year", $this->id);
-        } elseif ($timeFilter === "last-year") {
+        } elseif ($timeFilter === 'last-year') {
             $year = now()->year;
+
             return (int) Redis::zscore("leaderboard:$locationType:$locationId:$year", $this->id);
         } elseif ($timeFilter === 'all-time') {
             return (int) Redis::zscore("leaderboard:$locationType:$locationId:total", $this->id);
@@ -324,7 +327,7 @@ class User extends Authenticatable
      *
      * @return int total number of brand tags
      */
-    public function getTotalBrandsRedisAttribute ()
+    public function getTotalBrandsRedisAttribute()
     {
         return (int) Redis::hget("user:{$this->id}", 'total_brands');
     }
@@ -337,7 +340,7 @@ class User extends Authenticatable
     /**
      * Return the users progress to earning their next Littercoin
      */
-    public function getLittercoinProgressAttribute ()
+    public function getLittercoinProgressAttribute()
     {
         return (int) Redis::hget("user:{$this->id}", 'littercoin_progress') ?? 0;
     }
@@ -345,7 +348,7 @@ class User extends Authenticatable
     /**
      * Get the total number of Littercoin the user has earned
      */
-    public function getTotalLittercoinAttribute ()
+    public function getTotalLittercoinAttribute()
     {
         $count = $this->littercoin_allowance + $this->littercoin_owed;
 
@@ -357,7 +360,7 @@ class User extends Authenticatable
     /**
      * Get all payments
      */
-    public function payments (): HasMany
+    public function payments(): HasMany
     {
         return $this->hasMany(Payment::class);
     }
@@ -365,7 +368,7 @@ class User extends Authenticatable
     /**
      * Get all photos
      */
-    public function photos (): HasMany
+    public function photos(): HasMany
     {
         return $this->hasMany(Photo::class);
     }
@@ -373,7 +376,7 @@ class User extends Authenticatable
     /**
      * A user can add many bounding boxes
      */
-    public function boxes (): HasMany
+    public function boxes(): HasMany
     {
         return $this->hasMany(Annotation::class, 'added_by');
     }
@@ -381,7 +384,7 @@ class User extends Authenticatable
     /**
      * A user can verify many bounding boxes
      */
-    public function boxesVerified (): HasMany
+    public function boxesVerified(): HasMany
     {
         return $this->hasMany(Annotation::class, 'verified_by');
     }
@@ -391,7 +394,7 @@ class User extends Authenticatable
      *
      * return boolean
      */
-    public function confirmEmail ()
+    public function confirmEmail()
     {
         $this->verified = true;
         $this->token = null;
@@ -405,7 +408,7 @@ class User extends Authenticatable
      *
      * return void
      */
-    public function setPasswordAttribute ($password)
+    public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
     }
@@ -413,62 +416,62 @@ class User extends Authenticatable
     /**
      * Has Many Through relationships
      */
-    public function customTags (): HasManyThrough
+    public function customTags(): HasManyThrough
     {
         return $this->hasManyThrough(CustomTag::class, Photo::class);
     }
 
-    public function smoking ()
+    public function smoking()
     {
         return $this->hasManyThrough('App\Smoking', Photo::class);
     }
 
-    public function alcohol ()
+    public function alcohol()
     {
         return $this->hasManyThrough('App\Alcohol', Photo::class);
     }
 
-    public function coffee ()
+    public function coffee()
     {
         return $this->hasManyThrough('App\Coffee', Photo::class);
     }
 
-    public function food ()
+    public function food()
     {
         return $this->hasManyThrough('App\Food', Photo::class);
     }
 
-    public function softdrinks ()
+    public function softdrinks()
     {
         return $this->hasManyThrough('App\SoftDrinks', Photo::class);
     }
 
-    public function drugs ()
+    public function drugs()
     {
         return $this->hasManyThrough('App\Drugs', Photo::class);
     }
 
-    public function sanitary ()
+    public function sanitary()
     {
         return $this->hasManyThrough('App\Sanitary', Photo::class);
     }
 
-    public function other ()
+    public function other()
     {
         return $this->hasManyThrough('App\Other', Photo::class);
     }
 
-    public function coastal ()
+    public function coastal()
     {
         return $this->hasManyThrough('App\Coastal', Photo::class);
     }
 
-    public function pathway ()
+    public function pathway()
     {
         return $this->hasManyThrough('App\Pathway', Photo::class);
     }
 
-    public function art ()
+    public function art()
     {
         return $this->hasManyThrough('App\Art', Photo::class);
     }
@@ -478,7 +481,7 @@ class User extends Authenticatable
      *
      * @return BelongsTo
      */
-    public function team ()
+    public function team()
     {
         return $this->belongsTo(Team::class, 'active_team', 'id');
     }
@@ -488,7 +491,7 @@ class User extends Authenticatable
      *
      * Load extra columns on the pivot table
      */
-    public function teams (): BelongsToMany
+    public function teams(): BelongsToMany
     {
         return $this->belongsToMany(Team::class)
             ->withTimestamps()
@@ -518,7 +521,7 @@ class User extends Authenticatable
      * Load extra columns on the pivot table
      * ->withTimestamps();
      */
-    public function cleanups (): BelongsToMany
+    public function cleanups(): BelongsToMany
     {
         return $this->belongsToMany(Cleanup::class)
             ->using(CleanupUser::class);

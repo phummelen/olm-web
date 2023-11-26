@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddTotalsToCities extends Migration
 {
@@ -25,7 +25,7 @@ class AddTotalsToCities extends Migration
             $table->integer('total_drugs')->unsigned()->nullable();
             $table->integer('total_needles')->unsigned()->nullable();
             $table->integer('total_sanitary')->unsigned()->nullable();
-            $table->integer('total_other')->unsigned()->nullable();   
+            $table->integer('total_other')->unsigned()->nullable();
         });
     }
 

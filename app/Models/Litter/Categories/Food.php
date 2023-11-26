@@ -25,7 +25,7 @@ class Food extends LitterCategory
             'foodOther',
             'pizza_box',
             'aluminium_foil',
-            'chewing_gum'
+            'chewing_gum',
         ];
     }
 }

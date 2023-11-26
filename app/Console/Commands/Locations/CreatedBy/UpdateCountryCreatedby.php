@@ -41,14 +41,12 @@ class UpdateCountryCreatedby extends Command
     {
         $countries = Country::whereNull('created_by')->get();
 
-        foreach ($countries as $country)
-        {
+        foreach ($countries as $country) {
             echo "country $country->id $country->country \n";
 
             $photo = Photo::where('country_id', $country->id)->orderBy('id')->first();
 
-            if ($photo)
-            {
+            if ($photo) {
                 $country->created_by = $photo->user_id;
                 $country->save();
 

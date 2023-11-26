@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin;
 
-
 use App\Actions\LogAdminVerificationAction;
 use App\Events\ImageDeleted;
 use App\Models\Photo;
@@ -65,9 +64,9 @@ class DeletePhotoTest extends TestCase
             'picked_up' => false,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
-                ]
-            ]
+                    'butts' => 3,
+                ],
+            ],
         ]);
 
         $this->user->refresh();
@@ -125,7 +124,7 @@ class DeletePhotoTest extends TestCase
     {
         // User has already uploaded an image, so their xp is 1
         Redis::zrem('xp.users', $this->admin->id);
-        Redis::zadd("xp.users", 1, $this->user->id);
+        Redis::zadd('xp.users', 1, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}", 1, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", 1, $this->user->id);
         Redis::zadd("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", 1, $this->user->id);
@@ -133,10 +132,10 @@ class DeletePhotoTest extends TestCase
         $this->post('/add-tags', [
             'photo_id' => $this->photo->id,
             'picked_up' => false,
-            'tags' => ['smoking' => ['butts' => 3]]
+            'tags' => ['smoking' => ['butts' => 3]],
         ]);
         $this->assertSame(0, $this->admin->xp_redis);
-        $this->assertSame('4', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('4', Redis::zscore('xp.users', $this->user->id));
         $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
         $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
         $this->assertSame('4', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));
@@ -146,7 +145,7 @@ class DeletePhotoTest extends TestCase
 
         // Assert leaderboards are updated ------------
         $this->assertSame(1, $this->admin->xp_redis);
-        $this->assertSame('0', Redis::zscore("xp.users", $this->user->id));
+        $this->assertSame('0', Redis::zscore('xp.users', $this->user->id));
         $this->assertSame('0', Redis::zscore("xp.country.{$this->photo->country_id}", $this->user->id));
         $this->assertSame('0', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}", $this->user->id));
         $this->assertSame('0', Redis::zscore("xp.country.{$this->photo->country_id}.state.{$this->photo->state_id}.city.{$this->photo->city_id}", $this->user->id));

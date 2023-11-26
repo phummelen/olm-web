@@ -10,7 +10,7 @@ class ReverseGeocodeLocationAction
     /** @var Client */
     private $client;
 
-    public function __construct (Client $client)
+    public function __construct(Client $client)
     {
         $this->client = $client;
     }
@@ -18,16 +18,14 @@ class ReverseGeocodeLocationAction
     /**
      * Using the GPS coordinates from the image, return the Reverse Geocode result from OpenStreetMap
      *
-     * @param $latitude
-     * @param $longitude
      *
      * @throws GuzzleException
      */
-    public function run ($latitude, $longitude): array
+    public function run($latitude, $longitude): array
     {
         $apiKey = config('services.location.secret');
 
-        $url = 'https://eu1.locationiq.com/v1/reverse.php?format=json&key=' . $apiKey . "&lat=" . $latitude . "&lon=" . $longitude . "&zoom=20";
+        $url = 'https://eu1.locationiq.com/v1/reverse.php?format=json&key='.$apiKey.'&lat='.$latitude.'&lon='.$longitude.'&zoom=20';
 
         return json_decode(
             $this->client->get($url)->getBody(),

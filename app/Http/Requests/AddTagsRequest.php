@@ -18,7 +18,7 @@ class AddTagsRequest extends FormRequest
             'tags' => 'required_without:custom_tags|array',
             'picked_up' => 'required|boolean',
             'custom_tags' => 'required_without:tags|array|max:3',
-            'custom_tags.*' => 'distinct:ignore_case|min:3|max:100'
+            'custom_tags.*' => 'distinct:ignore_case|min:3|max:100',
         ];
     }
 }

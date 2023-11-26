@@ -22,7 +22,7 @@ class AlcoholFactory extends Factory
     public function definition()
     {
         return [
-            'beerCan' => $this->faker->randomDigit
+            'beerCan' => $this->faker->randomDigit,
         ];
     }
 }

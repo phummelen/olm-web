@@ -32,7 +32,7 @@ class GenerateDailyLeaderboards extends Command
      *
      * @return int
      */
-    public function handle ()
+    public function handle()
     {
         $photos = Photo::query()
             ->select(
@@ -49,8 +49,7 @@ class GenerateDailyLeaderboards extends Command
 
         $total = $photos->count();
 
-        foreach ($photos->cursor() as $photo)
-        {
+        foreach ($photos->cursor() as $photo) {
             $user = User::find($photo->user_id);
             $userId = $user->id;
             $incrXp = $photo->total_litter;
@@ -69,29 +68,25 @@ class GenerateDailyLeaderboards extends Command
             $state = State::find($photo->state_id);
             $city = City::find($photo->city_id);
 
-            if ($user)
-            {
+            if ($user) {
                 Redis::zincrby("leaderboard:users:$year:$month:$day", $incrXp, $userId);
                 Redis::zincrby("leaderboard:users:$year:$month", $incrXp, $userId);
                 Redis::zincrby("leaderboard:users:$year", $incrXp, $userId);
             }
 
-            if ($country)
-            {
+            if ($country) {
                 Redis::zincrby("leaderboard:country:$photo->country_id:$year:$month:$day", $incrXp, $userId);
                 Redis::zincrby("leaderboard:country:$photo->country_id:$year:$month", $incrXp, $userId);
                 Redis::zincrby("leaderboard:country:$photo->country_id:$year", $incrXp, $userId);
             }
 
-            if ($state)
-            {
+            if ($state) {
                 Redis::zincrby("leaderboard:state:$photo->state_id:$year:$month:$day", $incrXp, $userId);
                 Redis::zincrby("leaderboard:state:$photo->state_id:$year:$month", $incrXp, $userId);
                 Redis::zincrby("leaderboard:state:$photo->state_id:$year", $incrXp, $userId);
             }
 
-            if ($city)
-            {
+            if ($city) {
                 Redis::zincrby("leaderboard:city:$photo->city_id:$year:$month:$day", $incrXp, $userId);
                 Redis::zincrby("leaderboard:city:$photo->city_id:$year:$month", $incrXp, $userId);
                 Redis::zincrby("leaderboard:city:$photo->city_id:$year", $incrXp, $userId);
@@ -99,7 +94,7 @@ class GenerateDailyLeaderboards extends Command
 
             $completed = ($photo->id / $total);
 
-            $this->info($completed . " %");
+            $this->info($completed.' %');
         }
     }
 }

@@ -10,15 +10,15 @@ class Stripe extends Model
     protected $table = 'stripe';
 
     protected $fillable = [
-    	'id',
-    	'customer_id',
-    	'stripe_active',
-    	'subscription_end_at',
-        'plan'
+        'id',
+        'customer_id',
+        'stripe_active',
+        'subscription_end_at',
+        'plan',
     ];
 
-    public function user(){
-    	return $this->belongsTo(User::class);
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
-
 }

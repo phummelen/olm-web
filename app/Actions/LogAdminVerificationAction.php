@@ -20,7 +20,7 @@ class LogAdminVerificationAction
         array $addedTags,
         array $removedTags,
         int $rewardedAdminXp,
-        int $removedUserXp
+        int $removedUserXp,
     ) {
         AdminVerificationLog::create([
             'admin_id' => $admin->id,
@@ -29,7 +29,7 @@ class LogAdminVerificationAction
             'added_tags' => $addedTags,
             'removed_tags' => $removedTags,
             'rewarded_admin_xp' => $rewardedAdminXp,
-            'removed_user_xp' => $removedUserXp
+            'removed_user_xp' => $removedUserXp,
         ]);
     }
 }

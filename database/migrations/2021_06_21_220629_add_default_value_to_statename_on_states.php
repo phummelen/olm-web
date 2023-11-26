@@ -14,7 +14,7 @@ class AddDefaultValueToStatenameOnStates extends Migration
     public function up()
     {
         Schema::table('states', function (Blueprint $table) {
-            $table->string('state')->default('not found')->change();;
+            $table->string('state')->default('not found')->change();
         });
     }
 }

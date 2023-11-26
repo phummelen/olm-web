@@ -13,11 +13,12 @@ trait AddTagsTrait
 {
     /**
      * Add or Update tags on an image
-     * @param array $tags
-     * @param array $customTags
-     * @param int $photoId
+     *
+     * @param  array  $tags
+     * @param  array  $customTags
+     * @param  int  $photoId
      */
-    public function addTags ($tags, $customTags, $photoId)
+    public function addTags($tags, $customTags, $photoId)
     {
         /** @var Photo $photo */
         $photo = Photo::find($photoId);

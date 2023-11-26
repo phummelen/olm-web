@@ -18,7 +18,7 @@ trait FilterClustersByGeohashTrait
      * @param $zoom int   -> zoom level of the browser
      * @param $bbox array -> [west|left, south|bottom, east|right, north|top]
      */
-    public function filterClustersByGeoHash (Builder $query, int $zoom, string $bbox): Builder
+    public function filterClustersByGeoHash(Builder $query, int $zoom, string $bbox): Builder
     {
         $bbox = json_decode($bbox);
 
@@ -39,7 +39,7 @@ trait FilterClustersByGeohashTrait
             ->where('zoom', $zoom)
             ->where(function ($q) use ($geos) {
                 foreach ($geos as $geo) {
-                    $q->orWhere('geohash', 'like', $geo . '%'); // starts with
+                    $q->orWhere('geohash', 'like', $geo.'%'); // starts with
                 }
             });
     }
@@ -54,13 +54,13 @@ trait FilterClustersByGeohashTrait
                 'type' => 'Feature',
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => [$cluster->lon, $cluster->lat]
+                    'coordinates' => [$cluster->lon, $cluster->lat],
                 ],
                 'properties' => [
                     'point_count' => $cluster->point_count,
                     'point_count_abbreviated' => $cluster->point_count_abbreviated,
-                    'cluster' => true
-                ]
+                    'cluster' => true,
+                ],
             ];
         })->toArray();
     }

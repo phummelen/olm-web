@@ -22,7 +22,7 @@ class IndustrialFactory extends Factory
     public function definition()
     {
         return [
-            'oil' => $this->faker->randomDigit
+            'oil' => $this->faker->randomDigit,
         ];
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\User;
 
-use DateTime;
 use App\Exports\CreateCSVExport;
 use App\Http\Controllers\Controller;
 use App\Jobs\EmailUserExportCompleted;
@@ -10,6 +9,7 @@ use App\Level;
 use App\Models\CustomTag;
 use App\Models\Photo;
 use App\Models\User\User;
+use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +19,7 @@ class ProfileController extends Controller
     /**
      * Apply middleware to all of these routes
      */
-    public function __construct ()
+    public function __construct()
     {
         $this->middleware('auth');
     }
@@ -29,20 +29,20 @@ class ProfileController extends Controller
      *
      * @return array
      */
-    public function download (Request $request)
+    public function download(Request $request)
     {
         $user = Auth::user();
 
         $dateFilter = $this->getDownloadDateFilter($request);
 
-        $x     = new DateTime();
-        $date  = $x->format('Y-m-d');
-        $date  = explode('-', $date);
+        $x = new DateTime();
+        $date = $x->format('Y-m-d');
+        $date = explode('-', $date);
 
-        $year  = $date[0];
+        $year = $date[0];
         $month = $date[1];
-        $day   = $date[2];
-        $unix  = now()->timestamp;
+        $day = $date[2];
+        $unix = now()->timestamp;
 
         $path = $year.'/'.$month.'/'.$day.'/'.$unix;  // 2020/10/25/unix/
 
@@ -57,7 +57,7 @@ class ProfileController extends Controller
             ->queue($path, 's3', null, ['visibility' => 'public'])
             ->chain([
                 // These jobs are executed when above is finished.
-                new EmailUserExportCompleted($user->email, $path)
+                new EmailUserExportCompleted($user->email, $path),
                 // new ....job
             ]);
 
@@ -74,12 +74,12 @@ class ProfileController extends Controller
      *
      * @return array
      */
-    public function geojson ()
+    public function geojson()
     {
         $photos = Photo::query()
             ->where([
                 ['user_id', auth()->user()->id],
-                'verified' => 2
+                'verified' => 2,
             ])
             ->with([
                 'user:id,name,username,show_username_maps,show_name_maps,settings',
@@ -105,7 +105,7 @@ class ProfileController extends Controller
                 'type' => 'Feature',
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => [$photo->lat, $photo->lon]
+                    'coordinates' => [$photo->lat, $photo->lon],
                 ],
                 'properties' => [
                     'photo_id' => $photo->id,
@@ -120,16 +120,16 @@ class ProfileController extends Controller
                     'team' => $team,
                     'picked_up' => $photo->picked_up,
                     'social' => $photo->user->social_links,
-                    'custom_tags' => $photo->customTags->pluck('tag')
-                ]
+                    'custom_tags' => $photo->customTags->pluck('tag'),
+                ],
             ];
         }
 
         return [
             'geojson' => [
                 'type' => 'FeatureCollection',
-                'features' => $features
-            ]
+                'features' => $features,
+            ],
         ];
     }
 
@@ -139,7 +139,7 @@ class ProfileController extends Controller
      *
      * @return array
      */
-    public function index ()
+    public function index()
     {
         /** @var User $user */
         $user = Auth::user()->append('xp_redis');
@@ -175,7 +175,7 @@ class ProfileController extends Controller
             'usersPosition' => $usersPosition,
             'tagPercent' => $tagPercent,
             'photoPercent' => $photoPercent,
-            'requiredXp' => $requiredXp
+            'requiredXp' => $requiredXp,
         ];
     }
 
@@ -185,7 +185,7 @@ class ProfileController extends Controller
      */
     private function getDownloadDateFilter(Request $request): array
     {
-        if (!$request->dateField || !$request->fromDate && !$request->toDate) {
+        if (! $request->dateField || ! $request->fromDate && ! $request->toDate) {
             return [];
         }
 
@@ -195,10 +195,11 @@ class ProfileController extends Controller
         $toDate = $request->toDate
             ? Carbon::parse($request->toDate)
             : now();
+
         return [
             'column' => $request->dateField,
             'fromDate' => $fromDate->toDateString(),
-            'toDate' => $toDate->toDateString()
+            'toDate' => $toDate->toDateString(),
         ];
     }
 }

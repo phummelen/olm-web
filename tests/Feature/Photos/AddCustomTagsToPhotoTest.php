@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Photos;
 
-use Iterator;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Storage;
+use Iterator;
 use Tests\Feature\HasPhotoUploads;
 use Tests\TestCase;
 
@@ -40,14 +40,14 @@ class AddCustomTagsToPhotoTest extends TestCase
     public function test_a_user_can_add_custom_tags_to_a_photo()
     {
         $user = User::factory()->create();
-        $this->actingAs($user)->post('/submit', ['file' => $this->imageAndAttributes['file'],]);
+        $this->actingAs($user)->post('/submit', ['file' => $this->imageAndAttributes['file']]);
         $photo = $user->fresh()->photos->last();
         $this->assertSame(1, $user->fresh()->xp);
 
         $this->postJson('/add-tags', [
             'photo_id' => $photo->id,
             'picked_up' => false,
-            'custom_tags' => ['tag1', 'tag2', 'tag3']
+            'custom_tags' => ['tag1', 'tag2', 'tag3'],
         ])->assertOk();
 
         $this->assertSame(['tag1', 'tag2', 'tag3'], $photo->fresh()->customTags->pluck('tag')->toArray());
@@ -60,13 +60,13 @@ class AddCustomTagsToPhotoTest extends TestCase
     public function test_it_validates_the_custom_tags($tags, $errors)
     {
         $user = User::factory()->create();
-        $this->actingAs($user)->post('/submit', ['file' => $this->imageAndAttributes['file'],]);
+        $this->actingAs($user)->post('/submit', ['file' => $this->imageAndAttributes['file']]);
         $photo = $user->fresh()->photos->last();
 
         $response = $this->postJson('/add-tags', [
             'photo_id' => $photo->id,
             'presence' => true,
-            'custom_tags' => $tags
+            'custom_tags' => $tags,
         ]);
 
         $response->assertStatus(422);

@@ -14,14 +14,14 @@ class JoinTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'identifier' => 'required|min:3|max:15|exists:teams,identifier'
+            'identifier' => 'required|min:3|max:15|exists:teams,identifier',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'exists' => 'Sorry, we could not find a team with this identifier.'
+            'exists' => 'Sorry, we could not find a team with this identifier.',
         ];
     }
 }

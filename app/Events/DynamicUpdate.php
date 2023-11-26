@@ -3,18 +3,17 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class DynamicUpdate
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     public $category;
 
     /**
@@ -22,7 +21,7 @@ class DynamicUpdate
      *
      * @return void
      */
-    public function __construct ($category)
+    public function __construct($category)
     {
         $this->category = $category;
     }

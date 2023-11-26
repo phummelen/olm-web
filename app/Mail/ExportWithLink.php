@@ -11,6 +11,7 @@ class ExportWithLink extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $path;
 
     /**
@@ -18,7 +19,7 @@ class ExportWithLink extends Mailable
      *
      * @return void
      */
-    public function __construct ($path)
+    public function __construct($path)
     {
         $this->path = $path;
     }
@@ -34,7 +35,7 @@ class ExportWithLink extends Mailable
             ->subject('OpenLitterMap Data')
             ->view('emails.downloads.opendata_link')
             ->with([
-                'url' => Storage::disk('s3')->url($this->path)
+                'url' => Storage::disk('s3')->url($this->path),
             ]);
     }
 }

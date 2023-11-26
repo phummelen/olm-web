@@ -12,32 +12,30 @@ class DeleteMerchantController extends Controller
     /**
      * Admin can delete a merchant
      */
-    public function __invoke (Request $request)
+    public function __invoke(Request $request)
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('delete merchants'))
-        {
+        if (! $user->hasPermissionTo('delete merchants')) {
             return [
                 'success' => false,
-                'msg' => 'unauthorized'
+                'msg' => 'unauthorized',
             ];
         }
 
         $merchant = Merchant::find($request->merchantId);
 
-        if (!$merchant)
-        {
+        if (! $merchant) {
             return [
                 'success' => false,
-                'msg' => 'does not exist'
+                'msg' => 'does not exist',
             ];
         }
 
         $merchant->delete();
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 }

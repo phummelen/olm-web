@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class LeaveTeamTest extends TestCase
 {
-
     public function test_a_user_can_leave_a_team()
     {
         // User joins a team -------------------------
@@ -115,7 +114,7 @@ class LeaveTeamTest extends TestCase
         $leader = User::factory()->create();
         $otherUserInTeam = User::factory()->create();
         $team = Team::factory()->create([
-            'leader' => $leader->id
+            'leader' => $leader->id,
         ]);
 
         $leader->teams()->attach($team);

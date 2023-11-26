@@ -35,23 +35,23 @@ class UserTest extends TestCase
 
     public function test_a_user_can_get_a_setting()
     {
-        $settings = ["settings" => ["foo" => "bar"]];
+        $settings = ['settings' => ['foo' => 'bar']];
         /** @var User $user */
         $user = User::factory()->create($settings);
 
-        $this->assertSame("bar", $user->setting("foo"));
-        $this->assertNull($user->setting("baz"));
-        $this->assertSame(5, $user->setting("baz", 5));
+        $this->assertSame('bar', $user->setting('foo'));
+        $this->assertNull($user->setting('baz'));
+        $this->assertSame(5, $user->setting('baz', 5));
     }
 
     public function test_a_user_can_change_settings()
     {
-        $settings = ["settings" => ["foo" => "bar"]];
+        $settings = ['settings' => ['foo' => 'bar']];
         /** @var User $user */
         $user = User::factory()->create($settings);
 
-        $this->assertSame("world", $user->settings(["foo" => "world"])->setting("foo"));
-        $this->assertSame("hello", $user->settings(["baz" => "hello"])->setting("baz"));
-        $this->assertSame(["foo" => "world", "baz" => 'hello'], $user->fresh()->settings);
+        $this->assertSame('world', $user->settings(['foo' => 'world'])->setting('foo'));
+        $this->assertSame('hello', $user->settings(['baz' => 'hello'])->setting('baz'));
+        $this->assertSame(['foo' => 'world', 'baz' => 'hello'], $user->fresh()->settings);
     }
 }

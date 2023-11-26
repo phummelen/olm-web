@@ -5,12 +5,12 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class LittercoinInstructions extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $user;
 
     /**
@@ -31,7 +31,7 @@ class LittercoinInstructions extends Mailable
     public function build()
     {
         return $this->from('OpenLitterMap')
-                    ->subject('You are owed Littercoin. Follow these instructions to claim your allowance.')
-                    ->view('emails.claimlittercoin');
+            ->subject('You are owed Littercoin. Follow these instructions to claim your allowance.')
+            ->view('emails.claimlittercoin');
     }
 }

@@ -4,7 +4,6 @@ namespace App\Listeners\Locations;
 
 use App\Actions\Locations\UpdateTotalPhotosForLocationAction;
 use App\Events\ImageUploaded;
-use App\Models\User\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
 class IncreaseLocationTotalPhotos implements ShouldQueue
@@ -22,7 +21,7 @@ class IncreaseLocationTotalPhotos implements ShouldQueue
      */
     public function handle(ImageUploaded $event)
     {
-        if (!$event->isUserVerified) {
+        if (! $event->isUserVerified) {
             return;
         }
 

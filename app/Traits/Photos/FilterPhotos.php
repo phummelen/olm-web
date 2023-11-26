@@ -3,7 +3,6 @@
 namespace App\Traits\Photos;
 
 use App\Models\Photo;
-use GeoHash;
 
 trait FilterPhotos
 {
@@ -16,15 +15,13 @@ trait FilterPhotos
      *     created_at, datetime
      * @param $selectAll || null
      * @param $ids || null
-     *
      * @return $query
      */
-    public function filterPhotos (
+    public function filterPhotos(
         $filters_json,
         $selectAll = null,
-        $ids = null
-    )
-    {
+        $ids = null,
+    ) {
         $query = Photo::query();
         $query->where('user_id', auth()->user()->id);
         $query->where('verified', 0);
@@ -33,43 +30,41 @@ trait FilterPhotos
         $filters = json_decode((string) $filters_json);
 
         // If selectAll is false, and the user is passing IDs,
-        if (!is_null($selectAll) && ($selectAll === false && ! is_null($ids) && count($ids) > 0)) {
+        if (! is_null($selectAll) && ($selectAll === false && ! is_null($ids) && count($ids) > 0)) {
             // we only want to select these IDs
             $query->whereIn('id', $ids);
+
             return $query;
         }
 
         // Filter by photo.id
-        if (strlen((string) $filters->id) > 0)
-        {
+        if (strlen((string) $filters->id) > 0) {
             $id = $filters->id;
 
             $query->where(function ($q) use ($id) {
                 return $q->where([
                     'user_id' => auth()->user()->id,
-                    ['id', 'like', '%'.$id.'%']
+                    ['id', 'like', '%'.$id.'%'],
                 ]);
             });
         }
 
-        if ($filters->dateRange->start && $filters->dateRange->end)
-        {
+        if ($filters->dateRange->start && $filters->dateRange->end) {
             $start = $filters->dateRange->start;
             $end = $filters->dateRange->end;
 
-            $query->where('created_at', '>=', $start . ' 00:00:00');
-            $query->where('created_at', '<=', $end . ' 23:59:59');
+            $query->where('created_at', '>=', $start.' 00:00:00');
+            $query->where('created_at', '<=', $end.' 23:59:59');
         }
 
-//        if ($filters->verified !== null)
-//        {
-//            ($filters->verified === 0)
-//                ? $query->where('verified', 0)
-//                : $query->where('verified', '>', 0);
-//        }
+        //        if ($filters->verified !== null)
+        //        {
+        //            ($filters->verified === 0)
+        //                ? $query->where('verified', 0)
+        //                : $query->where('verified', '>', 0);
+        //        }
 
-        if (! is_null($selectAll) && $selectAll)
-        {
+        if (! is_null($selectAll) && $selectAll) {
             // Do not include these ids
             $query->whereNotIn('id', $ids);
         }

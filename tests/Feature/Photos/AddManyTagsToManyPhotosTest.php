@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 class AddManyTagsToManyPhotosTest extends TestCase
 {
-
     public function test_a_user_can_bulk_tag_photos()
     {
         /** @var User $user */
@@ -19,7 +18,7 @@ class AddManyTagsToManyPhotosTest extends TestCase
         $photos = Photo::factory(2)->create([
             'user_id' => $user->id,
             'verified' => 0,
-            'verification' => 0
+            'verification' => 0,
         ]);
         $this->assertSame(2, $user->fresh()->xp);
 
@@ -28,12 +27,12 @@ class AddManyTagsToManyPhotosTest extends TestCase
                 $photos[0]->id => [
                     'tags' => ['smoking' => ['butts' => 3]],
                     'custom_tags' => ['tag1', 'tag2', 'tag3'],
-                    'picked_up' => true
+                    'picked_up' => true,
                 ],
                 $photos[1]->id => [
                     'tags' => ['alcohol' => ['pint' => 1]],
                     'custom_tags' => ['tag4', 'tag5'],
-                    'picked_up' => false
+                    'picked_up' => false,
                 ],
             ],
         ]);

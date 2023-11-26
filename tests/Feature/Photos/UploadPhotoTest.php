@@ -8,6 +8,7 @@ use App\Events\Photo\IncrementPhotoMonth;
 use App\Models\Location\City;
 use App\Models\Location\Country;
 use App\Models\Location\State;
+use App\Models\Photo;
 use App\Models\Teams\Team;
 use App\Models\User\User;
 use Illuminate\Http\UploadedFile;
@@ -18,8 +19,6 @@ use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 use Tests\Feature\HasPhotoUploads;
 use Tests\TestCase;
-
-use App\Models\Photo;
 
 class UploadPhotoTest extends TestCase
 {
@@ -44,7 +43,7 @@ class UploadPhotoTest extends TestCase
         Event::fake([ImageUploaded::class, IncrementPhotoMonth::class]);
 
         $user = User::factory()->create([
-            'active_team' => Team::factory()
+            'active_team' => Team::factory(),
         ]);
 
         $this->actingAs($user);
@@ -112,7 +111,7 @@ class UploadPhotoTest extends TestCase
                     $e->countryId === $this->getCountryId() &&
                     $e->stateId === $this->getStateId() &&
                     $e->cityId === $this->getCityId() &&
-                    $e->isUserVerified === !$user->verification_required;
+                    $e->isUserVerified === ! $user->verification_required;
             }
         );
 
@@ -179,7 +178,7 @@ class UploadPhotoTest extends TestCase
         Carbon::setTestNow(now());
 
         $user = User::factory()->create([
-            'active_team' => Team::factory()
+            'active_team' => Team::factory(),
         ]);
 
         $this->actingAs($user);
@@ -215,18 +214,18 @@ class UploadPhotoTest extends TestCase
         $stateId = State::factory()->create(['state' => $imageAttributes['address']['state'], 'country_id' => $countryId])->id;
         $cityId = City::factory()->create(['city' => $imageAttributes['address']['city'], 'country_id' => $countryId, 'state_id' => $stateId])->id;
 
-        Redis::del("xp.users");
+        Redis::del('xp.users');
         Redis::del("xp.country.$countryId");
         Redis::del("xp.country.$countryId.state.$stateId");
         Redis::del("xp.country.$countryId.state.$stateId.city.$cityId");
-        $this->assertNull(Redis::zscore("xp.users", $user->id));
+        $this->assertNull(Redis::zscore('xp.users', $user->id));
         $this->assertNull(Redis::zscore("xp.country.$countryId", $user->id));
         $this->assertNull(Redis::zscore("xp.country.$countryId.state.$stateId", $user->id));
         $this->assertNull(Redis::zscore("xp.country.$countryId.state.$stateId.city.$cityId", $user->id));
 
         $this->actingAs($user)->post('/submit', ['file' => $imageAttributes['file']]);
 
-        $this->assertSame('1', Redis::zscore("xp.users", $user->id));
+        $this->assertSame('1', Redis::zscore('xp.users', $user->id));
         $this->assertSame('1', Redis::zscore("xp.country.$countryId", $user->id));
         $this->assertSame('1', Redis::zscore("xp.country.$countryId.state.$stateId", $user->id));
         $this->assertSame('1', Redis::zscore("xp.country.$countryId.state.$stateId.city.$cityId", $user->id));
@@ -254,7 +253,7 @@ class UploadPhotoTest extends TestCase
         $nonImage = UploadedFile::fake()->image('some.pdf');
 
         $this->postJson('/submit', [
-            'file' => $nonImage
+            'file' => $nonImage,
         ])
             ->assertStatus(422)
             ->assertJsonValidationErrors('file');
@@ -273,11 +272,11 @@ class UploadPhotoTest extends TestCase
 
         // PNG
         $imageAttributes = $this->getImageAndAttributes('png');
-        $this->post('/submit', ['file' => $imageAttributes['file'],])->assertOk();
+        $this->post('/submit', ['file' => $imageAttributes['file']])->assertOk();
 
         // JPEG
         $imageAttributes = $this->getImageAndAttributes('jpeg');
-        $this->post('/submit', ['file' => $imageAttributes['file'],])->assertOk();
+        $this->post('/submit', ['file' => $imageAttributes['file']])->assertOk();
     }
 
     public function test_it_throws_server_error_when_photo_has_no_location_data()
@@ -289,7 +288,7 @@ class UploadPhotoTest extends TestCase
         $image = UploadedFile::fake()->image('image.jpg');
 
         $response = $this->post('/submit', [
-            'file' => $image
+            'file' => $image,
         ]);
 
         $response->assertStatus(500);

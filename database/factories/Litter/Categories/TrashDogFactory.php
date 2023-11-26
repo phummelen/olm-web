@@ -22,7 +22,7 @@ class TrashDogFactory extends Factory
     public function definition()
     {
         return [
-            'trashdog' => $this->faker->randomDigit
+            'trashdog' => $this->faker->randomDigit,
         ];
     }
 }

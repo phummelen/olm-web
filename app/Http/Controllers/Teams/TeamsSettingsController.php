@@ -19,17 +19,15 @@ class TeamsSettingsController extends Controller
      *
      * @return array
      */
-    public function index (Request  $request)
+    public function index(Request $request)
     {
         $user = Auth::user();
 
-        if ($request->all)
-        {
-            foreach ($user->teams as $team)
-            {
+        if ($request->all) {
+            foreach ($user->teams as $team) {
                 DB::table('team_user')->where([
                     'team_id' => $team->id,
-                    'user_id' => $user->id
+                    'user_id' => $user->id,
                 ])->update([
                     'show_name_maps' => $request->settings['show_name_maps'],
                     'show_username_maps' => $request->settings['show_username_maps'],
@@ -37,13 +35,10 @@ class TeamsSettingsController extends Controller
                     'show_username_leaderboards' => $request->settings['show_username_leaderboards'],
                 ]);
             }
-        }
-
-        else
-        {
+        } else {
             DB::table('team_user')->where([
                 'team_id' => $request->team_id,
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ])->update([
                 'show_name_maps' => $request->settings['show_name_maps'],
                 'show_username_maps' => $request->settings['show_username_maps'],

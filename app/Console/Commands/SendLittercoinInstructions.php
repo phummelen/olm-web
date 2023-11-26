@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Support\Facades\Mail;
-use App\Models\User\User;
 use App\Mail\LittercoinInstructions;
+use App\Models\User\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class SendLittercoinInstructions extends Command
 {
@@ -42,7 +42,7 @@ class SendLittercoinInstructions extends Command
     {
         $users = User::where([
             ['littercoin_owed', '>', 1],
-            ['littercoin_instructions_received', null]
+            ['littercoin_instructions_received', null],
         ])->get();
         foreach ($users as $user) {
             Mail::to($user->email)->send(new LittercoinInstructions($user));

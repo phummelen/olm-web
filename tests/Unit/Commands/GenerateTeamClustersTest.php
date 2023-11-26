@@ -15,7 +15,7 @@ class GenerateTeamClustersTest extends TestCase
         Photo::factory(5)->create([
             'lat' => 0,
             'lon' => 0,
-            'team_id' => $team->id
+            'team_id' => $team->id,
         ]);
 
         $this->artisan('clusters:generate-team-clusters');

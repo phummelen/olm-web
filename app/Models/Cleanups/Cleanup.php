@@ -15,13 +15,13 @@ class Cleanup extends Model
 
     public $appends = [
         'timeDiff',
-        'startsAt'
+        'startsAt',
     ];
 
     /**
      * A Cleanup can have many Users
      */
-    public function users ()
+    public function users()
     {
         return $this->belongsToMany(User::class)->withTimestamps();
     }
@@ -29,7 +29,7 @@ class Cleanup extends Model
     /**
      * eg: 8 months from now
      */
-    public function getTimeDiffAttribute ()
+    public function getTimeDiffAttribute()
     {
         return Carbon::parse($this->date)->diffForHumans();
     }
@@ -37,7 +37,7 @@ class Cleanup extends Model
     /**
      * 20th April 2023
      */
-    public function getStartsAtAttribute ()
+    public function getStartsAtAttribute()
     {
         return Carbon::parse($this->date)->format('d F Y');
     }

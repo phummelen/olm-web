@@ -14,7 +14,7 @@ class LeaveTeamRequest extends FormRequest
     public function rules()
     {
         return [
-            'team_id' => 'required|exists:teams,id'
+            'team_id' => 'required|exists:teams,id',
         ];
     }
 }

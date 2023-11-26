@@ -29,7 +29,7 @@ class AddTransactionIdAndTimeSentToLittercoin extends Migration
         Schema::table('littercoins', function (Blueprint $table) {
             $table->dropColumn([
                 'transaction_id',
-                'timestamp'
+                'timestamp',
             ]);
         });
     }

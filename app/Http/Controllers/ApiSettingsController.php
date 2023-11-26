@@ -3,21 +3,22 @@
 namespace App\Http\Controllers;
 
 use Exception;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class ApiSettingsController extends Controller
 {
     /**
      * Toggle privacy of users name on the maps
      */
-    public function mapsName (Request $request)
+    public function mapsName(Request $request)
     {
-		$user = Auth::guard('api')->user();
-        $user->show_name_maps = !$user->show_name_maps;
+        $user = Auth::guard('api')->user();
+        $user->show_name_maps = ! $user->show_name_maps;
         $user->save();
-    	return ['show_name_maps' => $user->show_name_maps];
+
+        return ['show_name_maps' => $user->show_name_maps];
     }
 
     /**
@@ -25,10 +26,11 @@ class ApiSettingsController extends Controller
      */
     public function mapsUsername(Request $request)
     {
-		$user = Auth::guard('api')->user();
-    	$user->show_username_maps = ! $user->show_username_maps;
-    	$user->save();
-    	return ['show_username_maps' => $user->show_username_maps];
+        $user = Auth::guard('api')->user();
+        $user->show_username_maps = ! $user->show_username_maps;
+        $user->save();
+
+        return ['show_username_maps' => $user->show_username_maps];
     }
 
     /**
@@ -36,10 +38,11 @@ class ApiSettingsController extends Controller
      */
     public function leaderboardName(Request $request)
     {
-		$user = Auth::guard('api')->user();
-    	$user->show_name = ! $user->show_name;
-    	$user->save();
-    	return ['show_name' => $user->show_name];
+        $user = Auth::guard('api')->user();
+        $user->show_name = ! $user->show_name;
+        $user->save();
+
+        return ['show_name' => $user->show_name];
     }
 
     /**
@@ -47,10 +50,11 @@ class ApiSettingsController extends Controller
      */
     public function leaderboardUsername(Request $request)
     {
-		$user = Auth::guard('api')->user();
-    	$user->show_username = ! $user->show_username;
-    	$user->save();
-    	return ['show_username' => $user->show_username];
+        $user = Auth::guard('api')->user();
+        $user->show_username = ! $user->show_username;
+        $user->save();
+
+        return ['show_username' => $user->show_username];
     }
 
     /**
@@ -58,10 +62,11 @@ class ApiSettingsController extends Controller
      */
     public function createdByName(Request $request)
     {
-		$user = Auth::guard('api')->user();
-		$user->show_name_createdby = ! $user->show_name_createdby;
-		$user->save();
-    	return ['show_name_createdby' => $user->show_name_createdby];
+        $user = Auth::guard('api')->user();
+        $user->show_name_createdby = ! $user->show_name_createdby;
+        $user->save();
+
+        return ['show_name_createdby' => $user->show_name_createdby];
     }
 
     /**
@@ -69,10 +74,11 @@ class ApiSettingsController extends Controller
      */
     public function createdByUsername(Request $request)
     {
-		$user = Auth::guard('api')->user();
-    	$user->show_username_createdby = ! $user->show_username_createdby;
-    	$user->save();
-    	return ['show_username_createdby' => $user->show_username_createdby];
+        $user = Auth::guard('api')->user();
+        $user->show_username_createdby = ! $user->show_username_createdby;
+        $user->save();
+
+        return ['show_username_createdby' => $user->show_username_createdby];
     }
 
     /**
@@ -80,7 +86,7 @@ class ApiSettingsController extends Controller
      *
      * Todo - Needs validation
      */
-    public function update (Request $request)
+    public function update(Request $request)
     {
         $user = Auth::guard('api')->user();
 
@@ -89,33 +95,30 @@ class ApiSettingsController extends Controller
 
         if ($key == 'picked_up') {
             $key = 'items_remaining';
-            $value = !$value;
+            $value = ! $value;
         }
 
-        try
-        {
+        try {
             $user->$key = $value;
             $user->save();
-        }
-        catch (Exception $exception)
-        {
+        } catch (Exception $exception) {
             Log::info(['ApiSettingsController@update', $exception->getMessage()]);
 
             return [
                 'success' => false,
-                'msg' => $exception->getMessage()
+                'msg' => $exception->getMessage(),
             ];
         }
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 
     /**
      * The user will see the previous tags on the next image
      */
-    public function togglePreviousTags (Request $request)
+    public function togglePreviousTags(Request $request)
     {
         $user = Auth::guard('api')->user();
 

@@ -18,6 +18,6 @@ class UserSettings extends Model
         'show_username_leaderboard',
         'show_name_createdby',
         'show_username_createdby',
-        'email_sub'
+        'email_sub',
     ];
 }

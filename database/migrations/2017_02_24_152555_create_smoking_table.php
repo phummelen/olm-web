@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class CreateSmokingTable extends Migration
 {
@@ -13,7 +13,7 @@ class CreateSmokingTable extends Migration
      */
     public function up()
     {
-       Schema::create('smoking', function (Blueprint $table) {
+        Schema::create('smoking', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('butts')->unsigned()->nullable();
             $table->integer('lighters')->unsigned()->nullable();

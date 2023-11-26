@@ -11,7 +11,6 @@ use App\Models\Photo;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Route;
 
 class AdminResetTagsController extends Controller
 {
@@ -24,13 +23,12 @@ class AdminResetTagsController extends Controller
     /**
      * Apply IsAdmin middleware to all of these routes
      */
-    public function __construct (
+    public function __construct(
         DeleteTagsFromPhotoAction $deleteTagsAction,
         UpdateLeaderboardsForLocationAction $updateLeaderboardsAction,
         DeletePhotoAction $deletePhotoAction,
-        CalculateTagsDifferenceAction $calculateTagsDiffAction
-    )
-    {
+        CalculateTagsDifferenceAction $calculateTagsDiffAction,
+    ) {
         $this->middleware('admin');
 
         $this->deleteTagsAction = $deleteTagsAction;
@@ -43,14 +41,13 @@ class AdminResetTagsController extends Controller
      *
      *  - Reset user_verification_count to 0
      */
-    public function __invoke (Request $request)
+    public function __invoke(Request $request)
     {
         $photo = Photo::findOrFail($request->photoId);
 
         // This function should only be run when the image is not verified already
         // Only superadmins should be able to reset tags on a verified photo
-        if ($photo->verified < 2)
-        {
+        if ($photo->verified < 2) {
             $photo->verification = 0;
             $photo->verified = 0;
             $photo->total_litter = 0;
@@ -59,8 +56,7 @@ class AdminResetTagsController extends Controller
 
             $user = User::find($photo->user_id);
 
-            if ($photo->tags())
-            {
+            if ($photo->tags()) {
                 $tagUpdates = $this->calculateTagsDiffAction->run(
                     $photo->tags(),
                     [],
@@ -71,21 +67,21 @@ class AdminResetTagsController extends Controller
 
                 $user->xp = max(0, $user->xp - $tagUpdates['removedUserXp']);
 
-                $this->updateLeaderboardsAction->run($photo, $user->id, - $tagUpdates['removedUserXp']);
+                $this->updateLeaderboardsAction->run($photo, $user->id, -$tagUpdates['removedUserXp']);
 
                 logAdminAction($photo, 'reset-tags', $tagUpdates);
             }
 
-//            // Todo - Add test to show xp is decrementing
-//            if (Redis::hexists("user_verification_count", $user->id))
-//            {
-//                $verificationCount = Redis::hget("user_verification_count", $user->id);
-//
-//                if ($verificationCount > 0)
-//                {
-//                    Redis::hincrby("user_verification_count", $user->id, -1);
-//                }
-//            }
+            //            // Todo - Add test to show xp is decrementing
+            //            if (Redis::hexists("user_verification_count", $user->id))
+            //            {
+            //                $verificationCount = Redis::hget("user_verification_count", $user->id);
+            //
+            //                if ($verificationCount > 0)
+            //                {
+            //                    Redis::hincrby("user_verification_count", $user->id, -1);
+            //                }
+            //            }
 
             $user->save();
 
@@ -93,7 +89,7 @@ class AdminResetTagsController extends Controller
         }
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 }

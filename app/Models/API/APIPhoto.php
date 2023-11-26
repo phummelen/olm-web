@@ -3,9 +3,7 @@
 namespace App\Models\API;
 
 use App\Models\Photo;
-
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
 class APIPhoto extends Photo
 {
@@ -15,13 +13,13 @@ class APIPhoto extends Photo
 
     protected $appends = [
         'type',
-        'uploaded'
+        'uploaded',
     ];
 
     /**
      * Append type => web to an image when loaded from web
      */
-    public function getTypeAttribute () : string
+    public function getTypeAttribute(): string
     {
         return 'web';
     }
@@ -29,7 +27,7 @@ class APIPhoto extends Photo
     /**
      * Any images from the backend are already uploaded
      */
-    public function getUploadedAttribute (): bool
+    public function getUploadedAttribute(): bool
     {
         return true;
     }

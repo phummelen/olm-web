@@ -2,10 +2,8 @@
 
 namespace App\Listeners\AddTags;
 
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
-
 use App\Models\Photo;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CompileResultsString implements ShouldQueue
 {
@@ -24,7 +22,7 @@ class CompileResultsString implements ShouldQueue
      *
      * With this string, we can translate the tags into any language without querying the database.
      */
-    public function handle ($event)
+    public function handle($event)
     {
         Photo::find($event->photo_id)->translate();
     }

@@ -8,17 +8,18 @@ use App\Models\Location\State;
 use App\Models\Photo;
 use App\Models\User\User;
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class ImageUploaded implements ShouldBroadcast, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     // For Websockets
     public $city;
 
@@ -75,14 +76,13 @@ class ImageUploaded implements ShouldBroadcast, ShouldQueue
      *
      * @return void
      */
-    public function __construct (
+    public function __construct(
         User $user,
         Photo $photo,
         Country $country,
         State $state,
-        City $city
-    )
-    {
+        City $city,
+    ) {
         $this->user = [
             'name' => $user->show_name_maps ? $user->name : '',
             'username' => $user->show_username_maps ? $user->username : '',
@@ -110,7 +110,7 @@ class ImageUploaded implements ShouldBroadcast, ShouldQueue
      *
      * @return Channel|array
      */
-    public function broadcastOn ()
+    public function broadcastOn()
     {
         return new Channel('main');
     }

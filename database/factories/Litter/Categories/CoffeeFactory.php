@@ -22,7 +22,7 @@ class CoffeeFactory extends Factory
     public function definition()
     {
         return [
-            'coffeeCups' => $this->faker->randomDigit
+            'coffeeCups' => $this->faker->randomDigit,
         ];
     }
 }

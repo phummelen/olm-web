@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Support\Facades\Mail;
-use App\Models\User\User;
 use App\Mail\UnverifiedReminder;
+use App\Models\User\User;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class SendEmailToUnverified extends Command
 {
@@ -41,7 +41,7 @@ class SendEmailToUnverified extends Command
     public function handle()
     {
         $users = User::where('verified', 0)->get();
-        foreach($users as $user) {
+        foreach ($users as $user) {
             Mail::to($user->email)->send(new UnverifiedReminder($user));
         }
     }

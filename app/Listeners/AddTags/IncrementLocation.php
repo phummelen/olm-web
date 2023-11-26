@@ -14,7 +14,7 @@ class IncrementLocation implements ShouldQueue
      *
      * @return void
      */
-    public function handle (TagsVerifiedByAdmin $event)
+    public function handle(TagsVerifiedByAdmin $event)
     {
         $this->increaseTotalsForLitter($event);
 
@@ -26,20 +26,18 @@ class IncrementLocation implements ShouldQueue
     /**
      * Increases litter and total_litter for every location
      */
-    protected function increaseTotalsForLitter (TagsVerifiedByAdmin $event): void
+    protected function increaseTotalsForLitter(TagsVerifiedByAdmin $event): void
     {
-        if ($event->total_litter_all_categories > 0)
-        {
-            foreach ($event->total_litter_per_category as $category => $total)
-            {
+        if ($event->total_litter_all_categories > 0) {
+            foreach ($event->total_litter_per_category as $category => $total) {
                 Redis::hincrby("country:$event->country_id", $category, $total);
                 Redis::hincrby("state:$event->state_id", $category, $total);
                 Redis::hincrby("city:$event->city_id", $category, $total);
             }
 
-            Redis::hincrby("country:$event->country_id", "total_litter", $event->total_litter_all_categories);
-            Redis::hincrby("state:$event->state_id", "total_litter", $event->total_litter_all_categories);
-            Redis::hincrby("city:$event->city_id", "total_litter", $event->total_litter_all_categories);
+            Redis::hincrby("country:$event->country_id", 'total_litter', $event->total_litter_all_categories);
+            Redis::hincrby("state:$event->state_id", 'total_litter', $event->total_litter_all_categories);
+            Redis::hincrby("city:$event->city_id", 'total_litter', $event->total_litter_all_categories);
         }
     }
 
@@ -48,18 +46,16 @@ class IncrementLocation implements ShouldQueue
      */
     protected function increaseTotalsForBrands(TagsVerifiedByAdmin $event): void
     {
-        if ($event->total_brands > 0)
-        {
-            foreach ($event->total_litter_per_brand as $brand => $total)
-            {
+        if ($event->total_brands > 0) {
+            foreach ($event->total_litter_per_brand as $brand => $total) {
                 Redis::hincrby("country:$event->country_id", $brand, $total);
                 Redis::hincrby("state:$event->state_id", $brand, $total);
                 Redis::hincrby("city:$event->city_id", $brand, $total);
             }
 
-            Redis::hincrby("country:$event->country_id", "total_brands", $event->total_brands);
-            Redis::hincrby("state:$event->state_id", "total_brands", $event->total_brands);
-            Redis::hincrby("city:$event->city_id", "total_brands", $event->total_brands);
+            Redis::hincrby("country:$event->country_id", 'total_brands', $event->total_brands);
+            Redis::hincrby("state:$event->state_id", 'total_brands', $event->total_brands);
+            Redis::hincrby("city:$event->city_id", 'total_brands', $event->total_brands);
         }
     }
 
@@ -70,8 +66,7 @@ class IncrementLocation implements ShouldQueue
      */
     protected function increaseTotalPhotos(TagsVerifiedByAdmin $event): void
     {
-        if ($event->isUserVerified)
-        {
+        if ($event->isUserVerified) {
             return;
         }
 

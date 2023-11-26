@@ -26,6 +26,6 @@ class Annotation extends Model
         'area',
         'added_by',
         'verified_by',
-        'is_500' // boolean. Was the annotation created for full high-res image or 500x500 image
+        'is_500', // boolean. Was the annotation created for full high-res image or 500x500 image
     ];
 }

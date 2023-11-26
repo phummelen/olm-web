@@ -3,10 +3,10 @@
 namespace App\Exceptions;
 
 use Exception;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Http\Request;
 use Laravel\Passport\Exceptions\OAuthServerException;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -17,7 +17,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        OAuthServerException::class
+        OAuthServerException::class,
     ];
 
     /**
@@ -34,6 +34,7 @@ class Handler extends ExceptionHandler
      * Report or log an exception.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function report(Throwable $exception)
@@ -44,8 +45,9 @@ class Handler extends ExceptionHandler
     /**
      * Render an exception into an HTTP response.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Response
+     *
      * @throws \Throwable
      */
     public function render($request, Throwable $exception)

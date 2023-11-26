@@ -7,7 +7,6 @@ use Tests\TestCase;
 
 class GetClustersTest extends TestCase
 {
-
     public function test_it_lists_global_clusters()
     {
         $globalCluster = Cluster::factory()->create(['zoom' => 2]);

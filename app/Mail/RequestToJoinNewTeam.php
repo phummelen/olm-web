@@ -5,12 +5,12 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class RequestToJoinNewTeam extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $leader;
 
     public $member;
@@ -38,7 +38,7 @@ class RequestToJoinNewTeam extends Mailable
             ->view('emails.teams.join')
             ->with([
                 'leader' => $this->leader,
-                'member' => $this->member
+                'member' => $this->member,
             ]);
     }
 }

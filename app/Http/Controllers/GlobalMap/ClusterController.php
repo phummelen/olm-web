@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\GlobalMap;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cluster;
 use App\Traits\FilterClustersByGeohashTrait;
-
-use App\Http\Controllers\Controller;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
@@ -25,7 +24,7 @@ class ClusterController extends Controller
 
         return [
             'type' => 'FeatureCollection',
-            'features' => $features
+            'features' => $features,
         ];
     }
 

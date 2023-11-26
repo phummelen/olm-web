@@ -14,6 +14,7 @@ class CleanupCreated implements ShouldBroadcast, ShouldQueue
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     public $name;
 
     public $latitude;
@@ -25,7 +26,7 @@ class CleanupCreated implements ShouldBroadcast, ShouldQueue
      *
      * @return void
      */
-    public function __construct ($name, $latitude, $longitude)
+    public function __construct($name, $latitude, $longitude)
     {
         $this->name = $name;
         $this->latitude = $latitude;

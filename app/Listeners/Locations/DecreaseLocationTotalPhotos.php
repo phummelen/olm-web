@@ -21,7 +21,7 @@ class DecreaseLocationTotalPhotos implements ShouldQueue
      */
     public function handle(ImageDeleted $event)
     {
-        if (!$event->isUserVerified) {
+        if (! $event->isUserVerified) {
             return;
         }
 

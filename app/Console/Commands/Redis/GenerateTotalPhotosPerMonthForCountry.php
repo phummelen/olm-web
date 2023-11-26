@@ -46,20 +46,16 @@ class GenerateTotalPhotosPerMonthForCountry extends Command
         $this->processCities();
     }
 
-    /**
-     *
-     */
-    public function processCountries ()
+    public function processCountries()
     {
         $countries = Country::where('manual_verify', true)->get();
 
-        foreach ($countries as $country)
-        {
+        foreach ($countries as $country) {
             echo "Country: $country->country \n";
 
             $photo = Photo::where('country_id', $country->id)->orderBy('id')->first();
 
-            if (!$photo) {
+            if (! $photo) {
                 continue;
             }
 
@@ -71,13 +67,12 @@ class GenerateTotalPhotosPerMonthForCountry extends Command
 
             $total = 0;
 
-            while ($currentMonth->lte($end))
-            {
+            while ($currentMonth->lte($end)) {
                 // format month eg. 10-15
                 $formattedMonth = $currentMonth->format('m-y');
 
                 // Check if Redis has data for the month
-                $count = (int)Redis::hget("ppm:country:$country->id", $formattedMonth);
+                $count = (int) Redis::hget("ppm:country:$country->id", $formattedMonth);
 
                 // Add this to the total
                 $total += $count;
@@ -90,20 +85,16 @@ class GenerateTotalPhotosPerMonthForCountry extends Command
         }
     }
 
-    /**
-     *
-     */
-    public function processStates ()
+    public function processStates()
     {
         $states = State::all();
 
-        foreach ($states as $state)
-        {
+        foreach ($states as $state) {
             echo "State: $state->state \n";
 
             $photo = Photo::where('state_id', $state->id)->orderBy('id')->first();
 
-            if (!$photo) {
+            if (! $photo) {
                 continue;
             }
 
@@ -115,13 +106,12 @@ class GenerateTotalPhotosPerMonthForCountry extends Command
 
             $total = 0;
 
-            while ($currentMonth->lte($end))
-            {
+            while ($currentMonth->lte($end)) {
                 // format month eg. 10-15
                 $formattedMonth = $currentMonth->format('m-y');
 
                 // Check if Redis has data for the month
-                $count = (int)Redis::hget("ppm:state:$state->id", $formattedMonth);
+                $count = (int) Redis::hget("ppm:state:$state->id", $formattedMonth);
 
                 // Add this to the total
                 $total += $count;
@@ -134,20 +124,16 @@ class GenerateTotalPhotosPerMonthForCountry extends Command
         }
     }
 
-    /**
-     *
-     */
-    public function processCities ()
+    public function processCities()
     {
         $cities = City::all();
 
-        foreach ($cities as $city)
-        {
+        foreach ($cities as $city) {
             echo "City: $city->city \n";
 
             $photo = Photo::where('city_id', $city->id)->orderBy('id')->first();
 
-            if (!$photo) {
+            if (! $photo) {
                 continue;
             }
 
@@ -159,13 +145,12 @@ class GenerateTotalPhotosPerMonthForCountry extends Command
 
             $total = 0;
 
-            while ($currentMonth->lte($end))
-            {
+            while ($currentMonth->lte($end)) {
                 // format month eg. 10-15
                 $formattedMonth = $currentMonth->format('m-y');
 
                 // Check if Redis has data for the month
-                $count = (int)Redis::hget("ppm:city:$city->id", $formattedMonth);
+                $count = (int) Redis::hget("ppm:city:$city->id", $formattedMonth);
 
                 // Add this to the total
                 $total += $count;

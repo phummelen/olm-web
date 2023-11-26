@@ -7,5 +7,5 @@ use Exception;
 class InvalidCoordinates extends Exception
 {
     // lat = 0, lon = 0
-    protected $message = "invalid-coordinates";
+    protected $message = 'invalid-coordinates';
 }

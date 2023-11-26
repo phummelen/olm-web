@@ -11,22 +11,22 @@ class FindPhotoByIdController extends Controller
     /**
      * Admin can load any photo by its ID
      */
-    public function __invoke (Request $request)
+    public function __invoke(Request $request)
     {
         $photo = Photo::with([
             'customTags',
             'user' => function ($q) {
                 $q->select('id', 'username');
-            }
+            },
         ])
-        ->where('id', $request['photoId'])
-        ->first();
+            ->where('id', $request['photoId'])
+            ->first();
 
         $photo->tags();
 
         return [
             'success' => true,
-            'photo' => $photo
+            'photo' => $photo,
         ];
     }
 }

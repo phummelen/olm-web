@@ -22,7 +22,7 @@ class SmokingFactory extends Factory
     public function definition()
     {
         return [
-            'butts' => $this->faker->randomDigit
+            'butts' => $this->faker->randomDigit,
         ];
     }
 }

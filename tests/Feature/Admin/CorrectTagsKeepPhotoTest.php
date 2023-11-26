@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin;
 
-
 use App\Actions\LogAdminVerificationAction;
 use App\Events\TagsVerifiedByAdmin;
 use App\Models\Litter\Categories\Smoking;
@@ -60,9 +59,9 @@ class CorrectTagsKeepPhotoTest extends TestCase
             'picked_up' => false,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
-                ]
-            ]
+                    'butts' => 3,
+                ],
+            ],
         ]);
 
         $this->photo->refresh();
@@ -143,7 +142,6 @@ class CorrectTagsKeepPhotoTest extends TestCase
         );
     }
 
-
     public function test_it_logs_the_admin_action()
     {
         $spy = $this->spy(LogAdminVerificationAction::class);
@@ -152,6 +150,6 @@ class CorrectTagsKeepPhotoTest extends TestCase
             ->post('/admin/verify-tags-as-correct', ['photoId' => $this->photo->id]);
 
         // this is not working for sean: 23rd July 2022
-         $spy->shouldHaveReceived('run');
+        $spy->shouldHaveReceived('run');
     }
 }

@@ -12,7 +12,7 @@ class CreateCleanupController extends Controller
     /**
      * Create a new cleanup event
      */
-    public function __invoke (Request $request)
+    public function __invoke(Request $request)
     {
         $request->validate([
             'name' => 'required|min:5',
@@ -21,7 +21,7 @@ class CreateCleanupController extends Controller
             'lon' => 'required',
             'time' => 'required|min:3',
             'description' => 'required|min:5',
-            'invite_link' => 'required|unique:cleanups|min:1'
+            'invite_link' => 'required|unique:cleanups|min:1',
         ]);
 
         $user = auth()->user();
@@ -33,11 +33,11 @@ class CreateCleanupController extends Controller
             'lat' => $request->lat,
             'lon' => $request->lon,
             'description' => $request->description,
-            'invite_link' => $request->invite_link
+            'invite_link' => $request->invite_link,
         ]);
 
         // Event: A new cleanup has been created
-        event (new CleanupCreated(
+        event(new CleanupCreated(
             $cleanup->name,
             $cleanup->lat,
             $cleanup->lon
@@ -48,7 +48,7 @@ class CreateCleanupController extends Controller
 
         return [
             'success' => true,
-            'cleanup' => $cleanup
+            'cleanup' => $cleanup,
         ];
     }
 }

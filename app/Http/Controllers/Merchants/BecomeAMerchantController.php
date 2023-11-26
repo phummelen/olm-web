@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Merchants;
 
-use Exception;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Merchant;
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Pressutto\LaravelSlack\Facades\Slack;
 
 class BecomeAMerchantController extends Controller
 {
-    public function __invoke (Request $request)
+    public function __invoke(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
@@ -22,8 +22,7 @@ class BecomeAMerchantController extends Controller
             'message' => 'nullable|string',
         ]);
 
-        try
-        {
+        try {
             $merchant = Merchant::create([
                 'name' => $request->name,
                 'address' => $request->address,
@@ -34,14 +33,12 @@ class BecomeAMerchantController extends Controller
             ]);
 
             Slack::send("Someone has applied to become a Littercoin merchant! Name: $merchant->name address: $merchant->address");
-        }
-        catch (Exception $exception)
-        {
+        } catch (Exception $exception) {
             Log::info(['BecomeAMerchantController', $exception->getMessage()]);
 
             return [
                 'success' => false,
-                'msg' => 'problem'
+                'msg' => 'problem',
             ];
         }
 

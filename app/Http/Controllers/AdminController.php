@@ -2,23 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Actions\Photos\DeletePhotoAction;
 use App\Actions\CalculateTagsDifferenceAction;
-use App\Actions\Photos\DeleteTagsFromPhotoAction;
 use App\Actions\Locations\UpdateLeaderboardsForLocationAction;
-
+use App\Actions\Photos\DeletePhotoAction;
+use App\Actions\Photos\DeleteTagsFromPhotoAction;
 use App\Events\ImageDeleted;
+use App\Events\TagsVerifiedByAdmin;
 use App\Models\Photo;
 use App\Models\User\User;
-
 use App\Traits\AddTagsTrait;
-
 use Carbon\Carbon;
-
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-
-use App\Events\TagsVerifiedByAdmin;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -42,13 +36,12 @@ class AdminController extends Controller
     /**
      * Apply IsAdmin middleware to all of these routes
      */
-    public function __construct (
+    public function __construct(
         DeleteTagsFromPhotoAction $deleteTagsAction,
         UpdateLeaderboardsForLocationAction $updateLeaderboardsAction,
         DeletePhotoAction $deletePhotoAction,
-        CalculateTagsDifferenceAction $calculateTagsDiffAction
-    )
-    {
+        CalculateTagsDifferenceAction $calculateTagsDiffAction,
+    ) {
         $this->middleware('admin');
 
         $this->deleteTagsAction = $deleteTagsAction;
@@ -60,7 +53,7 @@ class AdminController extends Controller
     /**
      * Get the total number of users who have signed up
      */
-    public function getUserCount ()
+    public function getUserCount()
     {
         $users = User::where('verified', 1)
             ->orWhere('name', 'default')
@@ -69,14 +62,13 @@ class AdminController extends Controller
 
         $totalUsers = $users->count();
 
-        $users = $users->groupBy(function($val) {
+        $users = $users->groupBy(function ($val) {
             return Carbon::parse($val->created_at)->format('m-y');
         });
 
         $upm = [];
         $months = ['', 'Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-        foreach($users as $index => $monthlyUser)
-        {
+        foreach ($users as $index => $monthlyUser) {
             $month = $months[(int) substr((string) $index, 0, 2)];
             $year = substr((string) $index, 2, 5);
             $upm[$month.$year] = $monthlyUser->count(); // Mar-17
@@ -86,14 +78,13 @@ class AdminController extends Controller
 
         $usersUploaded = User::where('has_uploaded', 1)->get();
 
-        $usersUploaded = $usersUploaded->groupBy(function($val) {
+        $usersUploaded = $usersUploaded->groupBy(function ($val) {
             return Carbon::parse($val->created_at)->format('m-y');
-        });;
+        });
 
         $uupm = [];
-        foreach($usersUploaded as $index => $userUploaded)
-        {
-            $month = $months[(int)$substr = substr((string) $index, 0, 2)];
+        foreach ($usersUploaded as $index => $userUploaded) {
+            $month = $months[(int) $substr = substr((string) $index, 0, 2)];
             $year = substr((string) $index, 2, 5);
             $uupm[$month.$year] = $userUploaded->count(); // Mar-17
         }
@@ -106,7 +97,7 @@ class AdminController extends Controller
     /**
      * Verify an image, delete the image
      */
-    public function verify (Request $request)
+    public function verify(Request $request)
     {
         /** @var Photo $photo */
         $photo = Photo::findOrFail($request->photoId);
@@ -122,13 +113,13 @@ class AdminController extends Controller
 
         logAdminAction($photo, Route::getCurrentRoute()->getActionMethod());
 
-        event (new TagsVerifiedByAdmin($photo->id));
+        event(new TagsVerifiedByAdmin($photo->id));
     }
 
     /**
      * Delete an image and its records
      */
-    public function destroy (Request $request)
+    public function destroy(Request $request)
     {
         /** @var Photo $photo */
         $photo = Photo::findOrFail($request->photoId);
@@ -173,7 +164,7 @@ class AdminController extends Controller
     /**
      * Update the contents of an Image, Delete the image
      */
-    public function updateDelete (Request $request)
+    public function updateDelete(Request $request)
     {
         /** @var Photo $photo */
         $photo = Photo::find($request->photoId);

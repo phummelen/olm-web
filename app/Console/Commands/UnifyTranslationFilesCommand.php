@@ -10,8 +10,8 @@ class UnifyTranslationFilesCommand extends Command
 {
     protected $signature = 'olm:unify-translation-files {path}';
 
-    protected $description = 'Copies translation keys from the En version and adds them to the other languages when missing.' .
-    'Use like this `art olm:unify-translation-files settings/account.json`' .
+    protected $description = 'Copies translation keys from the En version and adds them to the other languages when missing.'.
+    'Use like this `art olm:unify-translation-files settings/account.json`'.
     'You can unify all the language files by using `art olm:unify-translation-files all`';
 
     public function handle(): int
@@ -37,7 +37,7 @@ class UnifyTranslationFilesCommand extends Command
         $langs = ['de', 'es', 'fr', 'hu', 'nl', 'pl', 'pt', 'sw'];
 
         foreach ($langs as $lang) {
-            if (!File::exists(resource_path("js/langs/$lang/$path"))) {
+            if (! File::exists(resource_path("js/langs/$lang/$path"))) {
                 File::put(resource_path("js/langs/$lang/$path"), '{}');
             }
 
@@ -46,11 +46,11 @@ class UnifyTranslationFilesCommand extends Command
             foreach ($sourceJson as $key => $values) {
                 if (is_array($values)) {
                     foreach ($values as $tag => $translation) {
-                        if (!isset($translatedJson[$key][$tag])) {
+                        if (! isset($translatedJson[$key][$tag])) {
                             $translatedJson[$key][$tag] = $translation;
                         }
                     }
-                } elseif (!isset($translatedJson[$key])) {
+                } elseif (! isset($translatedJson[$key])) {
                     $translatedJson[$key] = $values;
                 }
             }
@@ -74,7 +74,6 @@ class UnifyTranslationFilesCommand extends Command
         $trimmedOutput = preg_replace('/\s+/', '', $output);
         $trimmedExisting = preg_replace('/\s+/', '', $file);
 
-
         if ($trimmedOutput === $trimmedExisting) {
             return;
         }
@@ -87,7 +86,7 @@ class UnifyTranslationFilesCommand extends Command
      */
     private function getAllTranslationFiles(): array
     {
-        return collect(File::allFiles(resource_path("js/langs/en")))
+        return collect(File::allFiles(resource_path('js/langs/en')))
             ->filter(function (SplFileInfo $file) {
                 return $file->getExtension() === 'json';
             })

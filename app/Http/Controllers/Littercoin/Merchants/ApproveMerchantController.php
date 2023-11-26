@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Littercoin\Merchants;
 
-use App\Models\Merchant;
 use App\Http\Controllers\Controller;
+use App\Models\Merchant;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,25 +12,23 @@ class ApproveMerchantController extends Controller
     /**
      * Admin can approve a merchant
      */
-    public function __invoke (Request $request)
+    public function __invoke(Request $request)
     {
         $user = Auth::user();
 
-        if (!$user->hasPermissionTo('approve merchants'))
-        {
+        if (! $user->hasPermissionTo('approve merchants')) {
             return [
                 'success' => false,
-                'msg' => 'unauthorized'
+                'msg' => 'unauthorized',
             ];
         }
 
         $merchant = Merchant::find($request->merchantId);
 
-        if (!$merchant)
-        {
+        if (! $merchant) {
             return [
                 'success' => false,
-                'msg' => 'does not exist'
+                'msg' => 'does not exist',
             ];
         }
 
@@ -39,7 +37,7 @@ class ApproveMerchantController extends Controller
         $merchant->save();
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 }

@@ -2,10 +2,8 @@
 
 namespace App\Listeners\AddLocation;
 
-use App\Models\Location\Country;
 use App\Events\NewCountryAdded;
-use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
+use App\Models\Location\Country;
 
 class UpdateCountriesTable
 {
@@ -14,15 +12,14 @@ class UpdateCountriesTable
      *
      * @return void
      */
-    public function handle (NewCountryAdded $event)
+    public function handle(NewCountryAdded $event)
     {
         $country = Country::firstOrCreate([
             'country' => $event->country,
-            'shortcode' => $event->countryCode
+            'shortcode' => $event->countryCode,
         ]);
 
-        if ($country && is_null($country->created_by))
-        {
+        if ($country && is_null($country->created_by)) {
             $country->created_by = $event->userId;
             $country->save();
         }

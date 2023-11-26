@@ -2,13 +2,12 @@
 
 namespace App\Jobs;
 
+use App\Mail\ExportWithLink;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-
-use App\Mail\ExportWithLink;
 use Illuminate\Support\Facades\Mail;
 
 class EmailUserExportCompleted implements ShouldQueue
@@ -17,6 +16,7 @@ class EmailUserExportCompleted implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     public $email;
 
     public $path;
@@ -26,7 +26,7 @@ class EmailUserExportCompleted implements ShouldQueue
      *
      * @return void
      */
-    public function __construct ($email, $path)
+    public function __construct($email, $path)
     {
         $this->email = $email;
         $this->path = $path;

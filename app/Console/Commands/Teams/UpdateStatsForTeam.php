@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands\Teams;
 
-use Illuminate\Support\Facades\DB;
 use App\Models\Photo;
 use App\Models\Teams\Team;
-
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 
 class UpdateStatsForTeam extends Command
 {
@@ -43,9 +42,8 @@ class UpdateStatsForTeam extends Command
     {
         $team = Team::find($this->argument('team_id'));
 
-        foreach ($team->users as $user)
-        {
-            $query =  Photo::where(['user_id' => $user->id, 'team_id' => $team->id]);
+        foreach ($team->users as $user) {
+            $query = Photo::where(['user_id' => $user->id, 'team_id' => $team->id]);
             $total_photos = $query->count();
             $total_litter = $query->sum('total_litter');
 

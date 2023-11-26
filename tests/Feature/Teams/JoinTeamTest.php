@@ -65,7 +65,7 @@ class JoinTeamTest extends TestCase
         ]);
 
         $response->assertOk()->assertJson([
-            'success' => false, 'msg' => 'already-joined'
+            'success' => false, 'msg' => 'already-joined',
         ]);
         $this->assertSame(1, $team->fresh()->members);
     }
@@ -154,12 +154,12 @@ class JoinTeamTest extends TestCase
             'picked_up' => false,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
+                    'butts' => 3,
                 ],
                 'brands' => [
-                    'aldi' => 2
-                ]
-            ]
+                    'aldi' => 2,
+                ],
+            ],
         ]);
 
         $teamContributions = $user->teams()->first();

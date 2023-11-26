@@ -10,6 +10,7 @@ class ContactMail extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     /**
      * @var string
      */

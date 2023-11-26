@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Admin;
 
-
 use App\Models\Location\Country;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Storage;
@@ -49,14 +48,14 @@ class GetPhotoTest extends TestCase
         // User uploads a photo in Canada
         $canada = Country::factory(['shortcode' => 'ca', 'country' => 'Canada'])->create();
         $canadaAttributes = $this->getImageAndAttributes('jpg', [
-            'country_code' => 'ca', 'country' => 'Canada'
+            'country_code' => 'ca', 'country' => 'Canada',
         ])['file'];
         $this->geocodingAction->withAddress(['country_code' => 'ca', 'country' => 'Canada']);
         $this->actingAs($this->user)->post('/submit', ['file' => $canadaAttributes]);
 
         // Admin gets the next photo by country -------------------
         $response = $this->actingAs($this->admin)
-            ->getJson('/admin/get-next-image-to-verify?country_id=' . $canada->id)
+            ->getJson('/admin/get-next-image-to-verify?country_id='.$canada->id)
             ->assertOk();
 
         // And it's the correct photo
@@ -69,11 +68,10 @@ class GetPhotoTest extends TestCase
 
         // Admin gets the next photo by country -------------------
         $this->actingAs($this->admin)
-            ->getJson('/admin/get-next-image-to-verify?country_id=' . 50000)
+            ->getJson('/admin/get-next-image-to-verify?country_id='. 50000)
             ->assertStatus(422)
             ->assertJsonValidationErrors('country_id');
     }
-
 
     public function test_an_admin_should_not_see_photos_of_users_that_dont_want_their_photos_tagged_by_others()
     {

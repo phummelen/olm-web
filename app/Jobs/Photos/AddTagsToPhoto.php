@@ -2,9 +2,9 @@
 
 namespace App\Jobs\Photos;
 
+use App\Actions\Locations\UpdateLeaderboardsForLocationAction;
 use App\Actions\Photos\AddCustomTagsToPhotoAction;
 use App\Actions\Photos\AddTagsToPhotoAction;
-use App\Actions\Locations\UpdateLeaderboardsForLocationAction;
 use App\Events\TagsVerifiedByAdmin;
 use App\Models\Photo;
 use App\Models\User\User;
@@ -20,6 +20,7 @@ class AddTagsToPhoto implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     public $photoId;
 
     /**
@@ -42,7 +43,7 @@ class AddTagsToPhoto implements ShouldQueue
      *
      * @return void
      */
-    public function __construct (int $photoId, bool $pickedUp, array $tags = [], array $customTags = [])
+    public function __construct(int $photoId, bool $pickedUp, array $tags = [], array $customTags = [])
     {
         $this->photoId = $photoId;
         $this->tags = $tags;
@@ -81,17 +82,14 @@ class AddTagsToPhoto implements ShouldQueue
         $updateLeaderboardsAction = app(UpdateLeaderboardsForLocationAction::class);
         $updateLeaderboardsAction->run($photo, $user->id, $litterTotals['all'] + $customTagsTotals);
 
-        $photo->remaining = !$this->pickedUp;
+        $photo->remaining = ! $this->pickedUp;
         $photo->total_litter = $litterTotals['litter'];
 
-        if (!$user->is_trusted)
-        {
+        if (! $user->is_trusted) {
             /* Bring the photo to an initial state of verification */
             /* 0 for testing, 0.1 for production */
             $photo->verification = 0.1;
-        }
-        else // the user is trusted. Dispatch event to update OLM.
-        {
+        } else { // the user is trusted. Dispatch event to update OLM.
             $photo->verification = 1;
             $photo->verified = 2;
             event(new TagsVerifiedByAdmin($photo->id));

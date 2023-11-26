@@ -32,7 +32,7 @@ class CreateTeamTest extends TestCase
         $response = $this->postJson('/api/teams/create', [
             'name' => 'team name',
             'identifier' => 'test-id',
-            'team_type' => $this->teamTypeId
+            'team_type' => $this->teamTypeId,
         ]);
 
         $response->assertOk();
@@ -53,12 +53,12 @@ class CreateTeamTest extends TestCase
         $this->postJson('/api/teams/create', [
             'name' => 'team name',
             'identifier' => 'test-id',
-            'team_type' => $this->teamTypeId
+            'team_type' => $this->teamTypeId,
         ]);
         $response = $this->postJson('/api/teams/create', [
             'name' => 'team name 2',
             'identifier' => 'test-id-2',
-            'team_type' => $this->teamTypeId
+            'team_type' => $this->teamTypeId,
         ]);
 
         $response->assertJsonFragment(['success' => false, 'message' => 'max-teams-created']);
@@ -73,7 +73,7 @@ class CreateTeamTest extends TestCase
         $this->postJson('/api/teams/create', [
             'name' => 'team name',
             'identifier' => 'test-id',
-            'team_type' => $this->teamTypeId
+            'team_type' => $this->teamTypeId,
         ]);
 
         Event::assertDispatched(
@@ -91,7 +91,7 @@ class CreateTeamTest extends TestCase
         $this->postJson('/api/teams/create', [
             'name' => 'team name',
             'identifier' => 'test-id',
-            'team_type' => $this->teamTypeId
+            'team_type' => $this->teamTypeId,
         ]);
 
         $team = Team::whereIdentifier('test-id')->first();

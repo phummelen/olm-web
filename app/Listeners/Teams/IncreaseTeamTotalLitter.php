@@ -23,7 +23,7 @@ class IncreaseTeamTotalLitter implements ShouldQueue
     {
         $photo = Photo::find($event->photo_id);
 
-        if (!$photo->team) {
+        if (! $photo->team) {
             return;
         }
 
@@ -34,11 +34,11 @@ class IncreaseTeamTotalLitter implements ShouldQueue
         DB::table('team_user')
             ->where([
                 'team_id' => $photo->team_id,
-                'user_id' => $photo->user_id
+                'user_id' => $photo->user_id,
             ])
             ->update([
-                'total_litter' => DB::raw('ifnull(total_litter, 0) + ' . $event->total_litter_all_categories),
-                'updated_at' => now()
+                'total_litter' => DB::raw('ifnull(total_litter, 0) + '.$event->total_litter_all_categories),
+                'updated_at' => now(),
             ]);
     }
 }

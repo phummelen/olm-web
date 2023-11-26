@@ -22,7 +22,7 @@ class DumpingFactory extends Factory
     public function definition()
     {
         return [
-            'small' => $this->faker->randomDigit
+            'small' => $this->faker->randomDigit,
         ];
     }
 }

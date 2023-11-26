@@ -3,18 +3,17 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Broadcasting\PrivateChannel;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class PhotoVerifiedByAdmin
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     public $photoId;
 
     /**
@@ -22,7 +21,7 @@ class PhotoVerifiedByAdmin
      *
      * @return void
      */
-    public function __construct ($photoId)
+    public function __construct($photoId)
     {
         $this->photoId = $photoId;
     }

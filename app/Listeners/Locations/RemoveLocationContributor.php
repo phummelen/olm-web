@@ -19,7 +19,7 @@ class RemoveLocationContributor implements ShouldQueue
     /**
      * Remove user_id from a redis set for each location
      */
-    public function handle (ImageDeleted $event)
+    public function handle(ImageDeleted $event)
     {
         // If the user has at least one photo
         // they are still considered a contributor

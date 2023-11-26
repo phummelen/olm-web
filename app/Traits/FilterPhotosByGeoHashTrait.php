@@ -2,9 +2,8 @@
 
 namespace App\Traits;
 
-use GeoHash;
 use App\Models\Photo;
-use App\Models\User\User;
+use GeoHash;
 use Illuminate\Database\Eloquent\Builder;
 
 trait FilterPhotosByGeoHashTrait
@@ -16,11 +15,11 @@ trait FilterPhotosByGeoHashTrait
      *
      * For a specific zoom level, we want to return the bounding box of the clusters + neighbours
      *
-     * @param string $bbox array -> [west|left, south|bottom, east|right, north|top]
+     * @param  string  $bbox array -> [west|left, south|bottom, east|right, north|top]
      * @param null layers
      * @return Builder $query
      */
-    public function filterPhotosByGeoHash (Builder $query, string $bbox, $layers = null): Builder
+    public function filterPhotosByGeoHash(Builder $query, string $bbox, $layers = null): Builder
     {
         $bbox = json_decode($bbox);
 
@@ -38,22 +37,18 @@ trait FilterPhotosByGeoHashTrait
         $geos = array_values($this->neighbors($center_geohash));
 
         // Build cluster query
-        $query->where(function ($q) use ($geos)
-        {
+        $query->where(function ($q) use ($geos) {
             foreach ($geos as $geo) {
-                $q->orWhere('geohash', 'like', $geo . '%');  // starts with
+                $q->orWhere('geohash', 'like', $geo.'%');  // starts with
             }
         });
 
-        if ($layers)
-        {
-            $query->where(function ($q) use ($layers)
-            {
-                foreach ($layers as $index => $layer)
-                {
+        if ($layers) {
+            $query->where(function ($q) use ($layers) {
+                foreach ($layers as $index => $layer) {
                     ($index === 0)
-                        ? $q->where($layer . "_id", '!=', null)
-                        : $q->orWhere($layer . "_id", '!=', null);
+                        ? $q->where($layer.'_id', '!=', null)
+                        : $q->orWhere($layer.'_id', '!=', null);
                 }
 
                 return $q;
@@ -65,13 +60,10 @@ trait FilterPhotosByGeoHashTrait
 
     /**
      * Convert our photos object into a geojson array
-     *
-     * @param $photos
      */
-    protected function photosToGeojson ($photos): array
+    protected function photosToGeojson($photos): array
     {
-        $features = $photos->map(function (Photo $photo)
-        {
+        $features = $photos->map(function (Photo $photo) {
             $name = $photo->user->show_name_maps ? $photo->user->name : null;
             $username = $photo->user->show_username_maps ? $photo->user->username : null;
             $team = $photo->team ? $photo->team->name : null;
@@ -85,7 +77,7 @@ trait FilterPhotosByGeoHashTrait
                 'type' => 'Feature',
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => [$photo->lat, $photo->lon]
+                    'coordinates' => [$photo->lat, $photo->lon],
                 ],
                 'properties' => [
                     'photo_id' => $photo->id,
@@ -100,23 +92,24 @@ trait FilterPhotosByGeoHashTrait
                     'picked_up' => $photo->picked_up,
                     'social' => $photo->user->social_links,
                     'custom_tags' => $photo->customTags->pluck('tag'),
-                    'admin' => $admin
-                ]
+                    'admin' => $admin,
+                ],
             ];
         })->toArray();
 
         return [
             'type' => 'FeatureCollection',
-            'features' => $features
+            'features' => $features,
         ];
     }
 
-    protected function getDataForAdmin ($adminVerificationLog) {
+    protected function getDataForAdmin($adminVerificationLog)
+    {
         return [
             'name' => $adminVerificationLog->admin->show_name ? $adminVerificationLog->admin->name : null,
             'username' => $adminVerificationLog->admin->show_username ? $adminVerificationLog->admin->username : null,
             'created_at' => $adminVerificationLog->created_at,
-            'removedTags' => $adminVerificationLog->removed_tags
+            'removedTags' => $adminVerificationLog->removed_tags,
         ];
     }
 }

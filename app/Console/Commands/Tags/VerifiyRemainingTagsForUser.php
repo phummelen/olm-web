@@ -2,9 +2,8 @@
 
 namespace App\Console\Commands\Tags;
 
-use App\Models\Photo;
 use App\Events\TagsVerifiedByAdmin;
-
+use App\Models\Photo;
 use Illuminate\Console\Command;
 
 class VerifiyRemainingTagsForUser extends Command
@@ -42,11 +41,10 @@ class VerifiyRemainingTagsForUser extends Command
     {
         $photos = Photo::where([
             'user_id' => $this->argument('user_id'),
-            'verification' => 0.1
+            'verification' => 0.1,
         ])->get();
 
-        foreach ($photos as $photo)
-        {
+        foreach ($photos as $photo) {
             $photo->verification = 1;
             $photo->verified = 2;
             $photo->save();

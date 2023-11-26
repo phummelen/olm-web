@@ -15,6 +15,6 @@ class Cluster extends Model
         'point_count',
         'point_count_abbreviated',
         'geohash',
-        'zoom'
+        'zoom',
     ];
 }

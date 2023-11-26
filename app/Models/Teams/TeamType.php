@@ -10,6 +10,6 @@ class TeamType extends Model
     use HasFactory;
 
     protected $casts = [
-    	'price' => 'integer'
+        'price' => 'integer',
     ];
 }

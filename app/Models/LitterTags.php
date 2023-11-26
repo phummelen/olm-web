@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-final class LitterTags {
+final class LitterTags
+{
     private $json = '
 {
     "smoking": {
@@ -93,7 +94,7 @@ final class LitterTags {
 
     private $jsonDecoded;
 
-    public static function INSTANCE ()
+    public static function INSTANCE()
     {
         static $inst = null;
         if ($inst === null) {
@@ -103,12 +104,12 @@ final class LitterTags {
         return $inst;
     }
 
-    public function __construct ()
+    public function __construct()
     {
         $this->jsonDecoded = json_decode((string) $this->json);
     }
 
-    public function getDecodedJSON ()
+    public function getDecodedJSON()
     {
         return $this->jsonDecoded;
     }

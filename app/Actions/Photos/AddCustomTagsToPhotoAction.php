@@ -9,7 +9,7 @@ class AddCustomTagsToPhotoAction
     /**
      * Adds custom tags to the photo.
      */
-    public function run (Photo $photo, array $tags): int
+    public function run(Photo $photo, array $tags): int
     {
         if ($tags === []) {
             return 0;

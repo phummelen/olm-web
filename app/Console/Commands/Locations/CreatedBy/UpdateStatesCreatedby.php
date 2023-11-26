@@ -41,14 +41,12 @@ class UpdateStatesCreatedby extends Command
     {
         $states = State::whereNull('created_by')->get();
 
-        foreach ($states as $state)
-        {
+        foreach ($states as $state) {
             echo "state $state->id $state->state \n";
 
             $photo = Photo::where('state_id', $state->id)->orderBy('id')->first();
 
-            if ($photo)
-            {
+            if ($photo) {
                 $state->created_by = $photo->user_id;
                 $state->save();
 

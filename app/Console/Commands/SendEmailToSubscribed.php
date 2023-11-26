@@ -2,10 +2,9 @@
 
 namespace App\Console\Commands;
 
-use App\Subscriber;
-use App\Models\User\User;
 use App\Jobs\Emails\DispatchEmail;
-
+use App\Models\User\User;
+use App\Subscriber;
 use Illuminate\Console\Command;
 
 class SendEmailToSubscribed extends Command
@@ -41,13 +40,12 @@ class SendEmailToSubscribed extends Command
      */
     public function handle()
     {
-         $users = User::where('emailsub', 1)->orderBy('id', 'asc')->get();
-//        $users = Subscriber::all();
+        $users = User::where('emailsub', 1)->orderBy('id', 'asc')->get();
+        //        $users = Subscriber::all();
 
-        foreach ($users as $user)
-        {
-            echo "user.id " . $user->id . " \n \n";
-            dispatch (new DispatchEmail($user));
+        foreach ($users as $user) {
+            echo 'user.id '.$user->id." \n \n";
+            dispatch(new DispatchEmail($user));
         }
     }
 }
