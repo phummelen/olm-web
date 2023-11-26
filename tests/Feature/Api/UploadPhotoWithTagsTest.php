@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Api;
 
-use Iterator;
 use App\Events\ImageUploaded;
 use App\Events\Photo\IncrementPhotoMonth;
 use App\Models\Litter\Categories\Smoking;
@@ -12,6 +11,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Storage;
+use Iterator;
 use Tests\Feature\HasPhotoUploads;
 use Tests\TestCase;
 
@@ -36,7 +36,7 @@ class UploadPhotoWithTagsTest extends TestCase
         Carbon::setTestNow(now());
 
         $user = User::factory()->create([
-            'active_team' => Team::factory()
+            'active_team' => Team::factory(),
         ]);
 
         $this->actingAs($user, 'api');
@@ -108,22 +108,22 @@ class UploadPhotoWithTagsTest extends TestCase
         ];
         yield [
             'fields' => ['photo' => UploadedFile::fake()->image('some.pdf'), 'lat' => 5, 'lon' => 5, 'date' => now()->toDateTimeString(), 'tags' => json_encode(['smoking' => ['butts' => 3]])],
-            'errors' => ['photo']
+            'errors' => ['photo'],
         ];
         yield [
             'fields' => ['photo' => 'validImage', 'lat' => 'asdf', 'lon' => 'asdf', 'date' => now()->toDateTimeString(), 'tags' => json_encode(['smoking' => ['butts' => 3]])],
-            'errors' => ['lat', 'lon']
+            'errors' => ['lat', 'lon'],
         ];
         yield [
             'fields' => ['photo' => 'validImage', 'lat' => 5, 'lon' => 5, 'date' => now()->toDateTimeString(), 'tags' => 'test'],
-            'errors' => ['photo']
+            'errors' => ['photo'],
         ];
     }
 
     /**
      * @dataProvider validationDataProvider
      */
-    public function test_the_uploaded_photo_and_tags_are_validated ($fields, $errors)
+    public function test_the_uploaded_photo_and_tags_are_validated($fields, $errors)
     {
         $user = User::factory()->create();
 

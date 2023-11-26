@@ -23,7 +23,7 @@ class LevelFactory extends Factory
     {
         return [
             'xp' => $this->faker->randomElement([10, 50, 100, 1000, 10000, 100000]),
-            'level' => $this->faker->randomDigit
+            'level' => $this->faker->randomDigit,
         ];
     }
 }

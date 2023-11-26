@@ -19,13 +19,13 @@ class UpdateTeamRequest extends FormRequest
                 'required',
                 'min:3',
                 'max:100',
-                Rule::unique('teams')->ignore($this->route('team'))
+                Rule::unique('teams')->ignore($this->route('team')),
             ],
             'identifier' => [
                 'required',
                 'min:3',
                 'max:15',
-                Rule::unique('teams')->ignore($this->route('team'))
+                Rule::unique('teams')->ignore($this->route('team')),
             ],
         ];
     }

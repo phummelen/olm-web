@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers\User;
 
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
 use App\Actions\Photos\GetPreviousCustomTagsAction;
+use App\Http\Controllers\Controller;
 use App\Jobs\Photos\AddTagsToPhoto;
 use App\Models\Photo;
 use App\Traits\Photos\FilterPhotos;
-
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class UserPhotoController extends Controller
 {
@@ -23,15 +22,15 @@ class UserPhotoController extends Controller
      *
      * @return array
      */
-    public function bulkTag (Request $request)
+    public function bulkTag(Request $request)
     {
         foreach ($request->photos as $photoId => $data) {
-             dispatch (new AddTagsToPhoto(
-                 $photoId,
-                 $data['picked_up'] ?? false,
-                 $data['tags'] ?? [],
-                 $data['custom_tags'] ?? []
-             ));
+            dispatch(new AddTagsToPhoto(
+                $photoId,
+                $data['picked_up'] ?? false,
+                $data['tags'] ?? [],
+                $data['custom_tags'] ?? []
+            ));
         }
 
         return ['success' => true];
@@ -42,7 +41,7 @@ class UserPhotoController extends Controller
      *
      * @return array
      */
-    public function destroy (Request $request)
+    public function destroy(Request $request)
     {
         $user = Auth::user();
         $s3 = Storage::disk('s3');
@@ -51,14 +50,10 @@ class UserPhotoController extends Controller
 
         $photos = $this->filterPhotos(json_encode($request->filters), $request->selectAll, $ids)->get();
 
-        foreach ($photos as $photo)
-        {
-            try
-            {
-                if ($user->id === $photo->user_id)
-                {
-                    if (app()->environment('production'))
-                    {
+        foreach ($photos as $photo) {
+            try {
+                if ($user->id === $photo->user_id) {
+                    if (app()->environment('production')) {
                         $path = substr((string) $photo->filename, 42);
                         $s3->delete($path);
                     }
@@ -67,7 +62,7 @@ class UserPhotoController extends Controller
                 }
             } catch (Exception $e) {
                 // could not be deleted
-                Log::info(["Photo could not be deleted", $e->getMessage()]);
+                Log::info(['Photo could not be deleted', $e->getMessage()]);
             }
         }
 
@@ -79,7 +74,7 @@ class UserPhotoController extends Controller
      *
      * @return array
      */
-    public function filter ()
+    public function filter()
     {
         $query = $this->filterPhotos(request()->filters);
 
@@ -88,7 +83,7 @@ class UserPhotoController extends Controller
 
         return [
             'count' => $count,
-            'paginate' => $paginate
+            'paginate' => $paginate,
         ];
     }
 
@@ -97,25 +92,25 @@ class UserPhotoController extends Controller
      *
      * @return array
      */
-    public function index ()
+    public function index()
     {
         $query = Photo::select('id', 'filename', 'total_litter', 'verified', 'datetime', 'created_at')
             ->where([
                 'user_id' => auth()->user()->id,
                 'verified' => 0,
-                'verification' => 0
+                'verification' => 0,
             ]);
 
         return [
             'paginate' => $query->simplePaginate($this->paginate),
-            'count' => $query->count()
+            'count' => $query->count(),
         ];
     }
 
     /**
      * List of the user's previously added custom tags
      */
-    public function previousCustomTags (GetPreviousCustomTagsAction $previousTagsAction)
+    public function previousCustomTags(GetPreviousCustomTagsAction $previousTagsAction)
     {
         return $previousTagsAction->run(request()->user());
     }

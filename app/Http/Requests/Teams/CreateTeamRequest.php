@@ -16,7 +16,7 @@ class CreateTeamRequest extends FormRequest
         return [
             'name' => 'required|min:3|max:100|unique:teams',
             'identifier' => 'required|min:3|max:15|unique:teams',
-            'team_type' => 'required'
+            'team_type' => 'required',
         ];
     }
 }

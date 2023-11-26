@@ -22,7 +22,7 @@ class DrugsFactory extends Factory
     public function definition()
     {
         return [
-            'needles' => $this->faker->randomDigit
+            'needles' => $this->faker->randomDigit,
         ];
     }
 }

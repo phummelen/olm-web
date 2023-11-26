@@ -2,8 +2,8 @@
 
 namespace App\Models\Location;
 
-use App\Models\User\User;
 use App\Models\Photo;
+use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Facades\Redis;
 
@@ -20,7 +20,7 @@ class State extends Location
         'manual_verify',
         'littercoin_paid',
         'created_by',
-        'user_id_last_uploaded'
+        'user_id_last_uploaded',
     ];
 
     /**
@@ -34,13 +34,13 @@ class State extends Location
         'brands_data',
         'ppm',
         'updatedAtDiffForHumans',
-        'total_ppm'
+        'total_ppm',
     ];
 
     /**
      * Return the total photo per month for each state
      */
-    public function getTotalPpmAttribute ()
+    public function getTotalPpmAttribute()
     {
         $ppm = Redis::hgetall("totalppm:state:$this->id");
 
@@ -50,27 +50,27 @@ class State extends Location
     /**
      * Return the total_litter value from redis
      */
-    public function getTotalLitterRedisAttribute ()
+    public function getTotalLitterRedisAttribute()
     {
-        return Redis::hexists("state:$this->id", "total_litter")
-            ? (int)Redis::hget("state:$this->id", "total_litter")
+        return Redis::hexists("state:$this->id", 'total_litter')
+            ? (int) Redis::hget("state:$this->id", 'total_litter')
             : 0;
     }
 
     /**
      * Return the total_photos value from redis
      */
-    public function getTotalPhotosRedisAttribute ()
+    public function getTotalPhotosRedisAttribute()
     {
-        return Redis::hexists("state:$this->id", "total_photos")
-            ? (int)Redis::hget("state:$this->id", "total_photos")
+        return Redis::hexists("state:$this->id", 'total_photos')
+            ? (int) Redis::hget("state:$this->id", 'total_photos')
             : 0;
     }
 
     /**
      * Return the total number of people who uploaded a photo from redis
      */
-    public function getTotalContributorsRedisAttribute ()
+    public function getTotalContributorsRedisAttribute()
     {
         return Redis::scard("state:$this->id:user_ids");
     }
@@ -80,16 +80,14 @@ class State extends Location
      *
      * for state:id total_category
      */
-    public function getLitterDataAttribute ()
+    public function getLitterDataAttribute()
     {
         $categories = Photo::categories();
 
         $totals = [];
 
-        foreach ($categories as $category)
-        {
-            if ($category !== "brands")
-            {
+        foreach ($categories as $category) {
+            if ($category !== 'brands') {
                 $totals[$category] = Redis::hget("state:$this->id", $category);
             }
         }
@@ -100,14 +98,13 @@ class State extends Location
     /**
      * Return array of brand_total => value
      */
-    public function getBrandsDataAttribute ()
+    public function getBrandsDataAttribute()
     {
         $brands = Photo::getBrands();
 
         $totals = [];
 
-        foreach ($brands as $brand)
-        {
+        foreach ($brands as $brand) {
             $totals[$brand] = Redis::hget("country:$this->id", $brand);
         }
 
@@ -121,7 +118,7 @@ class State extends Location
      *
      * or empty array
      */
-    public function getPpmAttribute ()
+    public function getPpmAttribute()
     {
         $ppm = Redis::hgetall("ppm:state:$this->id");
 
@@ -131,30 +128,36 @@ class State extends Location
     /**
      * Get updatedAtDiffForHumans
      */
-    public function getUpdatedAtDiffForHumansAttribute () {
+    public function getUpdatedAtDiffForHumansAttribute()
+    {
         return $this->updated_at->diffForHumans();
     }
 
     /**
      * Relationships
      */
-    public function creator () {
+    public function creator()
+    {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function lastUploader () {
+    public function lastUploader()
+    {
         return $this->belongsTo(User::class, 'user_id_last_uploaded');
     }
 
-    public function country () {
+    public function country()
+    {
         return $this->belongsTo(Country::class);
     }
 
-    public function cities () {
+    public function cities()
+    {
         return $this->hasMany(City::class);
     }
 
-    public function photos () {
+    public function photos()
+    {
         return $this->hasMany(Photo::class);
     }
 }

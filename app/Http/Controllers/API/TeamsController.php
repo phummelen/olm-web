@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Auth;
 
 class TeamsController extends Controller
 {
-
     public function __construct()
     {
         $this->middleware('auth:api')->except('types');
@@ -97,7 +96,7 @@ class TeamsController extends Controller
 
         return $this->success([
             'team' => $team->fresh(),
-            'activeTeam' => $user->fresh()->team()->first()
+            'activeTeam' => $user->fresh()->team()->first(),
         ]);
     }
 
@@ -113,7 +112,7 @@ class TeamsController extends Controller
         /** @var Team $team */
         $team = Team::find($request->team_id);
 
-        if (!$user->isMemberOfTeam($request->team_id)) {
+        if (! $user->isMemberOfTeam($request->team_id)) {
             return $this->fail('not-a-member');
         }
 
@@ -125,7 +124,7 @@ class TeamsController extends Controller
 
         return $this->success([
             'team' => $team->fresh(),
-            'activeTeam' => $user->fresh()->team()->first()
+            'activeTeam' => $user->fresh()->team()->first(),
         ]);
     }
 
@@ -139,11 +138,11 @@ class TeamsController extends Controller
         /** @var Team $team */
         $team = Team::find($request->team_id);
 
-        if (!$team) {
+        if (! $team) {
             return $this->fail('team-not-found');
         }
 
-        if (!$user->isMemberOfTeam($request->team_id)) {
+        if (! $user->isMemberOfTeam($request->team_id)) {
             return $this->fail('not-a-member');
         }
 
@@ -169,18 +168,18 @@ class TeamsController extends Controller
     /**
      * Get paginated members for a team_id
      */
-    public function members (ListTeamMembersAction $action): array
+    public function members(ListTeamMembersAction $action): array
     {
         /** @var User $user */
         $user = auth()->user();
         /** @var Team $team */
         $team = Team::query()->find(request()->team_id);
 
-        if (!$team) {
+        if (! $team) {
             return $this->fail('team-not-found');
         }
 
-        if (!$user->isMemberOfTeam(request()->team_id)) {
+        if (! $user->isMemberOfTeam(request()->team_id)) {
             return $this->fail('not-a-member');
         }
 
@@ -192,18 +191,18 @@ class TeamsController extends Controller
     /**
      * The user wants to download data from a specific team
      */
-    public function download (Request $request, DownloadTeamDataAction $action): array
+    public function download(Request $request, DownloadTeamDataAction $action): array
     {
         /** @var User $user */
         $user = auth()->user();
         /** @var Team $team */
         $team = Team::query()->find($request->team_id);
 
-        if (!$team) {
+        if (! $team) {
             return $this->fail('team-not-found');
         }
 
-        if (!$user->isMemberOfTeam($request->team_id)) {
+        if (! $user->isMemberOfTeam($request->team_id)) {
             return $this->fail('not-a-member');
         }
 
@@ -220,7 +219,7 @@ class TeamsController extends Controller
     public function types()
     {
         return $this->success([
-            'types' => TeamType::select('id', 'team')->get()
+            'types' => TeamType::select('id', 'team')->get(),
         ]);
     }
 

@@ -22,7 +22,7 @@ class DogshitFactory extends Factory
     public function definition()
     {
         return [
-            'poo_in_bag' => $this->faker->randomDigit
+            'poo_in_bag' => $this->faker->randomDigit,
         ];
     }
 }

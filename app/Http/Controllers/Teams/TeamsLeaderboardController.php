@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 
 class TeamsLeaderboardController extends Controller
 {
-
     /**
      * Load Teams ranked by total litter
      *

@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Exports;
 
-
 use App\Exports\CreateCSVExport;
 use App\Models\Photo;
 use Tests\TestCase;
@@ -41,7 +40,7 @@ class CreateCSVExportTest extends TestCase
             'lon' => 42.0,
             'remaining' => true,
             'display_name' => '12345 Street',
-            'total_litter' => 500
+            'total_litter' => 500,
         ]);
         $photo->customTags()->createMany([['tag' => 'tag 1'], ['tag' => 'tag 2'], ['tag' => 'tag 3']]);
         $expected = [
@@ -89,7 +88,7 @@ class CreateCSVExportTest extends TestCase
             'lon' => 42.0,
             'remaining' => true,
             'display_name' => '12345 Street',
-            'total_litter' => 500
+            'total_litter' => 500,
         ]);
 
         $expected = [
@@ -141,9 +140,8 @@ class CreateCSVExportTest extends TestCase
 
         $model = $photo->$category()->create($withTypes);
 
-        $photo->update([$category . "_id" => $model->id]);
+        $photo->update([$category.'_id' => $model->id]);
 
         return $model;
     }
-
 }

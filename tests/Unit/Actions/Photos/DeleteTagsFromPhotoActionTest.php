@@ -18,7 +18,7 @@ class DeleteTagsFromPhotoActionTest extends TestCase
         $addTagsAction = app(AddTagsToPhotoAction::class);
         $addTagsAction->run($photo, [
             'brands' => ['adidas' => 5],
-            'art' => ['item' => 2]
+            'art' => ['item' => 2],
         ]);
         /** @var AddCustomTagsToPhotoAction $addTagsAction */
         $addTagsAction = app(AddCustomTagsToPhotoAction::class);
@@ -43,7 +43,7 @@ class DeleteTagsFromPhotoActionTest extends TestCase
         $addTagsAction = app(AddTagsToPhotoAction::class);
         $addTagsAction->run($photo, [
             'brands' => ['adidas' => 5],
-            'art' => ['item' => 2]
+            'art' => ['item' => 2],
         ]);
         /** @var AddCustomTagsToPhotoAction $addTagsAction */
         $addTagsAction = app(AddCustomTagsToPhotoAction::class);

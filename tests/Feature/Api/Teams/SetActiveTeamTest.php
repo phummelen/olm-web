@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class SetActiveTeamTest extends TestCase
 {
-
     public function test_a_user_can_set_a_team_as_their_active_team()
     {
         /** @var User $user */

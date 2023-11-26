@@ -17,11 +17,11 @@ class AddTagsToPhotoActionTest extends TestCase
         $addTagsAction = app(AddTagsToPhotoAction::class);
         $totals = $addTagsAction->run($photo, [
             'brands' => [
-                'adidas' => 5
+                'adidas' => 5,
             ],
             'art' => [
-                'item' => 2
-            ]
+                'item' => 2,
+            ],
         ]);
 
         $this->assertSame(

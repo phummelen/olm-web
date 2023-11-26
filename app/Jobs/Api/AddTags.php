@@ -2,16 +2,13 @@
 
 namespace App\Jobs\Api;
 
+use App\Actions\Locations\UpdateLeaderboardsForLocationAction;
 use App\Actions\Photos\AddCustomTagsToPhotoAction;
 use App\Actions\Photos\AddTagsToPhotoAction;
-use App\Actions\Locations\UpdateLeaderboardsForLocationAction;
-use App\Models\User\User;
-use App\Models\Photo;
-
 use App\Events\TagsVerifiedByAdmin;
-
+use App\Models\Photo;
+use App\Models\User\User;
 use Illuminate\Bus\Queueable;
-
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -23,6 +20,7 @@ class AddTags implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     public $userId;
 
     public $photoId;
@@ -33,13 +31,8 @@ class AddTags implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @param $userId
-     * @param $photoId
-     * @param $tags
-     * @param $customTags
      */
-    public function __construct ($userId, $photoId, $tags, $customTags)
+    public function __construct($userId, $photoId, $tags, $customTags)
     {
         $this->userId = $userId;
         $this->photoId = $photoId;
@@ -52,7 +45,7 @@ class AddTags implements ShouldQueue
      *
      * @return void
      */
-    public function handle ()
+    public function handle()
     {
         $litterTotals['all'] = 0;
         $litterTotals['litter'] = 0;
@@ -61,8 +54,7 @@ class AddTags implements ShouldQueue
         $user = User::find($this->userId);
         $photo = Photo::find($this->photoId);
 
-        if ($this->tags)
-        {
+        if ($this->tags) {
             $tags = (gettype($this->tags) === 'string')
                 ? json_decode($this->tags, true)
                 : $this->tags;
@@ -71,8 +63,7 @@ class AddTags implements ShouldQueue
             $litterTotals = $addTagsAction->run($photo, $tags);
         }
 
-        if ($this->customTags && $this->customTags !== "undefined")
-        {
+        if ($this->customTags && $this->customTags !== 'undefined') {
             $addCustomTagsAction = app(AddCustomTagsToPhotoAction::class);
 
             $customTags = (gettype($this->customTags) === 'string')
@@ -91,15 +82,11 @@ class AddTags implements ShouldQueue
 
         $photo->total_litter = $litterTotals['litter'];
 
-        if (!$user->is_trusted)
-        {
+        if (! $user->is_trusted) {
             /* Bring the photo to an initial state of verification */
             /* 0 for testing, 0.1 for production */
             $photo->verification = 0.1;
-        }
-
-        else // the user is trusted. Dispatch event to update OLM.
-        {
+        } else { // the user is trusted. Dispatch event to update OLM.
             $photo->verification = 1;
             $photo->verified = 2;
             event(new TagsVerifiedByAdmin($photo->id));

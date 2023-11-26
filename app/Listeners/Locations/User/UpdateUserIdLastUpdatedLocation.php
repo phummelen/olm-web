@@ -15,26 +15,23 @@ class UpdateUserIdLastUpdatedLocation implements ShouldQueue
      * @param  object  $event
      * @return void
      */
-    public function handle ($event)
+    public function handle($event)
     {
         $country = Country::find($event->country_id);
         $state = State::find($event->state_id);
         $city = City::find($event->city_id);
 
-        if ($country)
-        {
+        if ($country) {
             $country->user_id_last_uploaded = $event->user_id;
             $country->save();
         }
 
-        if ($state)
-        {
+        if ($state) {
             $state->user_id_last_uploaded = $event->user_id;
             $state->save();
         }
 
-        if ($city)
-        {
+        if ($city) {
             $city->user_id_last_uploaded = $event->user_id;
             $city->save();
         }

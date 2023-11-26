@@ -13,19 +13,17 @@ class DisplayTagsOnMapController extends Controller
      *
      * @return array
      */
-    public function show (Request $request)
+    public function show(Request $request)
     {
         $photos = Photo::query();
 
-        if ($request->has('custom_tag'))
-        {
+        if ($request->has('custom_tag')) {
             $photos = $photos->whereHas('customTags', function (Builder $query) use ($request) {
                 return $query->where('tag', $request->custom_tag);
             });
         }
 
-        if ($request->has('custom_tags'))
-        {
+        if ($request->has('custom_tags')) {
             $tags = explode(',', (string) $request->custom_tags);
 
             $photos = $photos->whereHas('customTags', function (Builder $query) use ($tags) {
@@ -33,27 +31,25 @@ class DisplayTagsOnMapController extends Controller
             });
         }
 
-        if ($request->has('brand'))
-        {
+        if ($request->has('brand')) {
             $photos = $photos->whereHas('brands', function (Builder $query) use ($request) {
                 return $query->whereNotNull($request->brand);
             });
         }
 
         $photos = $photos->with([
-                'user:id,name,username,show_username_maps,show_name_maps,settings',
-                'user.team:is_trusted',
-                'team:id,name',
-                'customTags:photo_id,tag',
-            ])
+            'user:id,name,username,show_username_maps,show_name_maps,settings',
+            'user.team:is_trusted',
+            'team:id,name',
+            'customTags:photo_id,tag',
+        ])
             ->limit(5000)
             ->get();
 
         // Populate geojson object
         $features = [];
 
-        foreach ($photos as $photo)
-        {
+        foreach ($photos as $photo) {
             $name = $photo->user->show_name_maps ? $photo->user->name : null;
             $username = $photo->user->show_username_maps ? $photo->user->username : null;
             $team = $photo->team ? $photo->team->name : null;
@@ -64,7 +60,7 @@ class DisplayTagsOnMapController extends Controller
                 'type' => 'Feature',
                 'geometry' => [
                     'type' => 'Point',
-                    'coordinates' => [$photo->lat, $photo->lon]
+                    'coordinates' => [$photo->lat, $photo->lon],
                 ],
                 'properties' => [
                     'photo_id' => $photo->id,
@@ -79,14 +75,14 @@ class DisplayTagsOnMapController extends Controller
                     'team' => $team,
                     'picked_up' => $photo->picked_up,
                     'social' => $photo->user->social_links,
-                    'custom_tags' => $photo->customTags->pluck('tag')
-                ]
+                    'custom_tags' => $photo->customTags->pluck('tag'),
+                ],
             ];
         }
 
         return [
             'type' => 'FeatureCollection',
-            'features' => $features
+            'features' => $features,
         ];
     }
 }

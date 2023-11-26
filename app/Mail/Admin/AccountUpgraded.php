@@ -3,7 +3,6 @@
 namespace App\Mail\Admin;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
@@ -11,6 +10,7 @@ class AccountUpgraded extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $user;
 
     /**
@@ -18,7 +18,7 @@ class AccountUpgraded extends Mailable
      *
      * @return void
      */
-    public function __construct ($user)
+    public function __construct($user)
     {
         $this->user = $user;
     }
@@ -34,7 +34,7 @@ class AccountUpgraded extends Mailable
             ->subject('You have earned your first Littercoin')
             ->view('emails.admin.account-upgraded')
             ->with([
-                'username' => $this->user->username
+                'username' => $this->user->username,
             ]);
     }
 }

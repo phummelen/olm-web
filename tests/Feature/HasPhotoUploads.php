@@ -17,15 +17,15 @@ trait HasPhotoUploads
     private $imageDisplayName = '10735, Carlisle Pike, Latimore Township, Adams County, Pennsylvania, 17324, USA';
 
     private $address = [
-        "house_number" => "10735",
-        "road" => "Carlisle Pike",
-        "city" => "Latimore Township",
-        "county" => "Adams County",
-        "state" => "Pennsylvania",
-        "postcode" => "17324",
-        "country" => "United States of America",
-        "country_code" => "us",
-        "suburb" => "unknown"
+        'house_number' => '10735',
+        'road' => 'Carlisle Pike',
+        'city' => 'Latimore Township',
+        'county' => 'Adams County',
+        'state' => 'Pennsylvania',
+        'postcode' => '17324',
+        'country' => 'United States of America',
+        'country_code' => 'us',
+        'suburb' => 'unknown',
     ];
 
     /** @var FakeReverseGeocodingAction */
@@ -42,7 +42,7 @@ trait HasPhotoUploads
     {
         $exifImage = file_get_contents($this->imagePath);
         $file = UploadedFile::fake()->createWithContent(
-            'image.' . $mimeType,
+            'image.'.$mimeType,
             $exifImage
         );
         $latitude = 40.053030045789;
@@ -64,7 +64,7 @@ trait HasPhotoUploads
         return ['latitude' => $latitude, 'longitude' => $longitude, 'geoHash' => $geoHash, 'displayName' => $displayName, 'address' => $address, 'dateTime' => $dateTime, 'filepath' => $filepath, 'file' => $file, 'imageName' => $imageName, 'bboxImageName' => $bboxImageName];
     }
 
-    protected function getApiImageAttributes (array $imageAttributes): array
+    protected function getApiImageAttributes(array $imageAttributes): array
     {
         return [
             'photo' => $imageAttributes['file'],
@@ -72,7 +72,7 @@ trait HasPhotoUploads
             'lon' => $imageAttributes['longitude'],
             'date' => $imageAttributes['dateTime'],
             'model' => 'test model',
-            'picked_up' => true
+            'picked_up' => true,
         ];
     }
 

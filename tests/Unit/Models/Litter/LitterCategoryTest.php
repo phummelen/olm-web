@@ -2,7 +2,6 @@
 
 namespace Tests\Unit\Models\Litter;
 
-
 use App\Models\Photo;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
@@ -18,7 +17,6 @@ class LitterCategoryTest extends TestCase
 
     /**
      * @dataProvider getCategories
-     * @param $category
      */
     public function test_categories_have_identical_types_as_their_schema($category)
     {
@@ -36,7 +34,6 @@ class LitterCategoryTest extends TestCase
 
     /**
      * @dataProvider getCategories
-     * @param $category
      */
     public function test_categories_have_no_guarded_properties($category)
     {
@@ -48,7 +45,6 @@ class LitterCategoryTest extends TestCase
 
     /**
      * @dataProvider getCategories
-     * @param $category
      */
     public function test_a_photo_has_a_translated_string_of_its_categories($category)
     {
@@ -65,7 +61,7 @@ class LitterCategoryTest extends TestCase
         $expected = '';
         foreach ($types as $type) {
             $className = $model->getTable() == 'arts' ? 'art' : $model->getTable();
-            $expected .= $className . '.' . $type . ' ' . $model->$type . ',';
+            $expected .= $className.'.'.$type.' '.$model->$type.',';
         }
 
         $this->assertSame($expected, $model->translate());
@@ -77,8 +73,7 @@ class LitterCategoryTest extends TestCase
     private function deleteArrValues(array $arr, array $remove): array
     {
         return array_filter($arr, function ($e) use ($remove) {
-            return !in_array($e, $remove);
+            return ! in_array($e, $remove);
         });
     }
-
 }

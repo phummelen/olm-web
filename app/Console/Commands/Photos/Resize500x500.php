@@ -2,10 +2,10 @@
 
 namespace App\Console\Commands\Photos;
 
-use Illuminate\Support\Facades\Storage;
 use App\Models\Photo;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Storage;
 use Image;
 
 class Resize500x500 extends Command
@@ -45,11 +45,9 @@ class Resize500x500 extends Command
         Photo::where([
             ['verified', '>=', 2],
             ['filename', '!=', '/assets/verified.jpg'],
-            'five_hundred_square_filepath' => null
-        ])->chunk(500, function ($photos)
-        {
-            foreach ($photos as $photo)
-            {
+            'five_hundred_square_filepath' => null,
+        ])->chunk(500, function ($photos) {
+            foreach ($photos as $photo) {
                 echo "Photo id $photo->id \n";
 
                 // Create an image object
@@ -69,7 +67,7 @@ class Resize500x500 extends Command
                 $x = explode('/', (string) $photo->filename);
 
                 // Get the last element which is the filename with extension
-                $filename = $x[count($x) -1];
+                $filename = $x[count($x) - 1];
                 $filepath = $year.'/'.$month.'/'.$day.'/'.$filename;
 
                 $s3 = Storage::disk('bbox');

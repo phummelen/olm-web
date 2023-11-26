@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class ContactRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -19,7 +18,7 @@ class ContactRequest extends FormRequest
             'message' => 'required|max:5000',
             'name' => 'nullable|max:255',
             'email' => 'required|email',
-            'g-recaptcha-response' => 'required|captcha'
+            'g-recaptcha-response' => 'required|captcha',
         ];
     }
 }

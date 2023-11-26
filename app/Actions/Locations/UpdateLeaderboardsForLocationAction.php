@@ -3,7 +3,6 @@
 namespace App\Actions\Locations;
 
 use App\Models\Photo;
-
 use Illuminate\Support\Facades\Redis;
 
 class UpdateLeaderboardsForLocationAction
@@ -11,7 +10,7 @@ class UpdateLeaderboardsForLocationAction
     /** @var UpdateLeaderboardsXpAction */
     protected $updateXpAction;
 
-    public function __construct (UpdateLeaderboardsXpAction $updateXpAction)
+    public function __construct(UpdateLeaderboardsXpAction $updateXpAction)
     {
         $this->updateXpAction = $updateXpAction;
     }
@@ -21,12 +20,11 @@ class UpdateLeaderboardsForLocationAction
      *
      * All time + time-stamped
      */
-    public function run (
+    public function run(
         Photo $photo,
         int $userId,
-        int $incrXp
-    ) :void
-    {
+        int $incrXp,
+    ): void {
         $year = now()->year;
         $month = now()->month;
         $day = now()->day;

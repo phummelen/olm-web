@@ -1,0 +1,21 @@
+{
+    "preset": "laravel",
+    "exclude":[
+        "bootstrap",
+        "config",
+        "public",
+        "resources",
+        "storage"
+    ],
+    "cache-file": "storage/pint.cache",
+    "rules": {
+        "line_ending": false,
+        "trailing_comma_in_multiline": {
+            "elements": [
+                "arrays",
+                "match",
+                "parameters"
+            ]
+        }
+    }
+}

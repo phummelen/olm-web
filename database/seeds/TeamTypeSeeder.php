@@ -19,7 +19,7 @@ class TeamTypeSeeder extends Seeder
             'price' => 0,
             'description' => 'A community of like-minded individuals',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
     }
 }

@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
 class AddCrispsToFood extends Migration
 {
@@ -20,7 +20,7 @@ class AddCrispsToFood extends Migration
             $table->integer('napkins')->unsigned()->nullable();
             $table->integer('sauce_packet')->unsigned()->nullable();
             $table->integer('glass_jar')->unsigned()->nullable();
-            $table->integer('glass_jar_lid')->unsigned()->nullable(); 
+            $table->integer('glass_jar_lid')->unsigned()->nullable();
         });
     }
 

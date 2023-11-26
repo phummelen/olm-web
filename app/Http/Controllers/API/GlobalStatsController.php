@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\Littercoin;
 use App\Models\Location\Country;
 use App\Models\User\User;
-use Illuminate\Http\Request;
 
 class GlobalStatsController extends Controller
 {
@@ -16,7 +15,7 @@ class GlobalStatsController extends Controller
      * Todo: We want to move all of this data to redis asap to avoid killing the database!
      * A lot of this taken from LoadDataHelper@getCountries. We need to remove the duplication.
      */
-    public function index () : array
+    public function index(): array
     {
         $littercoin = Littercoin::count();
 
@@ -30,8 +29,7 @@ class GlobalStatsController extends Controller
         $total_litter = 0;
         $total_photos = 0;
 
-        foreach ($countries as $country)
-        {
+        foreach ($countries as $country) {
             $total_photos += $country->total_photos_redis;
             $total_litter += $country->total_litter_redis;
         }
@@ -50,22 +48,22 @@ class GlobalStatsController extends Controller
         } elseif ($total_litter <= 10000) {
             $previousXp = 1000;
             $nextXp = 10000;
-            // 10,000
+        // 10,000
         } elseif ($total_litter <= 100000) {
             $previousXp = 10000;
             // 10,000
             $nextXp = 100000;
-            // 100,000
+        // 100,000
         } elseif ($total_litter <= 250000) {
             $previousXp = 100000;
             // 100,000
             $nextXp = 250000;
-            // 250,000
+        // 250,000
         } elseif ($total_litter <= 500000) {
             $previousXp = 250000;
             // 250,000
             $nextXp = 500000;
-            // 500,000
+        // 500,000
         } elseif ($total_litter <= 1000000) {
             $previousXp = 500000;
             // 250,000
@@ -79,7 +77,7 @@ class GlobalStatsController extends Controller
             'previousXp' => $previousXp,
             'nextXp' => $nextXp,
             'littercoin' => $littercoin,
-            'total_users' => $totalUsers
+            'total_users' => $totalUsers,
         ];
     }
 }

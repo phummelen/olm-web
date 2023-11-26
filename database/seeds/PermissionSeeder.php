@@ -18,31 +18,31 @@ class PermissionSeeder extends Seeder
             'name' => 'update tags',
             'guard_name' => 'web',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
         DB::table('permissions')->insert([
             'name' => 'create boxes',
             'guard_name' => 'web',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
         DB::table('permissions')->insert([
             'name' => 'update boxes',
             'guard_name' => 'web',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
         DB::table('permissions')->insert([
             'name' => 'view horizon',
             'guard_name' => 'web',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
         DB::table('permissions')->insert([
             'name' => 'verify boxes',
             'guard_name' => 'web',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
     }
 }

@@ -22,7 +22,7 @@ class SanitaryFactory extends Factory
     public function definition()
     {
         return [
-            'tooth_pick' => $this->faker->randomDigit
+            'tooth_pick' => $this->faker->randomDigit,
         ];
     }
 }

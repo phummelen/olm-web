@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Teams;
 
+use App\Http\Controllers\Controller;
 use App\Models\Photo;
 use App\Models\TeamCluster;
 use App\Traits\FilterClustersByGeohashTrait;
-
-use App\Http\Controllers\Controller;
 use App\Traits\FilterPhotosByGeoHashTrait;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -27,10 +26,10 @@ class TeamsClusterController extends Controller
      */
     public function clusters(Request $request): array
     {
-        if (!$request->team) {
+        if (! $request->team) {
             return [
                 'type' => 'FeatureCollection',
-                'features' => []
+                'features' => [],
             ];
         }
 
@@ -40,7 +39,7 @@ class TeamsClusterController extends Controller
 
         return [
             'type' => 'FeatureCollection',
-            'features' => $features
+            'features' => $features,
         ];
     }
 

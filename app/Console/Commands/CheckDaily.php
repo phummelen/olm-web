@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Carbon\Carbon;
 use App\Models\User\User;
 use Illuminate\Console\Command;
 
@@ -41,20 +40,17 @@ class CheckDaily extends Command
     {
         $users = User::where([
             ['verified', 1],
-            ['has_uploaded', 1]
+            ['has_uploaded', 1],
         ])->get();
 
         // If user has uploaded, reset the counter
-        foreach ($users as $user)
-        {
-            if ($user->has_uploaded_today == 0)
-            {
+        foreach ($users as $user) {
+            if ($user->has_uploaded_today == 0) {
                 $user->has_uploaded_counter = 0;
                 $user->save();
             }
 
-            if ($user->has_uploaded_today == 1)
-            {
+            if ($user->has_uploaded_today == 1) {
                 $user->has_uploaded_today = 0;
                 $user->save();
             }

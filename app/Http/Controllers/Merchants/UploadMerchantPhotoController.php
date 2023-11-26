@@ -2,49 +2,45 @@
 
 namespace App\Http\Controllers\Merchants;
 
-use Exception;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Merchant;
 use App\Models\MerchantPhoto;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class UploadMerchantPhotoController extends Controller
 {
-    public function __invoke (Request $request)
+    public function __invoke(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:jpg,png,jpeg,heif,heic',
-            'merchantId' => 'required'
+            'merchantId' => 'required',
         ]);
 
         $merchant = Merchant::find($request->merchantId);
 
-        if (!$merchant)
-        {
+        if (! $merchant) {
             return [
                 'success' => false,
-                'msg' => 'merchant not found'
+                'msg' => 'merchant not found',
             ];
         }
 
-        try
-        {
+        try {
             $uploadedFile = $request->file('file');
-            $filename = time() . '.' . $uploadedFile->getClientOriginalExtension();
+            $filename = time().'.'.$uploadedFile->getClientOriginalExtension();
 
             if (app()->environment('local')) {
                 // In local environment, save to the local disk
                 Storage::disk('local')->put($filename, file_get_contents($uploadedFile));
 
                 $filepath = 'todo';
-            }
-            else
-            {
+            } else {
                 // In production environment, save to AWS S3
-                $path = now()->year . '/' . now()->month . '/' . now()->day . '/' . $filename;
+                $path = now()->year.'/'.now()->month.'/'.now()->day.'/'.$filename;
 
                 $filesystem = Storage::disk('s3');
 
@@ -57,23 +53,21 @@ class UploadMerchantPhotoController extends Controller
             $merchantPhoto = MerchantPhoto::create([
                 'uploaded_by' => Auth::user()->id,
                 'filepath' => $filepath,
-                'merchant_id' => $merchant->id
+                'merchant_id' => $merchant->id,
             ]);
-        }
-        catch (Exception $exception)
-        {
+        } catch (Exception $exception) {
             Log::info(['UploadMerchantPhotoController', $exception->getMessage()]);
 
             return [
                 'success' => false,
-                'msg' => 'problem'
+                'msg' => 'problem',
             ];
         }
 
         return response()->json([
             'success' => true,
             'filename' => $filename,
-            'photo' => $merchantPhoto
+            'photo' => $merchantPhoto,
         ]);
     }
 }

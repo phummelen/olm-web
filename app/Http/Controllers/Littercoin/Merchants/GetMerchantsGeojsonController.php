@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Littercoin\Merchants;
 
-use App\Models\Merchant;
 use App\Http\Controllers\Controller;
+use App\Models\Merchant;
 use App\Traits\GeoJson\CreateGeoJsonPoints;
 
 class GetMerchantsGeojsonController extends Controller
@@ -13,17 +13,17 @@ class GetMerchantsGeojsonController extends Controller
     /**
      * Return geojson array of cleanups
      */
-    public function __invoke ()
+    public function __invoke()
     {
         $merchants = Merchant::with('photos')
             ->whereNotNull('approved')
             ->get();
 
-        $geojson = $this->createGeojsonPoints("Merchants", $merchants);
+        $geojson = $this->createGeojsonPoints('Merchants', $merchants);
 
         return [
             'success' => true,
-            'geojson' => $geojson
+            'geojson' => $geojson,
         ];
     }
 }

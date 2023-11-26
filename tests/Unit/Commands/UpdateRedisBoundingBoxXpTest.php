@@ -14,13 +14,13 @@ class UpdateRedisBoundingBoxXpTest extends TestCase
         $user = User::factory()->create();
         Annotation::factory()->create([
             'added_by' => $user->id,
-            'verified_by' => $user->id
+            'verified_by' => $user->id,
         ]);
-        Redis::del("xp.users");
-        $this->assertNull(Redis::zscore("xp.users", $user->id));
+        Redis::del('xp.users');
+        $this->assertNull(Redis::zscore('xp.users', $user->id));
 
         $this->artisan('users:update-redis-bounding-box-xp');
 
-        $this->assertSame('2', Redis::zscore("xp.users", $user->id));
+        $this->assertSame('2', Redis::zscore('xp.users', $user->id));
     }
 }

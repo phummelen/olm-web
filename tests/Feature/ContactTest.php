@@ -2,10 +2,10 @@
 
 namespace Tests\Feature;
 
-use Iterator;
 use Anhskohbo\NoCaptcha\Facades\NoCaptcha;
 use App\Mail\ContactMail;
 use Illuminate\Support\Facades\Mail;
+use Iterator;
 use Tests\TestCase;
 
 class ContactTest extends TestCase
@@ -31,7 +31,7 @@ class ContactTest extends TestCase
             'message' => 'Test message',
             'name' => 'Guest name',
             'email' => 'guest@email.com',
-            'g-recaptcha-response' => '1'
+            'g-recaptcha-response' => '1',
         ]);
 
         $response->assertOk();
@@ -50,8 +50,6 @@ class ContactTest extends TestCase
 
     /**
      * @dataProvider validationData
-     * @param $fields
-     * @param $errors
      */
     public function test_request_values_are_validated($fields, $errors)
     {
@@ -76,28 +74,27 @@ class ContactTest extends TestCase
         yield [
             // Missing subject
             'fields' => ['message' => 'message', 'email' => 'guest@email.com', 'g-recaptcha-response' => '1'],
-            'errors' => ['subject']
+            'errors' => ['subject'],
         ];
         yield [
             // Missing message
             'fields' => ['subject' => 'subject', 'email' => 'guest@email.com', 'g-recaptcha-response' => '1'],
-            'errors' => ['message']
+            'errors' => ['message'],
         ];
         yield [
             // Missing email
             'fields' => ['subject' => 'subject', 'message' => 'message', 'g-recaptcha-response' => '1'],
-            'errors' => ['email']
+            'errors' => ['email'],
         ];
         yield [
             // Malformed email
             'fields' => ['subject' => 'subject', 'message' => 'message', 'email' => 'malformed email', 'g-recaptcha-response' => '1'],
-            'errors' => ['email']
+            'errors' => ['email'],
         ];
         yield [
             // Missing recaptcha
             'fields' => ['subject' => 'subject', 'message' => 'message', 'email' => 'guest@email.com'],
-            'errors' => ['g-recaptcha-response']
+            'errors' => ['g-recaptcha-response'],
         ];
     }
-
 }

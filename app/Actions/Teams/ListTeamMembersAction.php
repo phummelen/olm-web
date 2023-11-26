@@ -2,7 +2,6 @@
 
 namespace App\Actions\Teams;
 
-
 use App\Models\Teams\Team;
 use Illuminate\Contracts\Pagination\Paginator;
 use Illuminate\Support\Facades\DB;
@@ -26,7 +25,7 @@ class ListTeamMembersAction
                 DB::raw("if(`team_user`.`show_username_leaderboards` = 1, `username`, '') as username"),
                 'users.active_team',
                 'users.updated_at',
-                'total_photos'
+                'total_photos',
             ]);
     }
 }

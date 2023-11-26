@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers\Auth;
 
-use Illuminate\Http\Response;
-use Illuminate\Http\RedirectResponse;
-use App\Models\User\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Contracts\Auth\StatefulGuard;
-use JWTAuth;
-use Tymon\JWTAuth\Exceptions\JWTException;
-
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
-use Illuminate\Support\Str;
-use Illuminate\Cache\RateLimiter;
+use App\Models\User\User;
 use Illuminate\Auth\Events\Lockout;
+use Illuminate\Cache\RateLimiter;
+use Illuminate\Contracts\Auth\StatefulGuard;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Str;
 
 class LoginController extends Controller
 {
@@ -44,7 +40,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    public function __construct ()
+    public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
@@ -54,7 +50,7 @@ class LoginController extends Controller
      *
      * @return Response
      */
-    public function showLoginForm ()
+    public function showLoginForm()
     {
         return redirect('/');
     }
@@ -64,7 +60,7 @@ class LoginController extends Controller
      *
      * @return RedirectResponse|Response
      */
-    public function login (Request $request)
+    public function login(Request $request)
     {
         $this->validateLogin($request);
 
@@ -94,7 +90,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    protected function validateLogin (Request $request)
+    protected function validateLogin(Request $request)
     {
         $this->validate($request, [
             $this->username() => 'required|string',
@@ -107,7 +103,7 @@ class LoginController extends Controller
      *
      * @return bool
      */
-    protected function attemptLogin (Request $request)
+    protected function attemptLogin(Request $request)
     {
         return $this->guard()->attempt(
             $this->credentials($request), $request->has('remember')
@@ -119,11 +115,12 @@ class LoginController extends Controller
      *
      * @return array
      */
-    protected function credentials (Request $request) {
+    protected function credentials(Request $request)
+    {
         return [
             'email' => $request->input('email'),
             'password' => $request->input('password'),
-            'verified' => true
+            'verified' => true,
         ];
     }
 
@@ -132,7 +129,7 @@ class LoginController extends Controller
      *
      * @return Response
      */
-    protected function sendLoginResponse (Request $request)
+    protected function sendLoginResponse(Request $request)
     {
         $request->session()->regenerate();
 
@@ -147,10 +144,9 @@ class LoginController extends Controller
      *
      * @return string
      */
-    public function redirectPath ()
+    public function redirectPath()
     {
-        if (method_exists($this, 'redirectTo'))
-        {
+        if (method_exists($this, 'redirectTo')) {
             return $this->redirectTo();
         }
 
@@ -163,7 +159,7 @@ class LoginController extends Controller
      * @param  mixed  $user
      * @return mixed
      */
-    protected function authenticated (Request $request, $user)
+    protected function authenticated(Request $request, $user)
     {
         // return redirect()->route('upload');
     }
@@ -173,7 +169,7 @@ class LoginController extends Controller
      *
      * @return RedirectResponse
      */
-    protected function sendFailedLoginResponse (Request $request)
+    protected function sendFailedLoginResponse(Request $request)
     {
         $errors = [$this->username() => trans('auth.failed')];
 
@@ -200,7 +196,7 @@ class LoginController extends Controller
      *
      * @return string
      */
-    public function username ()
+    public function username()
     {
         return 'email';
     }
@@ -223,19 +219,18 @@ class LoginController extends Controller
      *
      * @return StatefulGuard
      */
-    protected function guard ()
+    protected function guard()
     {
         return Auth::guard();
     }
 
-
-     // THROTTLE
+    // THROTTLE
     /**
      * Determine if the user has too many failed login attempts.
      *
      * @return bool
      */
-    protected function hasTooManyLoginAttempts (Request $request)
+    protected function hasTooManyLoginAttempts(Request $request)
     {
         return $this->limiter()->tooManyAttempts(
             $this->throttleKey($request), 5
@@ -247,7 +242,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    protected function incrementLoginAttempts (Request $request)
+    protected function incrementLoginAttempts(Request $request)
     {
         $this->limiter()->hit($this->throttleKey($request));
     }
@@ -257,7 +252,7 @@ class LoginController extends Controller
      *
      * @return RedirectResponse
      */
-    protected function sendLockoutResponse (Request $request)
+    protected function sendLockoutResponse(Request $request)
     {
         $seconds = $this->limiter()->availableIn(
             $this->throttleKey($request)
@@ -281,7 +276,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    protected function clearLoginAttempts (Request $request)
+    protected function clearLoginAttempts(Request $request)
     {
         $this->limiter()->clear($this->throttleKey($request));
     }
@@ -291,7 +286,7 @@ class LoginController extends Controller
      *
      * @return void
      */
-    protected function fireLockoutEvent (Request $request)
+    protected function fireLockoutEvent(Request $request)
     {
         event(new Lockout($request));
     }
@@ -301,7 +296,7 @@ class LoginController extends Controller
      *
      * @return string
      */
-    protected function throttleKey (Request $request)
+    protected function throttleKey(Request $request)
     {
         return Str::lower($request->input($this->username())).'|'.$request->ip();
     }
@@ -311,9 +306,8 @@ class LoginController extends Controller
      *
      * @return RateLimiter
      */
-    protected function limiter ()
+    protected function limiter()
     {
         return app(RateLimiter::class);
     }
-
 }

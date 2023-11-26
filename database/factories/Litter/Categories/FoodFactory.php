@@ -22,7 +22,7 @@ class FoodFactory extends Factory
     public function definition()
     {
         return [
-            'sweetWrappers' => $this->faker->randomDigit
+            'sweetWrappers' => $this->faker->randomDigit,
         ];
     }
 }

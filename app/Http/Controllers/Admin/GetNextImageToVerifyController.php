@@ -2,20 +2,18 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Photo;
-use App\Http\Requests\GetImageForVerificationRequest;
-
 use App\Http\Controllers\Controller;
-
-use Illuminate\Support\Facades\Redis;
+use App\Http\Requests\GetImageForVerificationRequest;
+use App\Models\Photo;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Redis;
 
 class GetNextImageToVerifyController extends Controller
 {
     /**
      * Get the next image to verify
      */
-    public function __invoke (GetImageForVerificationRequest $request): array
+    public function __invoke(GetImageForVerificationRequest $request): array
     {
         // Photos that are uploaded and tagged come first
         /** @var Photo $photo */
@@ -26,8 +24,7 @@ class GetNextImageToVerifyController extends Controller
             ->where('verification', 0.1)
             ->first();
 
-        if (!$photo)
-        {
+        if (! $photo) {
             // Photos that have been uploaded, but not tagged or submitted for verification
             /** @var Photo $photo */
             $photo = $this->filterPhotos()
@@ -38,11 +35,10 @@ class GetNextImageToVerifyController extends Controller
                 ->first();
         }
 
-        if (!$photo)
-        {
+        if (! $photo) {
             return [
                 'success' => false,
-                'msg' => 'photo not found'
+                'msg' => 'photo not found',
             ];
         }
 
@@ -72,9 +68,8 @@ class GetNextImageToVerifyController extends Controller
 
         $userVerificationCount = false;
 
-        if (Redis::hexists("user_verification_count", $photo->user_id))
-        {
-            $userVerificationCount = Redis::hget("user_verification_count", $photo->user_id);
+        if (Redis::hexists('user_verification_count', $photo->user_id)) {
+            $userVerificationCount = Redis::hget('user_verification_count', $photo->user_id);
         }
 
         return [
@@ -82,12 +77,13 @@ class GetNextImageToVerifyController extends Controller
             'photosNotProcessed' => $photosNotProcessed,
             'photosAwaitingVerification' => $photosAwaitingVerification,
             'userVerificationCount' => $userVerificationCount,
-            'photosNotProcessedForAdminTagging' => $photosNotProcessedForAdminTagging
+            'photosNotProcessedForAdminTagging' => $photosNotProcessedForAdminTagging,
         ];
     }
 
     /**
      * Generates a query builder with filtered photos
+     *
      * @return Builder|mixed
      */
     private function filterPhotos(): Builder

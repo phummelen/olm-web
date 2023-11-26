@@ -17,13 +17,13 @@ class CommunityController extends Controller
             'litterTagsPerMonth' => $this->getLitterTagsPerMonth(),
             'usersPerMonth' => $this->getUsersPerMonth(),
             'statsByMonth' => Cache::remember(
-                self::class . 'statsByMonth',
+                self::class.'statsByMonth',
                 // Clears cache at the start of next month
                 now()->addMonth()->startOfMonth()->startOfDay(),
                 function () {
                     return $this->getStatsByMonth();
                 }
-            )
+            ),
         ];
     }
 
@@ -86,7 +86,7 @@ class CommunityController extends Controller
         return [
             'photosByMonth' => $photosByMonth,
             'usersByMonth' => $usersByMonth,
-            'periods' => $periods
+            'periods' => $periods,
         ];
     }
 }

@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Models\Photo;
-use App\Jobs\Api\AddTags;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\AddTagsRequest;
+use App\Jobs\Api\AddTags;
+use App\Models\Photo;
+use Illuminate\Support\Facades\Log;
 
 class AddTagsToUploadedImageController extends Controller
 {
@@ -16,22 +16,21 @@ class AddTagsToUploadedImageController extends Controller
      *
      * version 2.2
      */
-    public function __invoke (AddTagsRequest $request)
+    public function __invoke(AddTagsRequest $request)
     {
         $user = auth()->user();
         $photo = Photo::find($request->photo_id);
 
-        if ($photo->user_id !== $user->id || $photo->verified > 0)
-        {
+        if ($photo->user_id !== $user->id || $photo->verified > 0) {
             abort(403, 'Forbidden');
         }
 
         Log::channel('tags')->info([
             'add_tags' => 'mobile',
-            'request' => $request->all()
+            'request' => $request->all(),
         ]);
 
-        dispatch (new AddTags(
+        dispatch(new AddTags(
             $user->id,
             $photo->id,
             ($request->litter ?? $request->tags) ?? [],
@@ -40,14 +39,14 @@ class AddTagsToUploadedImageController extends Controller
 
         $pickedUp = $request->filled('picked_up')
             ? $request->picked_up
-            : !$user->items_remaining;
+            : ! $user->items_remaining;
 
-        $photo->remaining = !$pickedUp;
+        $photo->remaining = ! $pickedUp;
         $photo->save();
 
         return [
             'success' => true,
-            'msg' => 'dispatched'
+            'msg' => 'dispatched',
         ];
     }
 }

@@ -25,6 +25,7 @@ class IncreaseTeamTotalPhotosTest extends TestCase
         $state = State::factory()->create();
         /** @var City $city */
         $city = City::factory()->create();
+
         return new ImageUploaded($user, $photo, $country, $state, $city);
     }
 
@@ -76,5 +77,4 @@ class IncreaseTeamTotalPhotosTest extends TestCase
             $user->teams->first()->pivot->updated_at->greaterThan($oldUpdatedAt)
         );
     }
-
 }

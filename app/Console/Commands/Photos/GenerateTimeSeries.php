@@ -40,33 +40,31 @@ class GenerateTimeSeries extends Command
      *
      * @return mixed
      */
-    public function handle ()
+    public function handle()
     {
         $months = [0, '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12'];
 
         $countries = Country::where('manual_verify', 1)->get();
 
-        foreach ($countries as $country)
-        {
-            echo "Country " . $country->country . " \n";
+        foreach ($countries as $country) {
+            echo 'Country '.$country->country." \n";
             $photosPerMonth = [];
 
             $photos = Photo::select('id', 'datetime', 'verified', 'country_id')
                 ->where([
                     'country_id' => $country->id,
-                    'verified' => 2
+                    'verified' => 2,
                 ])
                 ->orderBy('datetime', 'asc')
                 ->get();
 
-            $photos = $photos->groupBy(function($val) {
+            $photos = $photos->groupBy(function ($val) {
                 return Carbon::parse($val->datetime)->format('m-y');
             });
 
-            foreach ($photos as $index => $monthlyPhotos)
-            {
-                $month = $months[(int)$substr = substr((string) $index,0,2)];
-                $year = substr((string) $index,2,5);
+            foreach ($photos as $index => $monthlyPhotos) {
+                $month = $months[(int) $substr = substr((string) $index, 0, 2)];
+                $year = substr((string) $index, 2, 5);
                 $photosPerMonth[$month.$year] = $monthlyPhotos->count(); // Mar-17
                 // $total_photos += $monthlyPhotos->count();
             }
@@ -77,27 +75,25 @@ class GenerateTimeSeries extends Command
 
         $states = State::where('manual_verify', 1)->get();
 
-        foreach ($states as $state)
-        {
-            echo "State " . $state->state . " \n";
+        foreach ($states as $state) {
+            echo 'State '.$state->state." \n";
             $photosPerMonth = [];
 
             $photos = Photo::select('id', 'datetime', 'verified', 'country_id')
                 ->where([
                     'state_id' => $state->id,
-                    'verified' => 2
+                    'verified' => 2,
                 ])
                 ->orderBy('datetime', 'asc')
                 ->get();
 
-            $photos = $photos->groupBy(function($val) {
+            $photos = $photos->groupBy(function ($val) {
                 return Carbon::parse($val->datetime)->format('m-y');
             });
 
-            foreach ($photos as $index => $monthlyPhotos)
-            {
-                $month = $months[(int)$substr = substr((string) $index,0,2)];
-                $year = substr((string) $index,2,5);
+            foreach ($photos as $index => $monthlyPhotos) {
+                $month = $months[(int) $substr = substr((string) $index, 0, 2)];
+                $year = substr((string) $index, 2, 5);
                 $photosPerMonth[$month.$year] = $monthlyPhotos->count(); // Mar-17
                 // $total_photos += $monthlyPhotos->count();
             }
@@ -108,27 +104,25 @@ class GenerateTimeSeries extends Command
 
         $cities = City::where('manual_verify', 1)->get();
 
-        foreach ($cities as $city)
-        {
-            echo "City " . $city->city . " \n";
+        foreach ($cities as $city) {
+            echo 'City '.$city->city." \n";
             $photosPerMonth = [];
 
             $photos = Photo::select('id', 'datetime', 'verified', 'country_id')
                 ->where([
                     'city_id' => $city->id,
-                    'verified' => 2
+                    'verified' => 2,
                 ])
                 ->orderBy('datetime', 'asc')
                 ->get();
 
-            $photos = $photos->groupBy(function($val) {
+            $photos = $photos->groupBy(function ($val) {
                 return Carbon::parse($val->datetime)->format('m-y');
             });
 
-            foreach ($photos as $index => $monthlyPhotos)
-            {
-                $month = $months[(int)$substr = substr((string) $index,0,2)];
-                $year = substr((string) $index,2,5);
+            foreach ($photos as $index => $monthlyPhotos) {
+                $month = $months[(int) $substr = substr((string) $index, 0, 2)];
+                $year = substr((string) $index, 2, 5);
                 $photosPerMonth[$month.$year] = $monthlyPhotos->count(); // Mar-17
                 // $total_photos += $monthlyPhotos->count();
             }

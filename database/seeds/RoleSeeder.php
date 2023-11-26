@@ -15,22 +15,22 @@ class RoleSeeder extends Seeder
     public function run()
     {
         DB::table('roles')->insert([
-           'name' => 'superadmin',
+            'name' => 'superadmin',
             'guard_name' => 'web',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
         DB::table('roles')->insert([
             'name' => 'admin',
             'guard_name' => 'web',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
         DB::table('roles')->insert([
             'name' => 'helper',
             'guard_name' => 'web',
             'created_at' => now(),
-            'updated_at' => now()
+            'updated_at' => now(),
         ]);
     }
 }

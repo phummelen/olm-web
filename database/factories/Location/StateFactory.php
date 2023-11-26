@@ -26,7 +26,7 @@ class StateFactory extends Factory
         return [
             'created_by' => User::factory()->create(),
             'state' => $this->faker->state,
-            'country_id' => Country::factory()->create()
+            'country_id' => Country::factory()->create(),
         ];
     }
 }

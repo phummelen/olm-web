@@ -9,7 +9,6 @@ use Tests\TestCase;
 
 class ListTeamsTest extends TestCase
 {
-
     public function test_it_can_list_a_users_teams()
     {
         // User joins a team -------------------------

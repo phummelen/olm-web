@@ -3,24 +3,23 @@
 namespace App\Exports;
 
 use App\Models\Photo;
-
 use Illuminate\Bus\Queueable;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-
-use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
 
-class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
+class CreateCSVExport implements FromQuery, WithHeadings, WithMapping
 {
-    use Exportable;
     use Dispatchable;
+    use Exportable;
     use InteractsWithQueue;
     use Queueable;
     use SerializesModels;
+
     public $location_type;
 
     public $location_id;
@@ -37,7 +36,7 @@ class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
     /**
      * Init args
      */
-    public function __construct ($location_type, $location_id, $team_id = null, $user_id = null, array $dateFilter = [])
+    public function __construct($location_type, $location_id, $team_id = null, $user_id = null, array $dateFilter = [])
     {
         $this->location_type = $location_type;
         $this->location_id = $location_id;
@@ -56,7 +55,7 @@ class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
      * Todo - Insert translated string instead of hard-coded 1-language title
      * Todo - When downloading per team, show team member, if privacy true. (We need to create the privacy option first).
      */
-    public function headings (): array
+    public function headings(): array
     {
         $result = [
             'id',
@@ -66,9 +65,9 @@ class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
             'date_uploaded',
             'lat',
             'lon',
-//            'city',
-//            'state',
-//            'country',
+            //            'city',
+            //            'state',
+            //            'country',
             'picked up',
             'address',
             'total_litter',
@@ -89,9 +88,10 @@ class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
     /**
      * Map over query response
      * This will insert the each row under each heading
-     * @param Photo $row
+     *
+     * @param  Photo  $row
      */
-    public function map ($row): array
+    public function map($row): array
     {
         $result = [
             $row->id,
@@ -101,9 +101,9 @@ class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
             $row->created_at,
             $row->lat,
             $row->lon,
-//            $row->city_id, // todo -> name
-//            $row->state_id, // todo -> name
-//            $row->country_id, // todo -> name
+            //            $row->city_id, // todo -> name
+            //            $row->state_id, // todo -> name
+            //            $row->country_id, // todo -> name
             $row->remaining ? 'No' : 'Yes', // column name is "picked up"
             $row->display_name,
             $row->total_litter,
@@ -127,12 +127,11 @@ class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
      * Create a query which we will loop over in the map function
      * no need to use ->get();
      */
-    public function query ()
+    public function query()
     {
         $query = Photo::with(Photo::categories());
 
-        if ($this->dateFilter !== [])
-        {
+        if ($this->dateFilter !== []) {
             $query->whereBetween(
                 $this->dateFilter['column'],
                 [$this->dateFilter['fromDate'], $this->dateFilter['toDate']]
@@ -141,28 +140,27 @@ class CreateCSVExport implements FromQuery, WithMapping, WithHeadings
 
         if ($this->user_id) {
             return $query->where([
-                'user_id' => $this->user_id
+                'user_id' => $this->user_id,
             ]);
         } elseif ($this->team_id) {
             return $query->where([
                 'team_id' => $this->team_id,
-                'verified' => 2
+                'verified' => 2,
             ]);
         } elseif ($this->location_type === 'city') {
             return $query->where([
                 'city_id' => $this->location_id,
-                'verified' => 2
+                'verified' => 2,
             ]);
         } elseif ($this->location_type === 'state') {
             return $query->where([
                 'state_id' => $this->location_id,
-                'verified' => 2
+                'verified' => 2,
             ]);
-        } else
-        {
+        } else {
             return $query->where([
                 'country_id' => $this->location_id,
-                'verified' => 2
+                'verified' => 2,
             ]);
         }
     }

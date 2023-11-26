@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Teams;
 
-use Iterator;
 use App\Models\Teams\Team;
 use App\Models\User\User;
+use Iterator;
 use Tests\TestCase;
 
 class InactivateTeamTest extends TestCase

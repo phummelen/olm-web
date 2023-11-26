@@ -2,19 +2,17 @@
 
 namespace Tests\Feature\Photos;
 
+use App\Models\Photo;
 use App\Models\User\User;
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Storage;
 use Tests\Feature\HasPhotoUploads;
 use Tests\TestCase;
 
-use App\Models\Photo;
-
 class UploadPhotoOnProductionTest extends TestCase
 {
-    use WithoutMiddleware;
     use HasPhotoUploads;
+    use WithoutMiddleware;
 
     protected function setUp(): void
     {
@@ -33,7 +31,7 @@ class UploadPhotoOnProductionTest extends TestCase
 
         Photo::factory()->create([
             'user_id' => $user->id,
-            'datetime' => now()
+            'datetime' => now(),
         ]);
 
         app()->detectEnvironment(function () {
@@ -58,7 +56,7 @@ class UploadPhotoOnProductionTest extends TestCase
 
         Photo::factory()->create([
             'user_id' => $user->id,
-            'datetime' => now()
+            'datetime' => now(),
         ]);
 
         app()->detectEnvironment(function () {
@@ -72,9 +70,9 @@ class UploadPhotoOnProductionTest extends TestCase
         );
 
         $response->assertOk();
-//        $response->assertJson([
-//            'success' => false,
-//            'msg' => "photo-already-uploaded"
-//        ]);
+        //        $response->assertJson([
+        //            'success' => false,
+        //            'msg' => "photo-already-uploaded"
+        //        ]);
     }
 }

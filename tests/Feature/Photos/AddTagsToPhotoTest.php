@@ -4,9 +4,6 @@ namespace Tests\Feature\Photos;
 
 use App\Events\TagsVerifiedByAdmin;
 use App\Models\Litter\Categories\Smoking;
-use App\Models\Location\City;
-use App\Models\Location\Country;
-use App\Models\Location\State;
 use App\Models\Photo;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Event;
@@ -52,9 +49,9 @@ class AddTagsToPhotoTest extends TestCase
             'picked_up' => true,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
-                ]
-            ]
+                    'butts' => 3,
+                ],
+            ],
         ])->assertOk();
 
         // Assert tags are stored correctly ------------
@@ -70,7 +67,7 @@ class AddTagsToPhotoTest extends TestCase
     {
         // User uploads an image -------------------------
         $user = User::factory()->create([
-            'verification_required' => true
+            'verification_required' => true,
         ]);
 
         $this->actingAs($user);
@@ -87,12 +84,12 @@ class AddTagsToPhotoTest extends TestCase
             'picked_up' => true,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
+                    'butts' => 3,
                 ],
                 'alcohol' => [
-                    'beerBottle' => 5
-                ]
-            ]
+                    'beerBottle' => 5,
+                ],
+            ],
         ])->assertOk();
 
         // Assert user and photo info are updated correctly ------------
@@ -125,9 +122,9 @@ class AddTagsToPhotoTest extends TestCase
             'picked_up' => true,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
-                ]
-            ]
+                    'butts' => 3,
+                ],
+            ],
         ]);
 
         $response->assertForbidden();
@@ -137,7 +134,7 @@ class AddTagsToPhotoTest extends TestCase
     public function test_request_photo_id_is_validated()
     {
         $user = User::factory()->create([
-            'verification_required' => true
+            'verification_required' => true,
         ]);
 
         $this->actingAs($user);
@@ -145,7 +142,7 @@ class AddTagsToPhotoTest extends TestCase
         // Missing photo_id -------------------
         $this->postJson('/add-tags', [
             'tags' => ['smoking' => ['butts' => 3]],
-            'picked_up' => false
+            'picked_up' => false,
         ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['photo_id']);
@@ -154,7 +151,7 @@ class AddTagsToPhotoTest extends TestCase
         $this->postJson('/add-tags', [
             'photo_id' => 0,
             'tags' => ['smoking' => ['butts' => 3]],
-            'picked_up' => false
+            'picked_up' => false,
         ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['photo_id']);
@@ -163,7 +160,7 @@ class AddTagsToPhotoTest extends TestCase
         $this->postJson('/add-tags', [
             'photo_id' => Photo::factory()->create()->id,
             'tags' => ['smoking' => ['butts' => 3]],
-            'picked_up' => false
+            'picked_up' => false,
         ])
             ->assertForbidden();
     }
@@ -171,7 +168,7 @@ class AddTagsToPhotoTest extends TestCase
     public function test_request_tags_is_validated()
     {
         $user = User::factory()->create([
-            'verification_required' => true
+            'verification_required' => true,
         ]);
 
         $this->actingAs($user);
@@ -186,7 +183,7 @@ class AddTagsToPhotoTest extends TestCase
         $this->postJson('/add-tags', [
             'photo_id' => $photo->id,
             'tags' => [],
-            'picked_up' => false
+            'picked_up' => false,
         ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['tags']);
@@ -194,8 +191,8 @@ class AddTagsToPhotoTest extends TestCase
         // tags is not an array -------------------
         $this->postJson('/add-tags', [
             'photo_id' => $photo->id,
-            'tags' => "asdf",
-            'picked_up' => false
+            'tags' => 'asdf',
+            'picked_up' => false,
         ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['tags']);
@@ -204,7 +201,7 @@ class AddTagsToPhotoTest extends TestCase
     public function test_request_picked_up_is_validated()
     {
         $user = User::factory()->create([
-            'verification_required' => true
+            'verification_required' => true,
         ]);
 
         $this->actingAs($user);
@@ -227,7 +224,7 @@ class AddTagsToPhotoTest extends TestCase
         $this->postJson('/add-tags', [
             'photo_id' => $photo->id,
             'tags' => ['smoking' => ['butts' => 3]],
-            'picked_up' => 'asdf'
+            'picked_up' => 'asdf',
         ])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['picked_up']);
@@ -239,7 +236,7 @@ class AddTagsToPhotoTest extends TestCase
 
         // User uploads an image -------------------------
         $user = User::factory()->create([
-            'verification_required' => false
+            'verification_required' => false,
         ]);
 
         $this->actingAs($user);
@@ -256,9 +253,9 @@ class AddTagsToPhotoTest extends TestCase
             'picked_up' => true,
             'tags' => [
                 'smoking' => [
-                    'butts' => 3
-                ]
-            ]
+                    'butts' => 3,
+                ],
+            ],
         ])->assertOk();
 
         // Assert event is fired ------------
@@ -281,13 +278,13 @@ class AddTagsToPhotoTest extends TestCase
         /** @var User $user */
         $user = User::factory()->create();
         $this->actingAs($user);
-        $this->post('/submit', ['file' => $this->imageAndAttributes['file'],]);
+        $this->post('/submit', ['file' => $this->imageAndAttributes['file']]);
         $photo = $user->fresh()->photos->last();
-        Redis::del("xp.users");
+        Redis::del('xp.users');
         Redis::del("xp.country.$photo->country_id");
         Redis::del("xp.country.$photo->country_id.state.$photo->state_id");
         Redis::del("xp.country.$photo->country_id.state.$photo->state_id.city.$photo->city_id");
-        $this->assertNull(Redis::zscore("xp.users", $user->id));
+        $this->assertNull(Redis::zscore('xp.users', $user->id));
         $this->assertNull(Redis::zscore("xp.country.$photo->country_id", $user->id));
         $this->assertNull(Redis::zscore("xp.country.$photo->country_id.state.$photo->state_id", $user->id));
         $this->assertNull(Redis::zscore("xp.country.$photo->country_id.state.$photo->state_id.city.$photo->city_id", $user->id));
@@ -296,12 +293,12 @@ class AddTagsToPhotoTest extends TestCase
         $this->post('/add-tags', [
             'photo_id' => $photo->id,
             'picked_up' => false,
-            'tags' => ['smoking' => ['butts' => 3]]
+            'tags' => ['smoking' => ['butts' => 3]],
         ])->assertOk();
 
         // Assert leaderboards are updated ------------
         // 3xp from tags
-        $this->assertSame('3', Redis::zscore("xp.users", $user->id));
+        $this->assertSame('3', Redis::zscore('xp.users', $user->id));
         $this->assertSame('3', Redis::zscore("xp.country.$photo->country_id", $user->id));
         $this->assertSame('3', Redis::zscore("xp.country.$photo->country_id.state.$photo->state_id", $user->id));
         $this->assertSame('3', Redis::zscore("xp.country.$photo->country_id.state.$photo->state_id.city.$photo->city_id", $user->id));

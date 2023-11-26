@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Illuminate\Http\Request;
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class IsAdmin
@@ -11,13 +11,12 @@ class IsAdmin
     /**
      * Handle an incoming request.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return mixed
      */
-    public function handle ($request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        if (Auth::user() && (Auth::user()->hasRole('admin') || Auth::user()->hasRole('superadmin')))
-        {
+        if (Auth::user() && (Auth::user()->hasRole('admin') || Auth::user()->hasRole('superadmin'))) {
             return $next($request);
         }
 

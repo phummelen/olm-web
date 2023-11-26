@@ -1,18 +1,19 @@
-<?php /** @noinspection PhpUndefinedFieldInspection */
+<?php
+
+/** @noinspection PhpUndefinedFieldInspection */
 
 namespace App\Http\Controllers\Bbox;
 
-use Exception;
-use Illuminate\Support\Facades\Log;
 use App\Actions\CalculateTagsDifferenceAction;
 use App\Events\TagsVerifiedByAdmin;
+use App\Http\Controllers\Controller;
 use App\Litterrata;
 use App\Models\AI\Annotation;
 use App\Models\Photo;
-
 use App\Traits\AddTagsTrait;
+use Exception;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 class BoundingBoxController extends Controller
 {
@@ -35,14 +36,13 @@ class BoundingBoxController extends Controller
      *
      * @return array
      */
-    public function create (Request $request)
+    public function create(Request $request)
     {
         $photo = Photo::find($request->photo_id);
 
-        $olm = Litterrata::INSTANCE()->getDecodedJSON();;
+        $olm = Litterrata::INSTANCE()->getDecodedJSON();
 
-        foreach ($request->boxes as $box)
-        {
+        foreach ($request->boxes as $box) {
             $dims = [$box['left'], $box['top'], $box['width'], $box['height']];
 
             $category = $box['category'];
@@ -54,15 +54,13 @@ class BoundingBoxController extends Controller
             $brand_id = null;
             $brand = null;
 
-            if ($box['brand'])
-            {
+            if ($box['brand']) {
                 $brand = $box['brand'];
 
                 $brand_id = $olm->brands->$brand;
             }
 
-            try
-            {
+            try {
                 Annotation::create([
                     'photo_id' => $request->photo_id,
                     'category' => $box['category'],
@@ -78,9 +76,7 @@ class BoundingBoxController extends Controller
                     'area' => ($box['width'] * $box['height']),
                     'added_by' => auth()->user()->id,
                 ]);
-            }
-            catch (Exception $e)
-            {
+            } catch (Exception $e) {
                 Log::info(['BoundingBoxController@create', $e->getMessage()]);
             }
         }
@@ -96,7 +92,7 @@ class BoundingBoxController extends Controller
      *
      * @return array
      */
-    public function index ()
+    public function index()
     {
         $columns = [
             'id',
@@ -114,7 +110,7 @@ class BoundingBoxController extends Controller
             'material_id',
             'brands_id',
             'result_string',
-            'five_hundred_square_filepath'
+            'five_hundred_square_filepath',
         ];
 
         $userId = auth()->user()->id;
@@ -130,12 +126,11 @@ class BoundingBoxController extends Controller
                 'bbox_assigned_to' => $userId,
                 'wrong_tags' => false,
                 'total_litter' => 1,
-                ['five_hundred_square_filepath', '!=', null]
+                ['five_hundred_square_filepath', '!=', null],
             ])->first();
 
         // Or, get the next available photo
-        if (! $photo)
-        {
+        if (! $photo) {
             $photo = Photo::select($columns)
                 ->where([
                     'verified' => 2,
@@ -144,7 +139,7 @@ class BoundingBoxController extends Controller
                     'bbox_assigned_to' => null,
                     'wrong_tags' => false,
                     'total_litter' => 1,
-                    ['five_hundred_square_filepath', '!=', null]
+                    ['five_hundred_square_filepath', '!=', null],
                 ])->first();
 
             // Assign the photo to a user so 2+ users don't load the same photo
@@ -162,7 +157,7 @@ class BoundingBoxController extends Controller
         return [
             'photo' => $photo,
             'totalBoxCount' => $totalBoxCount,
-            'usersBoxCount' => $usersBoxCount
+            'usersBoxCount' => $usersBoxCount,
         ];
     }
 
@@ -171,7 +166,7 @@ class BoundingBoxController extends Controller
      *
      * @return array
      */
-    public function skip (Request $request)
+    public function skip(Request $request)
     {
         $photo = Photo::find($request->photo_id);
 
@@ -189,11 +184,10 @@ class BoundingBoxController extends Controller
      *
      * @return array
      */
-    public function updateTags (Request $request)
+    public function updateTags(Request $request)
     {
         // if Admin
-        if (auth()->user()->can('update tags'))
-        {
+        if (auth()->user()->can('update tags')) {
             $photo = Photo::find($request->photoId);
 
             $this->addTags($request->tags, [], $request->photoId);
@@ -217,7 +211,7 @@ class BoundingBoxController extends Controller
      *
      * @return array
      */
-    public function wrongTags (Request $request)
+    public function wrongTags(Request $request)
     {
         $photo = Photo::find($request->photoId);
 

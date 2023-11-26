@@ -10,10 +10,8 @@ class UploadPhotoAction
 {
     /**
      * Upload photo to a specific disk
-     *
-     *
      */
-    public function run (Image $photo, Carbon $datetime, string $filename, string $disk = 's3'): string
+    public function run(Image $photo, Carbon $datetime, string $filename, string $disk = 's3'): string
     {
         $path = $this->extractPath($datetime, $filename);
 
@@ -28,10 +26,8 @@ class UploadPhotoAction
      * Get the path for the image
      *
      * eg: /yyyy/mm/dd/filepath.png
-     *
-     *
      */
-    protected function extractPath (Carbon $datetime, string $filename): string
+    protected function extractPath(Carbon $datetime, string $filename): string
     {
         // Create dir/filename
         $explode = explode('-', $datetime->format('Y-m-d H:i:s'));
@@ -39,6 +35,6 @@ class UploadPhotoAction
         $m = $explode[1];
         $d = substr($explode[2], 0, 2);
 
-        return $y . '/' . $m . '/' . $d . '/' . $filename;
+        return $y.'/'.$m.'/'.$d.'/'.$filename;
     }
 }

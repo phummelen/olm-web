@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\WorldCup;
 
+use App\Helpers\Get\LocationHelper;
+use App\Http\Controllers\Controller;
+use App\Models\Leaderboard\Leaderboard;
 use App\Models\Littercoin;
 use App\Models\Location\Country;
-use App\Helpers\Get\LocationHelper;
-use App\Models\Leaderboard\Leaderboard;
-
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 
 class GetDataForWorldCupController extends Controller
@@ -24,7 +23,7 @@ class GetDataForWorldCupController extends Controller
      *
      * - Countries array
      */
-    public function __invoke (): array
+    public function __invoke(): array
     {
         $littercoin = Littercoin::count();
 
@@ -47,24 +46,23 @@ class GetDataForWorldCupController extends Controller
                 $q->select('id', 'name', 'username', 'show_name_createdby', 'show_username_createdby', 'created_at', 'updated_at')
                     ->where('show_name_createdby', true)
                     ->orWhere('show_username_createdby', true);
-            }
+            },
         ])
-        ->where('manual_verify', true)
-        ->orderBy('country', 'asc')
-        ->get();
+            ->where('manual_verify', true)
+            ->orderBy('country', 'asc')
+            ->get();
 
         $total_litter = 0;
         $total_photos = 0;
 
-        foreach ($countries as $country)
-        {
+        foreach ($countries as $country) {
             // Get firstUploader (creator) and lastUploader
             // We should be loading this dynamically
             $country = LocationHelper::getCreatorInfo($country);
 
             // Get Leaderboard per country. Should load more and stop when there are 10-max as some users settings may be off.
-//            $leaderboardIds = Redis::zrevrange("xp.country.$country->id", 0, 9, 'withscores');
-//            $country['leaderboard'] = Leaderboard::getLeadersByUserIds($leaderboardIds);
+            //            $leaderboardIds = Redis::zrevrange("xp.country.$country->id", 0, 9, 'withscores');
+            //            $country['leaderboard'] = Leaderboard::getLeadersByUserIds($leaderboardIds);
             $country['leaderboard'] = [];
 
             // Total values
@@ -100,22 +98,22 @@ class GetDataForWorldCupController extends Controller
         } elseif ($total_litter <= 10000) {
             $previousXp = 1000;
             $nextXp = 10000;
-            // 10,000
+        // 10,000
         } elseif ($total_litter <= 100000) {
             $previousXp = 10000;
             // 10,000
             $nextXp = 100000;
-            // 100,000
+        // 100,000
         } elseif ($total_litter <= 250000) {
             $previousXp = 100000;
             // 100,000
             $nextXp = 250000;
-            // 250,000
+        // 250,000
         } elseif ($total_litter <= 500000) {
             $previousXp = 250000;
             // 250,000
             $nextXp = 500000;
-            // 500,000
+        // 500,000
         } elseif ($total_litter <= 1000000) {
             $previousXp = 500000;
             // 250,000
@@ -139,7 +137,7 @@ class GetDataForWorldCupController extends Controller
             'previousXp' => $previousXp,
             'nextXp' => $nextXp,
             'littercoin' => $littercoin,
-            'owed' => 0
+            'owed' => 0,
         ];
     }
 }

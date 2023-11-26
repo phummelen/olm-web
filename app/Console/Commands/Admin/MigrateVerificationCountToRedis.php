@@ -41,13 +41,12 @@ class MigrateVerificationCountToRedis extends Command
     {
         $users = User::where('count_correctly_verified', '>', 0)->get();
 
-        foreach ($users as $user)
-        {
-            $verificationCount = Redis::hincrby("user_verification_count", $user->id, $user->count_correctly_verified);
+        foreach ($users as $user) {
+            $verificationCount = Redis::hincrby('user_verification_count', $user->id, $user->count_correctly_verified);
 
             echo "User_id: $user->id, score: $verificationCount \n";
         }
 
-        echo "Completed.";
+        echo 'Completed.';
     }
 }

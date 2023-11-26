@@ -45,27 +45,23 @@ class RefreshTotalContributors extends Command
      *
      * Note: The user_id will not be duplicated. It will only appear in the set once.
      */
-    public function handle ()
+    public function handle()
     {
         $users = User::where('has_uploaded', 1)->get();
 
-        foreach ($users as $user)
-        {
+        foreach ($users as $user) {
             $countryPhotos = $user->photos()->select('country_id')->distinct()->get();
-            foreach ($countryPhotos as $photo)
-            {
+            foreach ($countryPhotos as $photo) {
                 Redis::sadd("country:$photo->country_id:user_ids", $user->id);
             }
 
             $statePhotos = $user->photos()->select('state_id')->distinct()->get();
-            foreach ($statePhotos as $photo)
-            {
+            foreach ($statePhotos as $photo) {
                 Redis::sadd("state:$photo->state_id:user_ids", $user->id);
             }
 
             $cityPhotos = $user->photos()->select('city_id')->distinct()->get();
-            foreach ($cityPhotos as $photo)
-            {
+            foreach ($cityPhotos as $photo) {
                 Redis::sadd("city:$photo->city_id:user_ids", $user->id);
             }
         }

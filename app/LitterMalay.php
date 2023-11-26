@@ -2,7 +2,8 @@
 
 namespace App;
 
-final class LitterMalay{
+final class LitterMalay
+{
     private $json = '
 {
     "Smoking": {
@@ -626,7 +627,8 @@ final class LitterMalay{
 
     private $jsonDecoded;
 
-    public static function INSTANCE(){
+    public static function INSTANCE()
+    {
         static $inst = null;
         if ($inst === null) {
             $inst = new LitterMalay();
@@ -635,13 +637,16 @@ final class LitterMalay{
         return $inst;
     }
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->jsonDecoded = json_decode((string) $this->json);
     }
 
-    public function getDecodedJSON(){ return $this->jsonDecoded; }
+    public function getDecodedJSON()
+    {
+        return $this->jsonDecoded;
+    }
 }
-
 
 //// USAGE
 

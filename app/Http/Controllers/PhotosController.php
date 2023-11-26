@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Locations\UpdateLeaderboardsForLocationAction;
 use App\Actions\Photos\AddCustomTagsToPhotoAction;
 use App\Actions\Photos\AddTagsToPhotoAction;
 use App\Actions\Photos\DeletePhotoAction;
 use App\Actions\Photos\GetPreviousCustomTagsAction;
-use App\Actions\Locations\UpdateLeaderboardsForLocationAction;
 use App\Events\ImageDeleted;
-use App\Http\Requests\AddTagsRequest;
-use App\Models\User\User;
-
-use App\Models\Photo;
-use Illuminate\Http\Request;
 use App\Events\TagsVerifiedByAdmin;
-
 use App\Helpers\Post\UploadHelper;
-
+use App\Http\Requests\AddTagsRequest;
+use App\Models\Photo;
+use App\Models\User\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class PhotosController extends Controller
@@ -41,9 +38,8 @@ class PhotosController extends Controller
         UploadHelper $uploadHelper,
         AddTagsToPhotoAction $addTagsAction,
         UpdateLeaderboardsForLocationAction $updateLeaderboardsAction,
-        DeletePhotoAction $deletePhotoAction
-    )
-    {
+        DeletePhotoAction $deletePhotoAction,
+    ) {
         $this->uploadHelper = $uploadHelper;
         $this->addTagsAction = $addTagsAction;
         $this->updateLeaderboardsAction = $updateLeaderboardsAction;
@@ -96,13 +92,12 @@ class PhotosController extends Controller
      * If the user is new, we submit the image for verification.
      * If the user is trusted, we can update OLM.
      */
-    public function addTags (AddTagsRequest $request, AddCustomTagsToPhotoAction $customTagsAction)
+    public function addTags(AddTagsRequest $request, AddCustomTagsToPhotoAction $customTagsAction)
     {
         $user = Auth::user();
         $photo = Photo::findOrFail($request->photo_id);
 
-        if ($photo->user_id !== $user->id || $photo->verified > 0)
-        {
+        if ($photo->user_id !== $user->id || $photo->verified > 0) {
             abort(403, 'Forbidden');
         }
 
@@ -115,37 +110,34 @@ class PhotosController extends Controller
 
         $this->updateLeaderboardsAction->run($photo, $user->id, $litterTotals['all'] + $customTagsTotal);
 
-        $photo->remaining = !$request->picked_up;
+        $photo->remaining = ! $request->picked_up;
         $photo->total_litter = $litterTotals['litter'];
 
-        if (!$user->is_trusted)
-        {
+        if (! $user->is_trusted) {
             // Bring the photo to an initial state of verification
             // 0 for testing, 0.1 for production
             // This value can be +/- 0.1 when users vote True or False
             // When verification reaches 1.0, it verified increases from 0 to 1
             $photo->verification = 0.1;
-        }
-        else
-        {
+        } else {
             // the user is trusted. Dispatch event to update OLM.
             $photo->verification = 1;
             $photo->verified = 2;
-            event (new TagsVerifiedByAdmin($photo->id));
+            event(new TagsVerifiedByAdmin($photo->id));
         }
 
         $photo->save();
 
         return [
             'success' => true,
-            'msg' => 'success'
+            'msg' => 'success',
         ];
     }
 
     /**
      * Get unverified photos for tagging
      */
-    public function unverified (GetPreviousCustomTagsAction $previousTagsAction)
+    public function unverified(GetPreviousCustomTagsAction $previousTagsAction)
     {
         /** @var User $user */
         $user = Auth::user();
@@ -153,7 +145,7 @@ class PhotosController extends Controller
         $query = Photo::where([
             'user_id' => $user->id,
             'verified' => 0,
-            'verification' => 0
+            'verification' => 0,
         ]);
 
         // we need to get this before the pagination
@@ -170,7 +162,7 @@ class PhotosController extends Controller
             'photos' => $photos,
             'remaining' => $remaining,
             'total' => $total,
-            'custom_tags' => $previousTagsAction->run($user)
+            'custom_tags' => $previousTagsAction->run($user),
         ];
     }
 }

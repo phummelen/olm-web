@@ -14,7 +14,7 @@ class AddDefaultValueToCountrynameOnCountries extends Migration
     public function up()
     {
         Schema::table('countries', function (Blueprint $table) {
-            $table->string('country')->default('not found')->change();;
+            $table->string('country')->default('not found')->change();
         });
     }
 }

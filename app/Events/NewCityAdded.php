@@ -3,16 +3,15 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Queue\SerializesModels;
 
 class NewCityAdded implements ShouldBroadcast
 {
     use InteractsWithSockets;
     use SerializesModels;
+
     public $city;
 
     public $state;
@@ -34,15 +33,15 @@ class NewCityAdded implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct ($city, $state, $country, $now, $cityId = null, $lat = null, $lon = null, $photoId = null)
+    public function __construct($city, $state, $country, $now, $cityId = null, $lat = null, $lon = null, $photoId = null)
     {
-        $this->city    = $city;
-        $this->state   = $state;
+        $this->city = $city;
+        $this->state = $state;
         $this->country = $country;
-        $this->now     = $now;
-        $this->cityId  = $cityId;
-        $this->lat     = $lat;
-        $this->lon     = $lon;
+        $this->now = $now;
+        $this->cityId = $cityId;
+        $this->lat = $lat;
+        $this->lon = $lon;
         $this->photoId = $photoId;
     }
 

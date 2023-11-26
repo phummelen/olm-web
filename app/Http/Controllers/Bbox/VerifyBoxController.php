@@ -21,7 +21,7 @@ class VerifyBoxController extends Controller
      *
      * @return array
      */
-    public function index ()
+    public function index()
     {
         $userId = auth()->user()->id;
 
@@ -31,18 +31,17 @@ class VerifyBoxController extends Controller
                 'verified' => 3,
                 'bbox_verification_assigned_to' => $userId,
                 'bbox_skipped' => false,
-                ['five_hundred_square_filepath', '!=', null]
+                ['five_hundred_square_filepath', '!=', null],
             ])->first();
 
         // orWhere not working?
-        if (! $photo)
-        {
+        if (! $photo) {
             $photo = Photo::with('boxes')
                 ->where([
                     'verified' => 3,
                     'bbox_verification_assigned_to' => null,
                     'bbox_skipped' => false,
-                    ['five_hundred_square_filepath', '!=', null]
+                    ['five_hundred_square_filepath', '!=', null],
                 ])->first();
         }
 
@@ -56,18 +55,18 @@ class VerifyBoxController extends Controller
         // load the tags for the image
         $photo->tags();
 
-//        $totalBoxCount = 0;
-//        if ($photo['boxes'])
-//        {
-//            $totalBoxCount = $photo['boxes'][0]->id;
-//        }
-//
-//        $usersBoxCount = Photo::where(['verified' => 4, 'verified_by' => $userId])->count();
+        //        $totalBoxCount = 0;
+        //        if ($photo['boxes'])
+        //        {
+        //            $totalBoxCount = $photo['boxes'][0]->id;
+        //        }
+        //
+        //        $usersBoxCount = Photo::where(['verified' => 4, 'verified_by' => $userId])->count();
 
         return [
             'photo' => $photo,
-//            'totalBoxCount' => $totalBoxCount,
-//            'usersBoxCount' => $usersBoxCount
+            //            'totalBoxCount' => $totalBoxCount,
+            //            'usersBoxCount' => $usersBoxCount
         ];
     }
 
@@ -80,7 +79,7 @@ class VerifyBoxController extends Controller
      *
      * @return array
      */
-    public function update (Request $request)
+    public function update(Request $request)
     {
         $photo = Photo::find($request->photo_id);
 
@@ -90,16 +89,13 @@ class VerifyBoxController extends Controller
         $userAddedBoxes = User::where('id', $photo->bbox_assigned_to)->first();
         $userDoingVerification = auth()->user();
 
-        $olm = Litterrata::INSTANCE()->getDecodedJSON();;
+        $olm = Litterrata::INSTANCE()->getDecodedJSON();
 
-        foreach ($request->boxes as $box)
-        {
-            if ($request->hasChanged)
-            {
+        foreach ($request->boxes as $box) {
+            if ($request->hasChanged) {
                 $annotation = Annotation::where(['id' => $box['id'], 'photo_id' => $photo->id])->first();
 
-                if (! $annotation)
-                {
+                if (! $annotation) {
                     $annotation = new Annotation();
                     $annotation->photo_id = $photo->id;
                 }
@@ -115,8 +111,7 @@ class VerifyBoxController extends Controller
                 $brand_id = null;
                 $brand = null;
 
-                if ($box['brand'])
-                {
+                if ($box['brand']) {
                     $brand = $box['brand'];
 
                     $brand_id = $olm->brands->$brand;
@@ -143,12 +138,11 @@ class VerifyBoxController extends Controller
             // we need to make sure Littercoin is rewarded at 100 and additional counts are rewarded
             $userAddedBoxes->bbox_verification_count++;
 
-            if ($userAddedBoxes->bbox_verification_count === 100)
-            {
+            if ($userAddedBoxes->bbox_verification_count === 100) {
                 $userAddedBoxes->bbox_verification_count = 0;
                 $userAddedBoxes->littercoin_owed++;
 
-                event (new LittercoinMined($userAddedBoxes->id, 'verified-box'));
+                event(new LittercoinMined($userAddedBoxes->id, 'verified-box'));
             }
 
             $userAddedBoxes->save();

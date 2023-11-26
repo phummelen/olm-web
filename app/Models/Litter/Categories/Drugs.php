@@ -21,7 +21,7 @@ class Drugs extends LitterCategory
             'fullpackage',
             'baggie',
             'crack_pipes',
-            'drugsOther'
+            'drugsOther',
         ];
     }
 }

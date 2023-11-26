@@ -2,8 +2,8 @@
 
 namespace Actions;
 
-use Iterator;
 use App\Actions\CalculateTagsDifferenceAction;
+use Iterator;
 use Tests\TestCase;
 
 class CalculateTagsDifferenceActionTest extends TestCase
@@ -16,7 +16,7 @@ class CalculateTagsDifferenceActionTest extends TestCase
             'removed' => [],
             'added' => ['smoking' => ['butts' => 3]],
             'removedUserXp' => 0,
-            'rewardedAdminXp' => 1
+            'rewardedAdminXp' => 1,
         ];
         yield 'increment user tag' => [
             'oldTags' => ['smoking' => ['butts' => 3]],
@@ -24,7 +24,7 @@ class CalculateTagsDifferenceActionTest extends TestCase
             'removed' => ['smoking' => ['butts' => 3]],
             'added' => ['smoking' => ['butts' => 10]],
             'removedUserXp' => 0,
-            'rewardedAdminXp' => 1
+            'rewardedAdminXp' => 1,
         ];
         yield 'decrement user tag' => [
             'oldTags' => ['smoking' => ['butts' => 3]],
@@ -32,7 +32,7 @@ class CalculateTagsDifferenceActionTest extends TestCase
             'removed' => ['smoking' => ['butts' => 3]],
             'added' => ['smoking' => ['butts' => 1]],
             'removedUserXp' => 2,
-            'rewardedAdminXp' => 1
+            'rewardedAdminXp' => 1,
         ];
         yield 'delete user tag' => [
             'oldTags' => ['smoking' => ['butts' => 3]],
@@ -40,7 +40,7 @@ class CalculateTagsDifferenceActionTest extends TestCase
             'removed' => ['smoking' => ['butts' => 3]],
             'added' => ['smoking' => ['lighters' => 5]],
             'removedUserXp' => 3,
-            'rewardedAdminXp' => 2
+            'rewardedAdminXp' => 2,
         ];
         yield 'add, delete, incr, decr tags' => [
             'oldTags' => ['smoking' => ['butts' => 3, 'lighters' => 1]],
@@ -48,7 +48,7 @@ class CalculateTagsDifferenceActionTest extends TestCase
             'removed' => ['smoking' => ['butts' => 3, 'lighters' => 1]],
             'added' => ['smoking' => ['butts' => 1], 'alcohol' => ['beerBottle' => 2]],
             'removedUserXp' => 3,
-            'rewardedAdminXp' => 3
+            'rewardedAdminXp' => 3,
         ];
     }
 
@@ -60,7 +60,7 @@ class CalculateTagsDifferenceActionTest extends TestCase
             'removed' => [],
             'added' => ['smokingggg'],
             'removedUserXp' => 0,
-            'rewardedAdminXp' => 1
+            'rewardedAdminXp' => 1,
         ];
         yield 'delete user tag' => [
             'oldTags' => ['smokingggg', 'testtt'],
@@ -68,7 +68,7 @@ class CalculateTagsDifferenceActionTest extends TestCase
             'removed' => ['smokingggg', 'testtt'],
             'added' => ['lighters'],
             'removedUserXp' => 2,
-            'rewardedAdminXp' => 3
+            'rewardedAdminXp' => 3,
         ];
     }
 

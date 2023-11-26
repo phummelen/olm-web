@@ -35,7 +35,7 @@ class PhotoTest extends TestCase
                 'food_id', 'softdrinks_id', 'dumping_id', 'sanitary_id', 'industrial_id', 'other_id', 'coastal_id',
                 'art_id', 'brands_id', 'trashdog_id', 'dogshit_id', 'platform', 'bounding_box', 'geohash', 'team_id',
                 'bbox_skipped', 'skipped_by', 'bbox_assigned_to', 'wrong_tags', 'wrong_tags_by',
-                'bbox_verification_assigned_to', 'five_hundred_square_filepath'
+                'bbox_verification_assigned_to', 'five_hundred_square_filepath',
             ])
         );
     }
@@ -58,7 +58,7 @@ class PhotoTest extends TestCase
     {
         $photo = Photo::factory()->create();
 
-        $this->assertEquals(!$photo->remaining, $photo->picked_up);
+        $this->assertEquals(! $photo->remaining, $photo->picked_up);
     }
 
     public function test_a_photo_has_many_boxes()
@@ -66,7 +66,7 @@ class PhotoTest extends TestCase
         $photo = Photo::factory()->create();
 
         $annotation = Annotation::factory()->create([
-            'photo_id' => $photo->id
+            'photo_id' => $photo->id,
         ]);
 
         $this->assertInstanceOf(Collection::class, $photo->boxes);
@@ -92,7 +92,7 @@ class PhotoTest extends TestCase
                 'dogshit',
                 'art',
                 'material',
-                'other'
+                'other',
             ],
             Photo::categories()
         );
@@ -110,13 +110,13 @@ class PhotoTest extends TestCase
         $food = Food::factory()->create();
         $photo = Photo::factory()->create([
             'smoking_id' => $smoking->id,
-            'food_id' => $food->id
+            'food_id' => $food->id,
         ]);
 
         $photo->translate();
 
         $this->assertSame(
-            $smoking->translate() . $food->translate(),
+            $smoking->translate().$food->translate(),
             $photo->result_string
         );
     }
@@ -127,7 +127,7 @@ class PhotoTest extends TestCase
         $brands = Brand::factory(['walkers' => 1])->create();
         $photo = Photo::factory()->create([
             'smoking_id' => $smoking->id,
-            'brands_id' => $brands->id
+            'brands_id' => $brands->id,
         ]);
 
         $photo->total();
@@ -139,14 +139,14 @@ class PhotoTest extends TestCase
     public function test_a_photo_removes_empty_tags_from_categories()
     {
         $smoking = Smoking::factory([
-            'butts' => 1, 'lighters' => null
+            'butts' => 1, 'lighters' => null,
         ])->create();
         $brands = Brand::factory([
-            'walkers' => 1, 'amazon' => null
+            'walkers' => 1, 'amazon' => null,
         ])->create();
         $photo = Photo::factory()->create([
             'smoking_id' => $smoking->id,
-            'brands_id' => $brands->id
+            'brands_id' => $brands->id,
         ]);
 
         // As a sanity check, we first test that
@@ -178,7 +178,7 @@ class PhotoTest extends TestCase
     {
         $user = User::factory()->create();
         $photo = Photo::factory()->create([
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         $this->assertInstanceOf(User::class, $photo->user);
@@ -189,7 +189,7 @@ class PhotoTest extends TestCase
     {
         $smoking = Smoking::factory()->create();
         $photo = Photo::factory()->create([
-            'smoking_id' => $smoking->id
+            'smoking_id' => $smoking->id,
         ]);
 
         $this->assertInstanceOf(Smoking::class, $photo->smoking);
@@ -200,7 +200,7 @@ class PhotoTest extends TestCase
     {
         $food = Food::factory()->create();
         $photo = Photo::factory()->create([
-            'food_id' => $food->id
+            'food_id' => $food->id,
         ]);
 
         $this->assertInstanceOf(Food::class, $photo->food);
@@ -211,7 +211,7 @@ class PhotoTest extends TestCase
     {
         $coffee = Coffee::factory()->create();
         $photo = Photo::factory()->create([
-            'coffee_id' => $coffee->id
+            'coffee_id' => $coffee->id,
         ]);
 
         $this->assertInstanceOf(Coffee::class, $photo->coffee);
@@ -222,7 +222,7 @@ class PhotoTest extends TestCase
     {
         $softdrinks = SoftDrinks::factory()->create();
         $photo = Photo::factory()->create([
-            'softdrinks_id' => $softdrinks->id
+            'softdrinks_id' => $softdrinks->id,
         ]);
 
         $this->assertInstanceOf(SoftDrinks::class, $photo->softdrinks);
@@ -233,7 +233,7 @@ class PhotoTest extends TestCase
     {
         $alcohol = Alcohol::factory()->create();
         $photo = Photo::factory()->create([
-            'alcohol_id' => $alcohol->id
+            'alcohol_id' => $alcohol->id,
         ]);
 
         $this->assertInstanceOf(Alcohol::class, $photo->alcohol);
@@ -244,7 +244,7 @@ class PhotoTest extends TestCase
     {
         $sanitary = Sanitary::factory()->create();
         $photo = Photo::factory()->create([
-            'sanitary_id' => $sanitary->id
+            'sanitary_id' => $sanitary->id,
         ]);
 
         $this->assertInstanceOf(Sanitary::class, $photo->sanitary);
@@ -255,7 +255,7 @@ class PhotoTest extends TestCase
     {
         $dumping = Dumping::factory()->create();
         $photo = Photo::factory()->create([
-            'dumping_id' => $dumping->id
+            'dumping_id' => $dumping->id,
         ]);
 
         $this->assertInstanceOf(Dumping::class, $photo->dumping);
@@ -266,7 +266,7 @@ class PhotoTest extends TestCase
     {
         $other = Other::factory()->create();
         $photo = Photo::factory()->create([
-            'other_id' => $other->id
+            'other_id' => $other->id,
         ]);
 
         $this->assertInstanceOf(Other::class, $photo->other);
@@ -277,7 +277,7 @@ class PhotoTest extends TestCase
     {
         $industrial = Industrial::factory()->create();
         $photo = Photo::factory()->create([
-            'industrial_id' => $industrial->id
+            'industrial_id' => $industrial->id,
         ]);
 
         $this->assertInstanceOf(Industrial::class, $photo->industrial);
@@ -288,7 +288,7 @@ class PhotoTest extends TestCase
     {
         $coastal = Coastal::factory()->create();
         $photo = Photo::factory()->create([
-            'coastal_id' => $coastal->id
+            'coastal_id' => $coastal->id,
         ]);
 
         $this->assertInstanceOf(Coastal::class, $photo->coastal);
@@ -299,7 +299,7 @@ class PhotoTest extends TestCase
     {
         $art = Art::factory()->create();
         $photo = Photo::factory()->create([
-            'art_id' => $art->id
+            'art_id' => $art->id,
         ]);
 
         $this->assertInstanceOf(Art::class, $photo->art);
@@ -310,7 +310,7 @@ class PhotoTest extends TestCase
     {
         $brands = Brand::factory()->create();
         $photo = Photo::factory()->create([
-            'brands_id' => $brands->id
+            'brands_id' => $brands->id,
         ]);
 
         $this->assertInstanceOf(Brand::class, $photo->brands);
@@ -321,7 +321,7 @@ class PhotoTest extends TestCase
     {
         $trashdog = TrashDog::factory()->create();
         $photo = Photo::factory()->create([
-            'trashdog_id' => $trashdog->id
+            'trashdog_id' => $trashdog->id,
         ]);
 
         $this->assertInstanceOf(TrashDog::class, $photo->trashdog);
@@ -332,7 +332,7 @@ class PhotoTest extends TestCase
     {
         $dogshit = Dogshit::factory()->create();
         $photo = Photo::factory()->create([
-            'dogshit_id' => $dogshit->id
+            'dogshit_id' => $dogshit->id,
         ]);
 
         $this->assertInstanceOf(Dogshit::class, $photo->dogshit);

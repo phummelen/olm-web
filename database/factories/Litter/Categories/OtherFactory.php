@@ -22,7 +22,7 @@ class OtherFactory extends Factory
     public function definition()
     {
         return [
-            'random_litter' => $this->faker->randomDigit
+            'random_litter' => $this->faker->randomDigit,
         ];
     }
 }

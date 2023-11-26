@@ -57,7 +57,7 @@ class GenerateSitemap extends Command
     {
         $site = 'https://openlittermap.com/';
 
-        return Url::create($site . $url)
+        return Url::create($site.$url)
             ->setLastModificationDate(Carbon::yesterday())
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
             ->setPriority(1);
@@ -78,7 +78,7 @@ class GenerateSitemap extends Command
             ->where([
                 'manual_verify' => 1,
                 ['total_litter', '>', 0],
-                ['total_contributors', '>', 0]
+                ['total_contributors', '>', 0],
             ])
             ->get();
 
@@ -93,7 +93,7 @@ class GenerateSitemap extends Command
             ->where([
                 ['total_images', '>', 0],
                 ['total_litter', '>', 0],
-                ['total_contributors', '>', 0]
+                ['total_contributors', '>', 0],
             ])
             ->get();
 

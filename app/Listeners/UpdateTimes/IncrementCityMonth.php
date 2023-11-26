@@ -2,9 +2,8 @@
 
 namespace App\Listeners\UpdateTimes;
 
-use App\Models\Location\City;
-use Carbon\Carbon;
 use App\Events\Photo\IncrementPhotoMonth;
+use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Redis;
 
@@ -15,7 +14,7 @@ class IncrementCityMonth implements ShouldQueue
      *
      * @return void
      */
-    public function handle (IncrementPhotoMonth $event)
+    public function handle(IncrementPhotoMonth $event)
     {
         $formattedDate = Carbon::parse($event->created_at)->format('m-y');
 
@@ -24,19 +23,15 @@ class IncrementCityMonth implements ShouldQueue
         // Part 2 - Update the total photos from all months
         $exists = Redis::hexists("totalppm:city:$event->city_id", $formattedDate);
 
-        if ($exists)
-        {
+        if ($exists) {
             // 2.1 - Update total redis count
             Redis::hincrby("totalppm:city:$event->city_id", $formattedDate, 1);
-        }
-        else
-        {
+        } else {
             $previousMonth = Carbon::parse($event->created_at)->subMonth()->format('m-y');
 
             $value = Redis::hget("totalppm:city:$event->city_id", $previousMonth);
 
-            if ($value)
-            {
+            if ($value) {
                 Redis::hincrby("totalppm:city:$event->city_id", $formattedDate, $value + 1);
             }
         }

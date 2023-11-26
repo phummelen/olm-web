@@ -22,10 +22,10 @@ Broadcast::channel('App.User.{id}', function ($user, $id) {
 // 	return true;
 // });
 
-Broadcast::channel('home', function (){
+Broadcast::channel('home', function () {
     return true;
 });
 
-Broadcast::channel('main', function (){
+Broadcast::channel('main', function () {
     return true;
 });

@@ -28,7 +28,7 @@ class CityFactory extends Factory
             'created_by' => User::factory()->create(),
             'city' => $this->faker->city,
             'country_id' => Country::factory()->create(),
-            'state_id' => State::factory()->create()
+            'state_id' => State::factory()->create(),
         ];
     }
 }

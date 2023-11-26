@@ -15,7 +15,7 @@ class DeletePhotoAction
      * or has been partially uploaded, in which case there's nothing to delete.
      * That's why we're not throwing an exception here
      */
-    public function run (Photo $photo)
+    public function run(Photo $photo)
     {
         if ($photo->filename) {
             $this->deletePhoto($photo->filename, 's3');
@@ -29,7 +29,7 @@ class DeletePhotoAction
     /**
      * Delete a photo from a specified disk
      */
-    protected function deletePhoto (string $filename, string $disk) :void
+    protected function deletePhoto(string $filename, string $disk): void
     {
         $path = str_replace(
             rtrim((string) Storage::disk($disk)->url('/'), '/'),

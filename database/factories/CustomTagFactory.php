@@ -16,7 +16,7 @@ class CustomTagFactory extends Factory
     {
         return [
             'photo_id' => Photo::factory(),
-            'tag' => $this->faker->word
+            'tag' => $this->faker->word,
         ];
     }
 }

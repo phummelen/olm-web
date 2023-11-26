@@ -4,17 +4,18 @@ namespace App\Events;
 
 use App\Models\User\User;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\SerializesModels;
 use Illuminate\Foundation\Events\Dispatchable;
-use Illuminate\Broadcasting\InteractsWithSockets;
+use Illuminate\Queue\SerializesModels;
 
 class ImageDeleted implements ShouldBroadcast, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     /** @var User */
     public $user;
 
@@ -33,7 +34,7 @@ class ImageDeleted implements ShouldBroadcast, ShouldQueue
      *
      * @return void
      */
-    public function __construct (User $user, int $countryId, int $stateId, int $cityId, ?int $teamId)
+    public function __construct(User $user, int $countryId, int $stateId, int $cityId, ?int $teamId)
     {
         $this->user = $user;
         $this->countryId = $countryId;
@@ -46,7 +47,7 @@ class ImageDeleted implements ShouldBroadcast, ShouldQueue
     /**
      * Get the channels the event should broadcast on.
      */
-    public function broadcastOn (): Channel
+    public function broadcastOn(): Channel
     {
         return new Channel('main');
     }

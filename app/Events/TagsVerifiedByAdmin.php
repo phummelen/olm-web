@@ -7,15 +7,16 @@ use App\Models\User\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class TagsVerifiedByAdmin implements ShouldBroadcast, ShouldQueue
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     // photo relationships
     public $photo_id;
 
@@ -43,7 +44,7 @@ class TagsVerifiedByAdmin implements ShouldBroadcast, ShouldQueue
     // total per category, or total per brand
     public $total_litter_per_category = [];
 
-     // smoking => 5, alcohol => 1
+    // smoking => 5, alcohol => 1
     public $total_litter_per_brand = []; // mcd => 1, starbucks => 2
 
     /** @var bool */
@@ -56,7 +57,7 @@ class TagsVerifiedByAdmin implements ShouldBroadcast, ShouldQueue
      *
      * Initialise this event class, which all Listeners can use.
      */
-    public function __construct ($photo_id)
+    public function __construct($photo_id)
     {
         $photo = Photo::find($photo_id);
 
@@ -75,18 +76,13 @@ class TagsVerifiedByAdmin implements ShouldBroadcast, ShouldQueue
         // Count the total category values on this photo
         // We will use this data to update the total category values...
         // for each Country, State and City the photo was uploaded from
-        foreach ($categories as $category)
-        {
-            if ($photo->$category)
-            {
-                if ($category === "brands")
-                {
+        foreach ($categories as $category) {
+            if ($photo->$category) {
+                if ($category === 'brands') {
                     $this->total_brands = $photo->brands->total();
 
-                    foreach ($brands as $brand)
-                    {
-                        if ($photo->brands->$brand)
-                        {
+                    foreach ($brands as $brand) {
+                        if ($photo->brands->$brand) {
                             // This parent class will hold each brand total
                             // and use it to update each listener
                             $this->total_litter_per_brand[$brand] = $photo->brands->$brand;
@@ -94,8 +90,7 @@ class TagsVerifiedByAdmin implements ShouldBroadcast, ShouldQueue
                     }
                 }
                 // Don't include brands in total_litter. We keep total_brands separate.
-                else
-                {
+                else {
                     $categoryTotal = $photo->$category->total();
 
                     // This parent class will hold each category total

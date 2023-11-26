@@ -31,8 +31,8 @@ class UploadPhotoWithOrWithoutTagsRequest extends FormRequest
             'picked_up' => 'nullable|boolean',
 
             // Note: on API upload, custom tags are encoded as strings
-//            'custom_tags' => 'sometimes|array|max:3',
-//            'custom_tags.*' => 'sometimes|distinct:ignore_case|min:3|max:100'
+            //            'custom_tags' => 'sometimes|array|max:3',
+            //            'custom_tags.*' => 'sometimes|distinct:ignore_case|min:3|max:100'
         ];
     }
 }

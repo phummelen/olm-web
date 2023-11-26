@@ -6,7 +6,6 @@ use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class NewUserRegMail extends Mailable
 {
@@ -24,11 +23,10 @@ class NewUserRegMail extends Mailable
      *
      * @return void
      */
-    public function __construct ($user)
+    public function __construct($user)
     {
         $this->user = $user;
     }
-
 
     /**
      * Build the message.
@@ -41,7 +39,7 @@ class NewUserRegMail extends Mailable
             ->subject('Confirm your email on OpenLitterMap')
             ->view('auth.emails.confirm')
             ->with([
-                'token' => $this->user->token
+                'token' => $this->user->token,
             ]);
     }
 }

@@ -2,13 +2,13 @@
 
 namespace Tests\Feature\Api;
 
-use Iterator;
 use App\Actions\Photos\DeletePhotoAction;
 use App\Events\ImageUploaded;
 use App\Events\Photo\IncrementPhotoMonth;
 use App\Models\Location\City;
 use App\Models\Location\Country;
 use App\Models\Location\State;
+use App\Models\Photo;
 use App\Models\Teams\Team;
 use App\Models\User\User;
 use Illuminate\Http\UploadedFile;
@@ -17,10 +17,9 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
+use Iterator;
 use Tests\Feature\HasPhotoUploads;
 use Tests\TestCase;
-
-use App\Models\Photo;
 
 class UploadPhotoTest extends TestCase
 {
@@ -46,7 +45,7 @@ class UploadPhotoTest extends TestCase
 
         $user = User::factory()->create([
             'active_team' => Team::factory(),
-            'items_remaining' => 0
+            'items_remaining' => 0,
         ]);
 
         $this->actingAs($user, 'api');
@@ -115,7 +114,7 @@ class UploadPhotoTest extends TestCase
                     $e->countryId === $this->getCountryId() &&
                     $e->stateId === $this->getStateId() &&
                     $e->cityId === $this->getCityId() &&
-                    $e->isUserVerified === !$user->verification_required;
+                    $e->isUserVerified === ! $user->verification_required;
             }
         );
 
@@ -209,11 +208,11 @@ class UploadPhotoTest extends TestCase
         $stateId = State::factory()->create(['state' => $imageAttributes['address']['state'], 'country_id' => $countryId])->id;
         $cityId = City::factory()->create(['city' => $imageAttributes['address']['city'], 'country_id' => $countryId, 'state_id' => $stateId])->id;
 
-        Redis::del("xp.users");
+        Redis::del('xp.users');
         Redis::del("xp.country.$countryId");
         Redis::del("xp.country.$countryId.state.$stateId");
         Redis::del("xp.country.$countryId.state.$stateId.city.$cityId");
-        $this->assertNull(Redis::zscore("xp.users", $user->id));
+        $this->assertNull(Redis::zscore('xp.users', $user->id));
         $this->assertNull(Redis::zscore("xp.country.$countryId", $user->id));
         $this->assertNull(Redis::zscore("xp.country.$countryId.state.$stateId", $user->id));
         $this->assertNull(Redis::zscore("xp.country.$countryId.state.$stateId.city.$cityId", $user->id));
@@ -222,7 +221,7 @@ class UploadPhotoTest extends TestCase
             $this->getApiImageAttributes($imageAttributes)
         );
 
-        $this->assertSame('1', Redis::zscore("xp.users", $user->id));
+        $this->assertSame('1', Redis::zscore('xp.users', $user->id));
         $this->assertSame('1', Redis::zscore("xp.country.$countryId", $user->id));
         $this->assertSame('1', Redis::zscore("xp.country.$countryId.state.$stateId", $user->id));
         $this->assertSame('1', Redis::zscore("xp.country.$countryId.state.$stateId.city.$cityId", $user->id));
@@ -239,7 +238,6 @@ class UploadPhotoTest extends TestCase
         $response->assertRedirect('login');
     }
 
-
     public function validationDataProvider(): Iterator
     {
         yield [
@@ -248,11 +246,11 @@ class UploadPhotoTest extends TestCase
         ];
         yield [
             'fields' => ['photo' => UploadedFile::fake()->image('some.pdf'), 'lat' => 5, 'lon' => 5, 'date' => now()->toDateTimeString()],
-            'errors' => ['photo']
+            'errors' => ['photo'],
         ];
         yield [
             'fields' => ['photo' => 'validImage', 'lat' => 'asdf', 'lon' => 'asdf', 'date' => now()->toDateTimeString()],
-            'errors' => ['lat', 'lon']
+            'errors' => ['lat', 'lon'],
         ];
     }
 
@@ -293,5 +291,4 @@ class UploadPhotoTest extends TestCase
         $imageAttributes = $this->getImageAndAttributes('jpeg');
         $this->post('/api/photos/submit', $this->getApiImageAttributes($imageAttributes))->assertOk();
     }
-
 }

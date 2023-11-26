@@ -43,12 +43,10 @@ class FixDeleteLocations extends Command
     {
         $cities = City::all();
 
-        foreach ($cities as $city)
-        {
+        foreach ($cities as $city) {
             $photoExists = Photo::where('city_id', $city->id)->first();
 
-            if (!$photoExists)
-            {
+            if (! $photoExists) {
                 echo "No photo found for city:id $city->id : $city->city \n";
 
                 $city->delete();
@@ -57,18 +55,15 @@ class FixDeleteLocations extends Command
 
         $states = State::all();
 
-        foreach ($states as $state)
-        {
+        foreach ($states as $state) {
             $photoExists = Photo::where('state_id', $state->id)->first();
 
-            if (!$photoExists)
-            {
+            if (! $photoExists) {
                 echo "No photo found for state:id $state->id : $state->state \n";
 
                 $cityExists = City::where('state_id', $state->id)->first();
 
-                if (!$cityExists)
-                {
+                if (! $cityExists) {
                     $state->delete();
                 }
             }
@@ -76,19 +71,16 @@ class FixDeleteLocations extends Command
 
         $countries = Country::all();
 
-        foreach ($countries as $country)
-        {
+        foreach ($countries as $country) {
             $photoExists = Photo::where('country_id', $country->id)->first();
 
-            if (!$photoExists)
-            {
+            if (! $photoExists) {
                 echo "No photo found for country: $country->id $country->$country ($country->shortcode) \n";
 
                 $cityExists = City::where('country_id', $country->id)->first();
                 $stateExists = State::where('country_id', $country->id)->first();
 
-                if (!$cityExists && !$stateExists)
-                {
+                if (! $cityExists && ! $stateExists) {
                     $country->delete();
                 }
             }

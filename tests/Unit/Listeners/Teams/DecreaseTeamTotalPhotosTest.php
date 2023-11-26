@@ -77,5 +77,4 @@ class DecreaseTeamTotalPhotosTest extends TestCase
             $user->teams->first()->pivot->updated_at->greaterThan($oldUpdatedAt)
         );
     }
-
 }

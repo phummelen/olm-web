@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\User;
 
-use Iterator;
 use App\Models\User\User;
+use Iterator;
 use Tests\TestCase;
 
 class SettingsTest extends TestCase

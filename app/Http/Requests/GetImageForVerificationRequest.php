@@ -6,7 +6,6 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class GetImageForVerificationRequest extends FormRequest
 {
-
     /**
      * Get the validation rules that apply to the request.
      *
@@ -16,7 +15,7 @@ class GetImageForVerificationRequest extends FormRequest
     {
         return [
             'country_id' => 'nullable|exists:countries,id',
-            'skip' => 'nullable|numeric'
+            'skip' => 'nullable|numeric',
         ];
     }
 }

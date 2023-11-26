@@ -2,17 +2,16 @@
 
 namespace App\Mail;
 
-use App\Models\User\User;
 use App\Team;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class NewTeamCreated extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $team;
 
     public $user;
@@ -34,7 +33,6 @@ class NewTeamCreated extends Mailable
      * @return $this
 
      // different emails per team
-
      */
     public function build()
     {
@@ -43,7 +41,7 @@ class NewTeamCreated extends Mailable
             ->view('emails.teams.create')
             ->with([
                 'user' => $this->user->name,
-                'team' => $this->team->name
+                'team' => $this->team->name,
             ]);
     }
 }

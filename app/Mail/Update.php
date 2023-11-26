@@ -2,16 +2,15 @@
 
 namespace App\Mail;
 
-use App\Models\User\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class Update extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $user;
 
     /**
@@ -32,7 +31,7 @@ class Update extends Mailable
     public function build()
     {
         return $this->from('noreply@openlittermap.com')
-                    ->subject('Update #3 - Things are improving. You can help!')
-                    ->view('emails.update3');
+            ->subject('Update #3 - Things are improving. You can help!')
+            ->view('emails.update3');
     }
 }

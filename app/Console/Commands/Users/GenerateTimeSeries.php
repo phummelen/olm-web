@@ -44,9 +44,8 @@ class GenerateTimeSeries extends Command
 
         $users = User::all();
 
-        foreach ($users as $user)
-        {
-            echo "User.id " . $user->id . " \n";
+        foreach ($users as $user) {
+            echo 'User.id '.$user->id." \n";
             $user->photos_per_month = null;
 
             $photosPerMonth = [];
@@ -54,19 +53,18 @@ class GenerateTimeSeries extends Command
             $photos = Photo::select('id', 'user_id', 'datetime')
                 ->where([
                     'verified' => 2,
-                    'user_id' => $user->id
+                    'user_id' => $user->id,
                 ])
                 ->orderBy('datetime', 'asc')
                 ->get();
 
-            $photos = $photos->groupBy(function($val) {
+            $photos = $photos->groupBy(function ($val) {
                 return Carbon::parse($val->datetime)->format('m-y');
             });
 
-            foreach ($photos as $index => $monthlyPhotos)
-            {
-                $month = $months[(int)$substr = substr((string) $index,0,2)];
-                $year = substr((string) $index,2,5);
+            foreach ($photos as $index => $monthlyPhotos) {
+                $month = $months[(int) $substr = substr((string) $index, 0, 2)];
+                $year = substr((string) $index, 2, 5);
                 $photosPerMonth[$month.$year] = $monthlyPhotos->count(); // Mar-17
                 // $total_photos += $monthlyPhotos->count();
             }

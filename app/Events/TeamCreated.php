@@ -14,6 +14,7 @@ class TeamCreated implements ShouldBroadcast
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     public $teamName;
 
     /**
@@ -21,7 +22,7 @@ class TeamCreated implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct ($teamName)
+    public function __construct($teamName)
     {
         $this->teamName = $teamName;
     }

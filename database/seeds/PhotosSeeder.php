@@ -21,7 +21,7 @@ class PhotosSeeder extends Seeder
             Photo::create([
                 'user_id' => $faker->numberBetween(1, 4),
                 //'filename' => $faker->image(public_path('assets/bird-plastic.jpg'), 400, 300, null, false),
-                'filename' => $faker->word . '-' . $faker->randomNumber() . '.jpg',
+                'filename' => $faker->word.'-'.$faker->randomNumber().'.jpg',
                 'model' => $faker->word,
                 'datetime' => $faker->dateTimeThisYear,
                 'verified' => $faker->boolean,

@@ -2,8 +2,8 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Console\Command;
 use App\Models\Photo;
+use Illuminate\Console\Command;
 
 class ResetResultString extends Command
 {

@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Api;
 
-
 use App\Events\ImageDeleted;
 use App\Models\User\User;
 use Illuminate\Support\Facades\Event;
@@ -50,7 +49,7 @@ class DeletePhotoTest extends TestCase
 
         // User then deletes the photo
         $this->delete('/api/photos/delete', [
-            'photoId' => $photo->id
+            'photoId' => $photo->id,
         ])->assertOk();
 
         $user->refresh();
@@ -74,7 +73,7 @@ class DeletePhotoTest extends TestCase
         $photo = $user->fresh()->photos->last();
 
         // User has uploaded an image, so their xp is 1
-        Redis::zadd("xp.users", 1, $user->id);
+        Redis::zadd('xp.users', 1, $user->id);
         Redis::zadd("xp.country.$photo->country_id", 1, $user->id);
         Redis::zadd("xp.country.$photo->country_id.state.$photo->state_id", 1, $user->id);
         Redis::zadd("xp.country.$photo->country_id.state.$photo->state_id.city.$photo->city_id", 1, $user->id);
@@ -83,7 +82,7 @@ class DeletePhotoTest extends TestCase
         $this->delete('/api/photos/delete', ['photoId' => $photo->id])->assertOk();
 
         // Assert leaderboards are updated ------------
-        $this->assertSame('0', Redis::zscore("xp.users", $user->id));
+        $this->assertSame('0', Redis::zscore('xp.users', $user->id));
         $this->assertSame('0', Redis::zscore("xp.country.$photo->country_id", $user->id));
         $this->assertSame('0', Redis::zscore("xp.country.$photo->country_id.state.$photo->state_id", $user->id));
         $this->assertSame('0', Redis::zscore("xp.country.$photo->country_id.state.$photo->state_id.city.$photo->city_id", $user->id));
@@ -108,7 +107,7 @@ class DeletePhotoTest extends TestCase
 
         // User then deletes the photo
         $this->delete('/api/photos/delete', [
-            'photoId' => $photo->id
+            'photoId' => $photo->id,
         ]);
 
         Event::assertDispatched(
@@ -127,7 +126,7 @@ class DeletePhotoTest extends TestCase
     {
         // Unauthenticated users ---------------------
         $response = $this->delete('/api/photos/delete', [
-            'photoId' => 1
+            'photoId' => 1,
         ]);
 
         $response->assertRedirect('login');
@@ -151,7 +150,7 @@ class DeletePhotoTest extends TestCase
         $this->actingAs($anotherUser, 'api');
 
         $response = $this->delete('/api/photos/delete', [
-            'photoId' => $photo->id
+            'photoId' => $photo->id,
         ]);
 
         $response->assertForbidden();
@@ -164,7 +163,7 @@ class DeletePhotoTest extends TestCase
         $this->actingAs($user, 'api');
 
         $response = $this->delete('/api/photos/delete', [
-            'photoId' => 0
+            'photoId' => 0,
         ]);
 
         $response->assertNotFound();

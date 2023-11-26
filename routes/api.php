@@ -1,12 +1,11 @@
 <?php
 
 use App\Models\Littercoin;
-use Illuminate\Support\Facades\Route;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
-Route::group(['prefix' => 'v2', 'middleware' => 'auth:api'], function(){
+Route::group(['prefix' => 'v2', 'middleware' => 'auth:api'], function () {
 
     // Route::get('/user/setup-intent', 'API\UserController@getSetupIntent');
 
@@ -28,7 +27,7 @@ Route::post('add-tags', 'API\AddTagsToUploadedImageController')
     ->middleware('auth:api');
 
 // Check if current token is valid
-Route::post('/validate-token', function(Request $request) {
+Route::post('/validate-token', function (Request $request) {
     return ['message' => 'valid'];
 })->middleware('auth:api');
 

@@ -22,7 +22,7 @@ class SoftDrinksFactory extends Factory
     public function definition()
     {
         return [
-            'waterBottle' => $this->faker->randomDigit
+            'waterBottle' => $this->faker->randomDigit,
         ];
     }
 }

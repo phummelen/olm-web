@@ -5,12 +5,12 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class CustomEmailTemplate extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $user;
 
     /**
@@ -31,10 +31,10 @@ class CustomEmailTemplate extends Mailable
     public function build()
     {
         return $this->from('noreply@openlittermap.com')
-                    ->subject('Thank you for signing up to Open Litter Map')
-                    ->view('auth.emails.confirm')
-                    ->with([
-                        'token' => $this->user->token
-                    ]);
+            ->subject('Thank you for signing up to Open Litter Map')
+            ->view('auth.emails.confirm')
+            ->with([
+                'token' => $this->user->token,
+            ]);
     }
 }

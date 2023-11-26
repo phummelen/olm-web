@@ -5,12 +5,12 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Contracts\Queue\ShouldQueue;
 
 class ChangedEmail extends Mailable
 {
     use Queueable;
     use SerializesModels;
+
     public $user;
 
     /**
@@ -35,7 +35,7 @@ class ChangedEmail extends Mailable
             ->subject('Verify your updated email with us')
             ->view('auth.emails.update')
             ->with([
-                'token' => $this->user->token
+                'token' => $this->user->token,
             ]);
     }
 }

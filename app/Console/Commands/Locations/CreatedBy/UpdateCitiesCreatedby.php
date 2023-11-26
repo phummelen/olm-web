@@ -41,14 +41,12 @@ class UpdateCitiesCreatedby extends Command
     {
         $cities = City::whereNull('created_by')->get();
 
-        foreach ($cities as $city)
-        {
+        foreach ($cities as $city) {
             echo "city $city->id $city->city \n";
 
             $photo = Photo::where('city_id', $city->id)->orderBy('id')->first();
 
-            if ($photo)
-            {
+            if ($photo) {
                 $city->created_by = $photo->user_id;
                 $city->save();
 

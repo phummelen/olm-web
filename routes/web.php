@@ -206,7 +206,7 @@ Route::post('/settings/delete', 'UsersController@destroy');
 // The user can change their Security settings eg name, surname, username visiblity and toggle public profile
 Route::post('/settings/security', [
     'uses' => 'UsersController@updateSecurity',
-    'as'   => 'profile.settings.security'
+    'as' => 'profile.settings.security',
 ]);
 
 // Update the users privacy eg toggle their anonmyity
@@ -263,11 +263,11 @@ Route::get('/user/profile/download', 'User\ProfileController@download');
 Route::get('/emails/unsubscribe/{token}', 'EmailSubController@unsubEmail');
 Route::get('/unsubscribe/{token}', 'UsersController@unsubscribeEmail');
 
-Route::get('/terms', function() {
+Route::get('/terms', function () {
     return view('pages.terms');
 });
 
-Route::get('/privacy', function() {
+Route::get('/privacy', function () {
     return view('pages.privacy');
 });
 
@@ -291,7 +291,6 @@ Route::get('/password/reset', 'HomeController@index')
 Route::get('/password/reset/{token}', 'HomeController@index')
     ->name('password.reset')
     ->middleware('guest');
-
 
 /** PAYMENTS */
 Route::get('/join/{plan?}', 'HomeController@index');
@@ -318,8 +317,6 @@ Route::get('/merchants/get-geojson', 'Littercoin\Merchants\GetMerchantsGeojsonCo
 Route::get('/merchants/get-next-merchant-to-approve', 'Littercoin\Merchants\GetNextMerchantToApproveController');
 
 Route::post('/merchants/upload-photo', 'Merchants\UploadMerchantPhotoController');
-
-
 
 /**
  * ADMIN

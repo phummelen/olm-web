@@ -6,7 +6,8 @@ namespace App;
 // last tag = poo_in_bag => 211
 // Every category could be category -> 1:n
 
-final class Litterrata {
+final class Litterrata
+{
     private $json = '
 {
     "categories": {
@@ -261,7 +262,7 @@ final class Litterrata {
 
     private $jsonDecoded;
 
-    public static function INSTANCE ()
+    public static function INSTANCE()
     {
         static $inst = null;
         if ($inst === null) {
@@ -271,10 +272,13 @@ final class Litterrata {
         return $inst;
     }
 
-    public function __construct ()
+    public function __construct()
     {
         $this->jsonDecoded = json_decode((string) $this->json);
     }
 
-    public function getDecodedJSON(){ return $this->jsonDecoded; }
+    public function getDecodedJSON()
+    {
+        return $this->jsonDecoded;
+    }
 }

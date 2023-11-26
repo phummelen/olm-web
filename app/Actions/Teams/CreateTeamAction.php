@@ -16,7 +16,7 @@ class CreateTeamAction
             'name' => $data['name'],
             'type_id' => $data['team_type'],
             'leader' => $user->id,
-            'identifier' => $data['identifier']
+            'identifier' => $data['identifier'],
         ]);
 
         $this->addUserAsTeamMember($user, $team);

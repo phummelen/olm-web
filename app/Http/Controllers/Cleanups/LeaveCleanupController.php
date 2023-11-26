@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Cleanups;
 
-use Exception;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Models\Cleanups\Cleanup;
 use App\Models\Cleanups\CleanupUser;
-use Illuminate\Http\Request;
+use Exception;
+use Illuminate\Support\Facades\Log;
 
 class LeaveCleanupController extends Controller
 {
@@ -16,15 +15,14 @@ class LeaveCleanupController extends Controller
      *
      * User who created the cleanup should not be able to leave it
      */
-    public function __invoke ($link)
+    public function __invoke($link)
     {
         $cleanup = Cleanup::where('invite_link', $link)->first();
 
-        if (!$cleanup)
-        {
+        if (! $cleanup) {
             return [
                 'success' => false,
-                'msg' => 'not found'
+                'msg' => 'not found',
             ];
         }
 
@@ -34,36 +32,35 @@ class LeaveCleanupController extends Controller
         if ($cleanup->user_id === $user->id) {
             return [
                 'success' => false,
-                'msg' => 'cannot leave'
+                'msg' => 'cannot leave',
             ];
         }
 
         $exists = CleanupUser::where([
             'cleanup_id' => $cleanup->id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ])->first();
 
-        if (!$exists) {
+        if (! $exists) {
             return [
                 'success' => false,
-                'msg' => 'already left'
+                'msg' => 'already left',
             ];
         }
 
         try {
             $cleanup->users()->detach($user);
-        }
-        catch (Exception $exception) {
+        } catch (Exception $exception) {
             Log::info(['LeaveCleanupController', $exception->getMessage()]);
 
             return [
                 'success' => false,
-                'msg' => 'problem leaving cleanup'
+                'msg' => 'problem leaving cleanup',
             ];
         }
 
         return [
-            'success' => true
+            'success' => true,
         ];
     }
 }

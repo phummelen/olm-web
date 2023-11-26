@@ -2,11 +2,10 @@
 
 namespace App\Console\Commands\Tags;
 
+use App\Events\TagsVerifiedByAdmin;
+use App\Models\LitterTags;
 use App\Models\Photo;
 use App\Models\User\User;
-use App\Models\LitterTags;
-use App\Events\TagsVerifiedByAdmin;
-
 use Illuminate\Console\Command;
 
 class AddTagsForAUsersNewPhotos extends Command
@@ -44,12 +43,11 @@ class AddTagsForAUsersNewPhotos extends Command
 
         $photos = Photo::where(['user_id' => $user->id, 'verified' => 0])->get();
 
-        echo "Photos: " . count($photos) . "\n";
+        echo 'Photos: '.count($photos)."\n";
 
         $schema = LitterTags::INSTANCE()->getDecodedJSON();
 
-        foreach ($photos as $photo)
-        {
+        foreach ($photos as $photo) {
             $category = $this->argument('category');
 
             // Column on photos table to make a relationship with current category eg smoking_id
@@ -59,8 +57,7 @@ class AddTagsForAUsersNewPhotos extends Command
             $class = 'App\\Models\\Litter\\Categories\\'.$schema->$category->class;
 
             // Create and Update the relationship between photo + category table
-            if (is_null($photo->$id_table))
-            {
+            if (is_null($photo->$id_table)) {
                 $row = $class::create();
                 $photo->$id_table = $row->id;
                 $photo->save();

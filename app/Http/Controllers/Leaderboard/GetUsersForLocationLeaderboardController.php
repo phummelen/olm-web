@@ -19,7 +19,7 @@ class GetUsersForLocationLeaderboardController
      * - locationType = "country", "state", "city"
      * - locationId = countryId, stateId, cityId
      */
-    public function __invoke (): array
+    public function __invoke(): array
     {
         // Step 1 - Initialise values
         $timeFilter = null;
@@ -27,7 +27,7 @@ class GetUsersForLocationLeaderboardController
         $locationId = null;
 
         // Get the current page
-        $page = (int)request('page', 1);
+        $page = (int) request('page', 1);
         $start = ($page - 1) * self::PER_PAGE;
         $end = $start + self::PER_PAGE - 1;
 
@@ -42,11 +42,10 @@ class GetUsersForLocationLeaderboardController
         }
 
         // Step 3 - Validation
-        if ($timeFilter === null || $locationId === null || $locationType === null)
-        {
+        if ($timeFilter === null || $locationId === null || $locationType === null) {
             return [
                 'success' => false,
-                'msg' => 'missing params'
+                'msg' => 'missing params',
             ];
         }
 
@@ -73,7 +72,7 @@ class GetUsersForLocationLeaderboardController
         $users = User::with(['teams:id,name'])
             ->whereIn('id', $userIds)
             ->get()
-            ->map(function (User $user, $index) use ($start, $timeFilter, $locationType, $locationId) {
+            ->map(function (User $user, $index) use ($timeFilter, $locationType, $locationId) {
 
                 // Get the XP value for the Leaderboard type
                 // Global / all users all time
@@ -81,7 +80,7 @@ class GetUsersForLocationLeaderboardController
                 $params = [
                     'locationType' => $locationType,
                     'locationId' => $locationId,
-                    'timeFilter' => $timeFilter
+                    'timeFilter' => $timeFilter,
                 ];
 
                 $xp = $user->getXpWithParams($params);
@@ -95,7 +94,7 @@ class GetUsersForLocationLeaderboardController
 
                 return [
                     'name' => $user->show_name ? $user->name : '',
-                    'username' => $user->show_username ? ('@' . $user->username) : '',
+                    'username' => $user->show_username ? ('@'.$user->username) : '',
                     'xp' => $xp, // number_format($xp),
                     'global_flag' => $user->global_flag,
                     'social' => empty($user->social_links) ? null : $user->social_links,
@@ -110,7 +109,7 @@ class GetUsersForLocationLeaderboardController
         return [
             'success' => true,
             'users' => $users,
-            'hasNextPage' => $total > $end + 1
+            'hasNextPage' => $total > $end + 1,
         ];
     }
 
@@ -120,20 +119,15 @@ class GetUsersForLocationLeaderboardController
      * - Global leaderboard (All users, all locations, all time)
      * - Per location (UserIds for a Country, State, or City)
      *
-     * @param $timeFilter
-     * @param $start
-     * @param $end
      * @param $locationType "country", "state", "city"
-     * @param $locationId
      */
-    private function getDataForLocationLeaderboard (
+    private function getDataForLocationLeaderboard(
         $timeFilter,
         $start,
         $end,
         $locationType,
-        $locationId
-    ): array
-    {
+        $locationId,
+    ): array {
         $userIds = [];
         $total = 0;
 
@@ -164,7 +158,7 @@ class GetUsersForLocationLeaderboardController
             $total = Redis::zcount("leaderboard:$locationType:$locationId:$year", '-inf', '+inf');
             $userIds = Redis::zrevrange("leaderboard:$locationType:$locationId:$year", $start, $end);
         } elseif ($timeFilter === 'last-year') {
-            $year = now()->year -1;
+            $year = now()->year - 1;
             $total = Redis::zcount("leaderboard:$locationType:$locationId:$year", '-inf', '+inf');
             $userIds = Redis::zrevrange("leaderboard:$locationType:$locationId:$year", $start, $end);
         } elseif ($timeFilter === 'all-time') {

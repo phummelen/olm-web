@@ -14,12 +14,11 @@ abstract class LitterCategory extends Model
     /**
      * Total amount of litter on any litter category model
      */
-    public function total ()
+    public function total()
     {
         $total = 0;
 
-        foreach ($this->types() as $type)
-        {
+        foreach ($this->types() as $type) {
             if ($this->$type) {
                 $total += $this->$type;
             }
@@ -37,22 +36,20 @@ abstract class LitterCategory extends Model
      *
      * and value is the number of litter items for that key
      */
-    public function translate ()
+    public function translate()
     {
         $string = '';
 
-        foreach ($this->types() as $type)
-        {
-            if ($this->$type)
-            {
+        foreach ($this->types() as $type) {
+            if ($this->$type) {
                 $className = $this->table == 'arts' ? 'art' : $this->table;
 
-                $string .= $className . '.' . $type . ' ' . $this->$type . ',';
+                $string .= $className.'.'.$type.' '.$this->$type.',';
             }
         }
 
         return $string;
     }
 
-    public static abstract function types(): array;
+    abstract public static function types(): array;
 }

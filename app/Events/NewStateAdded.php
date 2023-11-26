@@ -3,18 +3,17 @@
 namespace App\Events;
 
 use Illuminate\Broadcasting\Channel;
-use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
-use Illuminate\Broadcasting\PresenceChannel;
-use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\SerializesModels;
 
 class NewStateAdded implements ShouldBroadcast
 {
     use Dispatchable;
     use InteractsWithSockets;
     use SerializesModels;
+
     public $state;
 
     public $country;
@@ -26,7 +25,7 @@ class NewStateAdded implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct ($state, $country, $now)
+    public function __construct($state, $country, $now)
     {
         $this->state = $state;
         $this->country = $country;

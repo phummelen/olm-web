@@ -10,15 +10,15 @@ class HomeController extends Controller
      * The main homepage
      *
      * @auth bool, logged in or guest
+     *
      * @user null, or authenticated user
      */
-    public function index ()
+    public function index()
     {
         $user = null;
         $auth = Auth::check();
 
-        if ($auth)
-        {
+        if ($auth) {
             $user = Auth::user();
             $user->roles;
         }

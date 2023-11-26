@@ -2,14 +2,13 @@
 
 namespace Tests\Feature\Teams;
 
-use Iterator;
 use App\Models\Teams\Team;
 use App\Models\User\User;
+use Iterator;
 use Tests\TestCase;
 
 class ToggleLeaderboardVisibilityTest extends TestCase
 {
-
     public function routeDataProvider(): Iterator
     {
         yield ['/teams/leaderboard/visibility', 'web'];
