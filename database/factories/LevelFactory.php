@@ -5,6 +5,9 @@ namespace Database\Factories;
 use App\Level;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Level>
+ */
 class LevelFactory extends Factory
 {
     /**
@@ -22,8 +25,8 @@ class LevelFactory extends Factory
     public function definition()
     {
         return [
-            'xp' => $this->faker->randomElement([10, 50, 100, 1000, 10000, 100000]),
-            'level' => $this->faker->randomDigit,
+            'xp' => fake()->randomElement([10, 50, 100, 1000, 10000, 100000]),
+            'level' => fake()->randomDigit,
         ];
     }
 }

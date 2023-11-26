@@ -5,6 +5,9 @@ namespace Database\Factories\Litter\Categories;
 use App\Models\Litter\Categories\Brand;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Brand>
+ */
 class BrandFactory extends Factory
 {
     /**
@@ -22,8 +25,8 @@ class BrandFactory extends Factory
     public function definition()
     {
         return [
-            'walkers' => $this->faker->randomDigit,
-            'amazon' => $this->faker->randomDigit,
+            'walkers' => fake()->randomDigit,
+            'amazon' => fake()->randomDigit,
         ];
     }
 }

@@ -6,6 +6,9 @@ use App\Models\Photo;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Photo>
+ */
 class PhotoFactory extends Factory
 {
     /**
@@ -24,11 +27,11 @@ class PhotoFactory extends Factory
     {
         return [
             'user_id' => User::factory()->create(),
-            'filename' => $this->faker->name.$this->faker->fileExtension,
+            'filename' => fake()->name.fake()->fileExtension,
             'model' => 'Unknown',
-            'datetime' => $this->faker->dateTime,
-            'lat' => $this->faker->latitude,
-            'lon' => $this->faker->longitude,
+            'datetime' => fake()->dateTime,
+            'lat' => fake()->latitude,
+            'lon' => fake()->longitude,
         ];
     }
 }

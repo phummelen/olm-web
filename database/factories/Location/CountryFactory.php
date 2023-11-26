@@ -6,6 +6,9 @@ use App\Models\Location\Country;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Country>
+ */
 class CountryFactory extends Factory
 {
     /**
@@ -24,9 +27,9 @@ class CountryFactory extends Factory
     {
         return [
             'created_by' => User::factory()->create(),
-            'country' => $this->faker->country,
-            'shortcode' => $this->faker->countryCode,
-            'slug' => $this->faker->slug,
+            'country' => fake()->country,
+            'shortcode' => fake()->countryCode,
+            'slug' => fake()->slug,
         ];
     }
 }

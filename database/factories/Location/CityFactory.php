@@ -8,6 +8,9 @@ use App\Models\Location\State;
 use App\Models\User\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<City>
+ */
 class CityFactory extends Factory
 {
     /**
@@ -26,7 +29,7 @@ class CityFactory extends Factory
     {
         return [
             'created_by' => User::factory()->create(),
-            'city' => $this->faker->city,
+            'city' => fake()->city,
             'country_id' => Country::factory()->create(),
             'state_id' => State::factory()->create(),
         ];
