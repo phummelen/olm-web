@@ -12,6 +12,7 @@ use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\Config\RectorConfig;
 use Rector\DeadCode\Rector\Assign\RemoveUnusedVariableAssignRector;
 use Rector\Php74\Rector\LNumber\AddLiteralSeparatorToNumberRector;
+use Rector\PHPUnit\CodeQuality\Rector\MethodCall\AssertEqualsOrAssertSameFloatParameterToSpecificMethodsTypeRector;
 use Rector\PHPUnit\Set\PHPUnitSetList;
 use Rector\Set\ValueObject\SetList;
 use RectorLaravel\Set\LaravelSetList;
@@ -51,6 +52,7 @@ return static function (RectorConfig $rectorConfig): void {
         RemoveUnusedVariableAssignRector::class => [
             __DIR__.'/tests',
         ],
+        AssertEqualsOrAssertSameFloatParameterToSpecificMethodsTypeRector::class,
     ]);
 
     // Ensure file system caching is used instead of in-memory.

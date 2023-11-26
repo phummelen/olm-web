@@ -24,7 +24,7 @@ class StripeController extends Controller
      */
     public function delete(Request $request)
     {
-        if ($user = Auth::user()) {
+        if (($user = Auth::user()) !== null) {
             $name = $user->subscriptions->first()->name;
 
             $user->subscription($name)->cancelNow();
@@ -41,7 +41,7 @@ class StripeController extends Controller
      */
     public function resubscribe(Request $request)
     {
-        if ($user = Auth::user()) {
+        if (($user = Auth::user()) !== null) {
             $plan = Plan::where('name', $request->plan)->first()->plan_id;
 
             // create a new subscription and manage multiple subscriptions.
