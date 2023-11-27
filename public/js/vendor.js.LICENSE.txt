@@ -4,92 +4,18 @@
  */
 
 /*!
- * VERSION: 0.3.1
- * DATE: 2018-08-27
- * UPDATES AND DOCS AT: http://greensock.com
+ * GSAP 3.12.2
+ * https://greensock.com
  *
- * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
- * This work is subject to the terms at http://greensock.com/standard-license or for
- * Club GreenSock members, the software agreement that was issued with your membership.
- * 
+ * @license Copyright 2008-2023, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
  * @author: Jack Doyle, jack@greensock.com
- **/
+*/
 
 /*!
- * VERSION: 0.6.1
- * DATE: 2018-08-27
- * UPDATES AND DOCS AT: http://greensock.com
- *
- * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
- * This work is subject to the terms at http://greensock.com/standard-license or for
- * Club GreenSock members, the software agreement that was issued with your membership.
- * 
- * @author: Jack Doyle, jack@greensock.com
- */
-
-/*!
- * VERSION: 1.16.1
- * DATE: 2018-08-27
- * UPDATES AND DOCS AT: http://greensock.com
- *
- * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
- * This work is subject to the terms at http://greensock.com/standard-license or for
- * Club GreenSock members, the software agreement that was issued with your membership.
- * 
- * @author: Jack Doyle, jack@greensock.com
- **/
-
-/*!
- * VERSION: 1.3.9
- * DATE: 2019-05-17
- * UPDATES AND DOCS AT: http://greensock.com
- *
- * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
- * This work is subject to the terms at http://greensock.com/standard-license or for
- * Club GreenSock members, the software agreement that was issued with your membership.
- * 
- * @author: Jack Doyle, jack@greensock.com
- **/
-
-/*!
- * VERSION: 2.1.3
- * DATE: 2019-05-17
- * UPDATES AND DOCS AT: http://greensock.com
- *
- * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
- * This work is subject to the terms at http://greensock.com/standard-license or for
- * Club GreenSock members, the software agreement that was issued with your membership.
- *
- * @author: Jack Doyle, jack@greensock.com
- */
-
-/*!
- * VERSION: 2.1.3
- * DATE: 2019-05-17
- * UPDATES AND DOCS AT: http://greensock.com
- *
- * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
- * This work is subject to the terms at http://greensock.com/standard-license or for
- * Club GreenSock members, the software agreement that was issued with your membership.
- * 
- * @author: Jack Doyle, jack@greensock.com
- **/
-
-/*!
- * VERSION: 2.1.3
- * DATE: 2019-05-17
- * UPDATES AND DOCS AT: http://greensock.com
- *
- * @license Copyright (c) 2008-2019, GreenSock. All rights reserved.
- * This work is subject to the terms at http://greensock.com/standard-license or for
- * Club GreenSock members, the software agreement that was issued with your membership.
- * 
- * @author: Jack Doyle, jack@greensock.com
- */
-
-/*!
- * Vue.js v2.6.11
- * (c) 2014-2019 Evan You
+ * Vue.js v2.7.15
+ * (c) 2014-2023 Evan You
  * Released under the MIT License.
  */
 
@@ -100,7 +26,5 @@
  */
 
 //! moment.js
-
-//! moment.js language configuration
 
 //! moment.js locale configuration
