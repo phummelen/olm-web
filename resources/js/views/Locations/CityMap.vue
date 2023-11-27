@@ -7,7 +7,7 @@ import L from 'leaflet'
 
 // error when importing Turf from '@turf/turf' and using bbox + aggregate
 // https://github.com/Turfjs/turf/issues/1952
-import * as turf from '../../../../public/js/turf.js'
+import * as Turf from '@turf/turf';
 
 import { categories } from '../../extra/categories'
 import { litterkeys } from '../../extra/litterkeys'
@@ -222,10 +222,10 @@ export default {
         aggregate ()
         {
             // Create a bounding box from our set of features
-            let bbox = turf.bbox(this.geojson);
+            let bbox = Turf.bbox(this.geojson);
 
             // Create a hexgrid from our data. This needs to be filtered to only show relevant data.
-            let hexgrid = turf.hexGrid(bbox, this.hex, 'meters');
+            let hexgrid = Turf.hexGrid(bbox, this.hex, 'meters');
 
             // we need to parse here to avoid copying the object as shallow copies
             // see https://github.com/Turfjs/turf/issues/1914
@@ -233,7 +233,7 @@ export default {
 
             // To filter the hexgrid, we need to find hex values with point in polygon and remove 0 values
             // "values" will be appended to the hexgrid
-            return turf.collect(hexgrid, this.geojson, 'total_litter', 'values');
+            return Turf.collect(hexgrid, this.geojson, 'total_litter', 'values');
         },
 
         /**

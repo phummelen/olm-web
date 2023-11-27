@@ -35,7 +35,6 @@
         "eslint-plugin-vue": "^7.3.0",
         "fs": "0.0.1-security",
         "laravel-echo": "^1.8.1",
-        "laravel-permission-to-vuejs": "^3.0.1",
         "leaflet": "^1.7.1",
         "leaflet-timedimension": "^1.1.1",
         "leaflet-webgl-heatmap": "github:xlcrr/leaflet-webgl-heatmap",

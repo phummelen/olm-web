@@ -11,12 +11,10 @@ import VueLocalStorage from 'vue-localstorage';
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import VueToastify from 'vue-toastify';
-// import VueMask from 'v-mask' // needed to cancel some error on CreditCard.vue which we are not yet using
 import VueNumber from 'vue-number-animation';
 import VueEcho from 'vue-echo-laravel';
 import Buefy from 'buefy';
 import fullscreen from 'vue-fullscreen';
-import LaravelPermissionToVueJS from 'laravel-permission-to-vuejs';
 import VueImg from 'v-img';
 import VueTypedJs from 'vue-typed-js'
 
@@ -37,7 +35,6 @@ Vue.use(VueToastify, {
 Vue.use(VueNumber);
 Vue.use(VueEcho, window.Echo);
 Vue.use(fullscreen);
-Vue.use(LaravelPermissionToVueJS);
 Vue.use(VueImg);
 Vue.use(VueTypedJs);
 
@@ -45,6 +42,57 @@ Vue.use(VueTypedJs);
 Vue.filter('commas', value => {
     return parseInt(value).toLocaleString();
 });
+
+// Vue + Laravel Permissions
+Vue.prototype.can = function(value){
+    var permissions = window.Laravel.jsPermissions.permissions;
+    var _return = false;
+    if(!Array.isArray(permissions)){
+        return false;
+    }
+    if(value.includes('|')){
+        value.split('|').forEach(function (item) {
+            if(permissions.includes(item.trim())){
+                _return = true;
+            }
+        });
+    }else if(value.includes('&')){
+        _return = true;
+        value.split('&').forEach(function (item) {
+            if(!permissions.includes(item.trim())){
+                _return = false;
+            }
+        });
+    }else{
+        _return = permissions.includes(value.trim());
+    }
+    return _return;
+}
+
+Vue.prototype.is = function(value){
+    var roles = window.Laravel.jsPermissions.roles;
+    var _return = false;
+    if(!Array.isArray(roles)){
+        return false;
+    }
+    if(value.includes('|')){
+        value.split('|').forEach(function (item) {
+            if(roles.includes(item.trim())){
+                _return = true;
+            }
+        });
+    }else if(value.includes('&')){
+        _return = true;
+        value.split('&').forEach(function (item) {
+            if(!roles.includes(item.trim())){
+                _return = false;
+            }
+        });
+    }else{
+        _return = roles.includes(value.trim());
+    }
+    return _return;
+}
 
 const vm = new Vue({
     el: '#app',

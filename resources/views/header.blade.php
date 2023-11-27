@@ -50,4 +50,7 @@
             transform: rotate(90deg);
         }
     </style>
+
+    @vite('resources/js/app.js')
+
 </head>

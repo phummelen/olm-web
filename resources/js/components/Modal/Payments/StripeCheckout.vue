@@ -55,7 +55,7 @@ export default {
             number: false,
             expiry: false,
             cvc: false,
-            stripe_key: process.env.VITE_STRIPE_KEY,
+            stripe_key: import.meta.env.VITE_STRIPE_KEY,
             options: {
                 "base": {
                     "iconColor": "#c4f0ff",

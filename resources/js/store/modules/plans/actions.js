@@ -33,7 +33,7 @@ export const actions = {
                 // });
 
                 // For now - stripes checkout page
-                const stripe = Stripe(process.env.MIX_STRIPE_PUBLIC_KEY);
+                const stripe = Stripe(import.meta.env.MIX_STRIPE_PUBLIC_KEY);
 
                 let successUrl = window.location.href + '&status=success';
                 let cancelUrl = window.location.href + '&status=error';

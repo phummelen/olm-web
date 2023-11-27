@@ -173,7 +173,7 @@ export default {
          * Key to return for google-recaptcha
          */
         computedKey () {
-            return process.env.VITE_GOOGLE_RECAPTCHA_KEY;
+            return import.meta.env.VITE_GOOGLE_RECAPTCHA_KEY;
         },
     },
     methods: {
