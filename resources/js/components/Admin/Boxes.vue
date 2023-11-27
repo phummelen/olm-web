@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import BrandsBox from './Bbox/BrandsBox';
+import BrandsBox from './Bbox/BrandsBox.vue';
 
 export default {
     name: 'Boxes',

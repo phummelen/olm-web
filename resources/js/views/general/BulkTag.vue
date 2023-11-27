@@ -102,8 +102,8 @@
 </template>
 
 <script>
-import PhotoDetailsPopup from '../../components/Modal/Photos/PhotoDetailsPopup';
-import FilterMyPhotos from '../../components/Profile/bottom/MyPhotos/FilterMyPhotos';
+import PhotoDetailsPopup from '../../components/Modal/Photos/PhotoDetailsPopup.vue';
+import FilterMyPhotos from '../../components/Profile/bottom/MyPhotos/FilterMyPhotos.vue';
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
 import moment from 'moment';

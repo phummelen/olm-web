@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import DonateButtons from '../../components/DonateButtons'
+import DonateButtons from '../../components/DonateButtons.vue'
 
 export default {
     name: 'Donate',

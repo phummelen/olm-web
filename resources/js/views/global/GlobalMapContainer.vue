@@ -11,7 +11,7 @@
 <script>
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import Supercluster from './Supercluster'
+import Supercluster from './Supercluster.vue'
 
 export default {
     name: 'GlobalMapContainer',
@@ -84,8 +84,6 @@ export default {
 </script>
 
 <style scoped>
-    @import '~leaflet/dist/leaflet.css';
-
     .global-map-container {
         height: calc(100% - 72px);
         margin: 0;

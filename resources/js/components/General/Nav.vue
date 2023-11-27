@@ -142,7 +142,7 @@
 </template>
 
 <script>
-import Languages from '../global/Languages'
+import Languages from '../global/Languages.vue'
 
 export default {
     name: 'Nav',

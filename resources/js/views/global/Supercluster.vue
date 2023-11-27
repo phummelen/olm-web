@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import LiveEvents from '../../components/LiveEvents';
+import LiveEvents from '../../components/LiveEvents.vue';
 
 import {
     CLUSTER_ZOOM_THRESHOLD,

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Radar from '../../Charts/Radar';
+import Radar from '../../Charts/Radar.vue';
 
 export default {
     name: 'ProfileCategories',
