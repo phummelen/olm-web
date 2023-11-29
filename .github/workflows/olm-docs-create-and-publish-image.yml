@@ -29,4 +29,4 @@ jobs:
           context: .
           file: ./deployment/web-dev.dockerfile
           push: true
-          tags: olm/web:latest
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/olm-web:latest
