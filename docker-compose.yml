@@ -1,0 +1,111 @@
+version: "3.8"
+services:
+  web:
+    image: phummelen/${APP_NAME}-web:${APP_VERSION}
+    container_name: ${APP_NAME}-web
+    restart: unless-stopped
+    ports:
+      - 8000:9000
+    working_dir: /app
+    depends_on:
+      - db
+      - photo-storage
+  docs:
+    image: phummelen/${APP_NAME}-docs:${APP_VERSION}
+    container_name: ${APP_NAME}-docs
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT
+  db:
+    image: mysql:8.0
+    container_name: ${APP_NAME}-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_USER: ${DB_USERNAME}
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    # ports:
+    #   - 3306:3306
+    volumes:
+      - ./config/mysql:/docker-entrypoint-initdb.d
+      - ./data/mysql/db:/var/lib/mysql
+  db-init:
+    image: phummelen/${APP_NAME}-web:${APP_VERSION}
+    container_name: ${APP_NAME}-web-init
+    depends_on:
+      - db
+    working_dir: /app
+    command: ["php artisan migrate"]
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpmyadmin
+    environment:
+      PMA_ARBITRARY: 1
+    # ports:
+    #   - 8087:80
+    restart: unless-stopped
+  redis:
+    image: redis
+    container_name: ${APP_NAME}-redis
+    # ports:
+    #   - 6379/tcp
+    #options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    restart: unless-stopped
+  photo-storage:
+    image: minio/minio:latest
+    container_name: public-assets.${APP_NAME}-storage
+    restart: unless-stopped
+    environment:
+      - MINIO_ACCESS_KEY=${AWS_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${AWS_ACCESS_SECRET}
+      - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+      - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+    ports:
+       - 9000:9000
+       - 9090:9090
+    volumes:
+      - ./data/minio:/data
+    command: server /data --console-address ":9090"
+  mta:
+    image: phummelen/${APP_NAME}-mta:${APP_VERSION}
+    container_name: ${APP_NAME}-mta
+    restart: unless-stopped
+    environment:
+      #RELAY_DOMAINS: ${RELAY_DOMAINS}
+      GMAIL_USER: ${GMAIL_USER}
+      GMAIL_PASSWORD: ${GMAIL_PASSWORD}
+      SES_REGION: ${SES_REGION}
+      SES_PORT: ${SES_PORT}
+      SES_USER: ${SES_USER}
+      SES_PASSWORD: ${SES_PASSWORD}
+  nginx:
+    image: nginx:stable-alpine-slim
+    container_name: ${APP_NAME}-proxy
+    restart: unless-stopped
+    ports:
+      - 8080:80
+    volumes:
+      - ./deployment/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - photo-storage
+      - web
+  # certbot:
+  #   image: certbot/certbot
+  #   volumes:
+  #     - ./data/letsencrypt:/etc/letsencrypt
+  #     - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+  #   depends_on:
+  #     - nginx
+  #   command: certonly --webroot --webroot-path=/var/www/html --email your_email@example.com --agree-tos -d your_domain.com
+
+# volumes:
+#   minio_data:
+#   letsencrypt:
+
+networks:
+  network:
+    name: ${ENVIRONMENT}
+    driver: bridge

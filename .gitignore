@@ -7,6 +7,7 @@
 /storage/pint.cache
 /storage/rector/cache
 /vendor
+/data/
 .env
 .env.backup
 .phpunit.result.cache

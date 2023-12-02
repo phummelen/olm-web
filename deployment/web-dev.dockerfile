@@ -41,7 +41,6 @@ RUN mkdir -p /home/$user/.composer \
     && chown -R $user:$user /app
 
 COPY --chown=$user . /app
-COPY --chown=$user .env.dockerimage /app/.env
 
 #USER $user
 
